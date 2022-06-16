@@ -93,7 +93,7 @@ class PasswordForm extends StatelessWidget {
         autocorrect: false,
         decoration: InputDecoration(
           prefixIcon: Icon(
-            Icons.key,
+            Icons.password,
             color: Color.fromARGB(255, 106, 91, 226),
           ),
           floatingLabelBehavior: FloatingLabelBehavior.never,
