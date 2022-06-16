@@ -11,18 +11,26 @@ class QuizScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Row(
-              children: const [
-                Icon(Icons.close_rounded),
-                Text(
-                  "10 : 45",
-                  style: TextStyle(color: Colors.white),
-                ),
-                Text(
-                  "# 10",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ],
+            Container(
+              width: MediaQuery.of(context).size.width * 1,
+              child: Row(
+                children: [
+                  Icon(Icons.close_rounded),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "10 : 45",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "# 10",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
             ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 80.0, horizontal: 12.0),
@@ -37,68 +45,80 @@ class QuizScreen extends StatelessWidget {
                 ),
               ),
             ),
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                "Phnom Penh",
-              ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                foregroundColor: MaterialStateProperty.all(
-                    const Color.fromARGB(255, 106, 91, 226)),
-                shape: MaterialStateProperty.all(const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    side: BorderSide(
-                      color: Color.fromARGB(255, 106, 91, 226),
-                    ))),
-              ),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                "Kompong Cham",
-              ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                foregroundColor: MaterialStateProperty.all(
-                    const Color.fromARGB(255, 106, 91, 226)),
-                shape: MaterialStateProperty.all(const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    side: BorderSide(
-                      color: Color.fromARGB(255, 106, 91, 226),
-                    ))),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "Phnom Penh",
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  foregroundColor: MaterialStateProperty.all(
+                      const Color.fromARGB(255, 106, 91, 226)),
+                  shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      side: BorderSide(
+                        color: Color.fromARGB(255, 106, 91, 226),
+                      ))),
+                ),
               ),
             ),
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                "Siem Reap",
-              ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                foregroundColor: MaterialStateProperty.all(
-                    const Color.fromARGB(255, 106, 91, 226)),
-                shape: MaterialStateProperty.all(const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    side: BorderSide(
-                      color: Color.fromARGB(255, 106, 91, 226),
-                    ))),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "Kompong Cham",
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  foregroundColor: MaterialStateProperty.all(
+                      const Color.fromARGB(255, 106, 91, 226)),
+                  shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      side: BorderSide(
+                        color: Color.fromARGB(255, 106, 91, 226),
+                      ))),
+                ),
               ),
             ),
-            TextButton(
-              onPressed: () {},
-              child: const Text(
-                "Sihanoukville",
+            Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "Siem Reap",
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  foregroundColor: MaterialStateProperty.all(
+                      const Color.fromARGB(255, 106, 91, 226)),
+                  shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      side: BorderSide(
+                        color: Color.fromARGB(255, 106, 91, 226),
+                      ))),
+                ),
               ),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                foregroundColor: MaterialStateProperty.all(
-                    const Color.fromARGB(255, 106, 91, 226)),
-                shape: MaterialStateProperty.all(const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                    side: BorderSide(
-                      color: Color.fromARGB(255, 106, 91, 226),
-                    ))),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              child: TextButton(
+                onPressed: () {},
+                child: const Text(
+                  "Sihanoukville",
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.white),
+                  foregroundColor: MaterialStateProperty.all(
+                      const Color.fromARGB(255, 106, 91, 226)),
+                  shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
+                      side: BorderSide(
+                        color: Color.fromARGB(255, 106, 91, 226),
+                      ))),
+                ),
               ),
             ),
           ],
