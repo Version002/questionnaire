@@ -5,6 +5,7 @@ import 'package:questionnaire/signin.dart';
 // import 'package:questionnaire/signin.dart';
 import 'package:questionnaire/signup.dart';
 import 'package:questionnaire/student/quiz.dart';
+import 'package:questionnaire/student/scoreReview.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const QuizScreen(),
+      home: const ScoreReview(),
     );
   }
 }
