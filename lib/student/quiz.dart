@@ -20,6 +20,7 @@ class QuizScreen extends StatelessWidget {
               ],
             ),
             const Question(),
+            // gonna do streambuilder for the answers later
             Padding(
               padding: const EdgeInsets.only(bottom: 32.0),
               child: SizedBox(
