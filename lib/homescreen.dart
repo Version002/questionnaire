@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:questionnaire/screen/CreatingQuizScreen.dart';
+import 'package:questionnaire/screen/ReportingScreen.dart';
 import 'package:questionnaire/widget/text/BlackText.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,7 +19,9 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             BlackText(
                 text: 'Hello, Anna!', fontWeight: FontWeight.w400, size: 25),
             BlackText(
@@ -25,7 +29,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontWeight: FontWeight.w300,
                 size: 15),
             GestureDetector(
-
+               onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => CreatingQuizScreen()));
+              },
               child: Stack(
                 children: [
                   Column(
@@ -86,7 +95,12 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             GestureDetector(
-              
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ReportingScreen()));
+              },
               child: Stack(
                 children: [
                   Column(
