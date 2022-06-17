@@ -12,20 +12,59 @@ class SignUp extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.195,
-              color: const Color.fromARGB(255, 106, 91, 226),
+            Stack(
+              children: [
+                const PurpleContainer(),
+                Column(
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    const Logo(),
+                    const Signup(),
+                    const UsernameForm(),
+                    const EmailForm(),
+                    const PasswordForm(),
+                    const ConfirmationForm(),
+                    const SignupButton()
+                  ],
+                ),
+              ],
             ),
-            const Signup(),
-            const UsernameForm(),
-            const EmailForm(),
-            const PasswordForm(),
-            const ConfirmationForm(),
-            const SignupButton()
           ],
         )),
       ),
+    );
+  }
+}
+
+class Logo extends StatelessWidget {
+  const Logo({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      child: Image.asset(
+        'assets/logo.png',
+        height: 158,
+        width: 190,
+        fit: BoxFit.fitWidth,
+      ),
+    );
+  }
+}
+
+class PurpleContainer extends StatelessWidget {
+  const PurpleContainer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.195,
+      color: const Color.fromARGB(255, 106, 91, 226),
     );
   }
 }
@@ -226,7 +265,7 @@ class Signup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.only(top: 50.0, bottom: 40.0),
+      padding: EdgeInsets.only(top: 10.0, bottom: 40.0),
       child: Center(
           child: Text(
         "Sign Up",
