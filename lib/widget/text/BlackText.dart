@@ -8,14 +8,12 @@ class BlackText extends StatelessWidget {
   BlackText({required this.text, required this.fontWeight,required this.size});
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text(
-        text,
-        style: TextStyle(
-          fontWeight: fontWeight,
-          fontSize: size,
-          color: Colors.black,
-        ),
+    return Text(
+      text,
+      style: TextStyle(
+        fontWeight: fontWeight,
+        fontSize: size,
+        color: Colors.black,
       ),
     );
   }
