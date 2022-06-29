@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:questionnaire/screen/CreatingQuizScreen.dart';
 import 'package:questionnaire/screen/ReportingScreen.dart';
@@ -22,14 +23,27 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: 20,
             ),
-            BlackText(
-                text: 'Hello, Anna!', fontWeight: FontWeight.w400, size: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                BlackText(
+                    text: 'Hello, Anna!',
+                    fontWeight: FontWeight.w400,
+                    size: 25),
+                IconButton(
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                    },
+                    icon: Icon(Icons.logout)),
+                
+              ],
+            ),
             BlackText(
                 text: 'I hope you are doing well',
                 fontWeight: FontWeight.w300,
                 size: 15),
             GestureDetector(
-               onTap: () {
+              onTap: () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -96,10 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ReportingScreen()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ReportingScreen()));
               },
               child: Stack(
                 children: [

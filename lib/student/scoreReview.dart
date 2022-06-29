@@ -321,15 +321,13 @@ class ScoreReviewText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-      child: Text(
-        "Score Review",
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.w700,
-          fontSize: 23,
-        ),
+    return Text(
+      "Score Review",
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w700,
+        fontSize: 23,
       ),
     );
   }

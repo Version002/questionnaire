@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:questionnaire/homescreen.dart';
+import 'package:questionnaire/signin.dart';
 import 'package:questionnaire/student/scoreReview.dart';
 
 // void main() {
@@ -34,7 +36,27 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      home: const MainPage(),
+    );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  const MainPage({ Key? key }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return  StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        print(snapshot.error);
+        if (snapshot.hasData) {
+          return HomeScreen();
+        } else {
+        return SignIn();
+
+        }
+      },
     );
   }
 }

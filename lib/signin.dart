@@ -1,4 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+final passwordController = TextEditingController();
+final userController = TextEditingController();
 
 class SignIn extends StatelessWidget {
   const SignIn({Key? key}) : super(key: key);
@@ -106,7 +110,7 @@ class LoginButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 145.0, vertical: 15.0),
       child: TextButton(
-        onPressed: () {},
+        onPressed: signIn,
         child: const Text(
           "Login",
           style: TextStyle(fontSize: 16),
@@ -124,6 +128,13 @@ class LoginButton extends StatelessWidget {
       ),
     );
   }
+
+  Future signIn() async {
+    print(userController.text.trim());
+    print(passwordController.text.trim());
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: userController.text.trim(), password: passwordController.text.trim());
+  }
 }
 
 class PasswordForm extends StatelessWidget {
@@ -133,10 +144,11 @@ class PasswordForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding:
           EdgeInsets.only(top: 24.0, left: 26.0, right: 26.0, bottom: 50.0),
       child: TextField(
+        controller: passwordController,
         cursorColor: Color.fromARGB(255, 106, 91, 226),
         obscureText: true,
         enableSuggestions: false,
@@ -175,17 +187,19 @@ class UsernameForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.only(top: 16.0, left: 28.0, right: 28.0),
       child: TextField(
+        controller: userController,
+        keyboardType: TextInputType.emailAddress,
         cursorColor: Color.fromARGB(255, 106, 91, 226),
         decoration: InputDecoration(
           prefixIcon: Icon(
-            Icons.person,
+            Icons.email,
             color: Color.fromARGB(255, 106, 91, 226),
           ),
           floatingLabelBehavior: FloatingLabelBehavior.never,
-          labelText: "Username",
+          labelText: "Email",
           labelStyle: TextStyle(
               color: Color.fromARGB(255, 106, 91, 226),
               fontSize: 14,
