@@ -1,10 +1,14 @@
+
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:questionnaire/homescreen.dart';
 import 'package:questionnaire/signin.dart';
+import 'package:questionnaire/signup.dart';
 import 'package:questionnaire/student/scoreReview.dart';
+import 'package:questionnaire/widget/Utils.dart';
 
 // void main() {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +19,7 @@ import 'package:questionnaire/student/scoreReview.dart';
 //   runApp(const MyApp());
 // }
 
-Future main() async {
+ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
@@ -31,12 +35,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey:  Utils.messengerKey,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainPage(),
+      home: const SignUp(),
     );
   }
 }
@@ -49,7 +54,6 @@ class MainPage extends StatelessWidget {
     return  StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        print(snapshot.error);
         if (snapshot.hasData) {
           return HomeScreen();
         } else {

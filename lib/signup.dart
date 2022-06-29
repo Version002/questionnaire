@@ -1,4 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
+import 'package:questionnaire/widget/Utils.dart';
+
+final emailController = TextEditingController();
+final passwordController = TextEditingController();
 
 class SignUp extends StatelessWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -20,10 +26,10 @@ class SignUp extends StatelessWidget {
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                     const Logo(),
                     const Signup(),
-                    const UsernameForm(),
+                    // const UsernameForm(),
                     const EmailForm(),
                     const PasswordForm(),
-                    const ConfirmationForm(),
+                    // const ConfirmationForm(),
                     const SignupButton()
                   ],
                 ),
@@ -79,7 +85,7 @@ class SignupButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 145.0, vertical: 50.0),
       child: TextButton(
-        onPressed: () {},
+        onPressed: signUp,
         child: const Text(
           "Sign up",
           style: TextStyle(fontSize: 16),
@@ -96,6 +102,18 @@ class SignupButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future signUp() async {
+   try {
+     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim());
+   }on FirebaseAuthException catch (e) {
+    print(e);
+
+    Utils.showSnackBar(e.message);
+   }
   }
 }
 
@@ -147,9 +165,10 @@ class PasswordForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.only(top: 24.0, left: 26.0, right: 26.0),
-      child: TextField(
+      child: TextFormField(
+        controller: passwordController,
         cursorColor: Color.fromARGB(255, 106, 91, 226),
         obscureText: true,
         enableSuggestions: false,
@@ -176,6 +195,8 @@ class PasswordForm extends StatelessWidget {
                 color: Color.fromARGB(255, 106, 91, 226), width: 2.0),
           ),
         ),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (value) => value != null && value.length<6 ? 'Enter min 6 characters' : null,
       ),
     );
   }
@@ -188,9 +209,11 @@ class EmailForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.only(top: 24.0, left: 26.0, right: 26.0),
-      child: TextField(
+      child: TextFormField(
+        keyboardType: TextInputType.emailAddress,
+        controller: emailController,
         cursorColor: Color.fromARGB(255, 106, 91, 226),
         decoration: InputDecoration(
           prefixIcon: Icon(
@@ -214,6 +237,10 @@ class EmailForm extends StatelessWidget {
                 color: Color.fromARGB(255, 106, 91, 226), width: 2.0),
           ),
         ),
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (email) => email != null && !EmailValidator.validate(email)
+            ? 'Enter a valid email'
+            : null,
       ),
     );
   }

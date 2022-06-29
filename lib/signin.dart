@@ -1,11 +1,13 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:questionnaire/signup.dart';
 
 final passwordController = TextEditingController();
 final userController = TextEditingController();
 
 class SignIn extends StatelessWidget {
-  const SignIn({Key? key}) : super(key: key);
+  SignIn({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +20,16 @@ class SignIn extends StatelessWidget {
           children: [
             Stack(
               children: [
-                const PurpleContainer(),
+                PurpleContainer(),
                 Column(
                   children: [
                     SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                    const Logo(),
-                    const Signin(),
-                    const UsernameForm(),
-                    const PasswordForm(),
-                    const LoginButton(),
-                    const SignUpText()
+                    Logo(),
+                    Signin(),
+                    UsernameForm(),
+                    PasswordForm(),
+                    LoginButton(),
+                    SignUpText()
                   ],
                 ),
               ],
@@ -40,7 +42,7 @@ class SignIn extends StatelessWidget {
 }
 
 class Logo extends StatelessWidget {
-  const Logo({
+  Logo({
     Key? key,
   }) : super(key: key);
 
@@ -58,7 +60,7 @@ class Logo extends StatelessWidget {
 }
 
 class PurpleContainer extends StatelessWidget {
-  const PurpleContainer({
+  PurpleContainer({
     Key? key,
   }) : super(key: key);
 
@@ -67,13 +69,13 @@ class PurpleContainer extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.195,
-      color: const Color.fromARGB(255, 106, 91, 226),
+      color: Color.fromARGB(255, 106, 91, 226),
     );
   }
 }
 
 class SignUpText extends StatelessWidget {
-  const SignUpText({
+  SignUpText({
     Key? key,
   }) : super(key: key);
 
@@ -82,7 +84,7 @@ class SignUpText extends StatelessWidget {
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Text(
             "Don't have an Account ? ",
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
@@ -101,25 +103,25 @@ class SignUpText extends StatelessWidget {
 }
 
 class LoginButton extends StatelessWidget {
-  const LoginButton({
+  LoginButton({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 145.0, vertical: 15.0),
+      padding: EdgeInsets.symmetric(horizontal: 145.0, vertical: 15.0),
       child: TextButton(
         onPressed: signIn,
-        child: const Text(
+        child: Text(
           "Login",
           style: TextStyle(fontSize: 16),
         ),
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-              const Color.fromARGB(255, 106, 91, 226)),
+          backgroundColor:
+              MaterialStateProperty.all(Color.fromARGB(255, 106, 91, 226)),
           foregroundColor: MaterialStateProperty.all(Colors.white),
-          shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(5.0)),
               side: BorderSide(
                 color: Color.fromARGB(255, 106, 91, 226),
@@ -129,16 +131,16 @@ class LoginButton extends StatelessWidget {
     );
   }
 
-  Future signIn() async {
-    print(userController.text.trim());
-    print(passwordController.text.trim());
+   signIn() async {
+    // showDialog(context: context, builder: (context) => Center(child: CircularProgressIndicator(),));
     await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: userController.text.trim(), password: passwordController.text.trim());
+        email: userController.text.trim(),
+        password: passwordController.text.trim());
   }
 }
 
 class PasswordForm extends StatelessWidget {
-  const PasswordForm({
+  PasswordForm({
     Key? key,
   }) : super(key: key);
 
@@ -181,7 +183,7 @@ class PasswordForm extends StatelessWidget {
 }
 
 class UsernameForm extends StatelessWidget {
-  const UsernameForm({
+  UsernameForm({
     Key? key,
   }) : super(key: key);
 
@@ -221,13 +223,13 @@ class UsernameForm extends StatelessWidget {
 }
 
 class Signin extends StatelessWidget {
-  const Signin({
+  Signin({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.only(top: 10.0, bottom: 40.0),
       child: Center(
           child: Text(
