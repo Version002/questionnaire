@@ -1,10 +1,10 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:questionnaire/homescreen.dart';
 import 'package:questionnaire/signin.dart';
-import 'package:questionnaire/widget/Utils.dart';
 
 final emailController = TextEditingController();
 final passwordController = TextEditingController();
@@ -14,13 +14,28 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     Future createUserFirebase({required String email}) async {
+      final docTeacher = FirebaseFirestore.instance.collection('teacher').doc();
+      final json = {
+        'email': email,
+        'teacherId': docTeacher.id,
+      };
+      await docTeacher.set(json);
+    }
+
+
     Future signUp() async {
       try {
+        
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailController.text.trim(),
             password: passwordController.text.trim());
+        final emailPost = emailController.text;
+        
+        createUserFirebase(email: emailPost);
+        
         Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()));
+                    MaterialPageRoute(builder: (context) => SignIn()));
       } on FirebaseAuthException catch (e) {
         print(e);
         final snackBar = SnackBar(
@@ -34,6 +49,7 @@ class SignUp extends StatelessWidget {
       }
     }
 
+   
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
