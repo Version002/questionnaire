@@ -89,12 +89,18 @@ class SignUpText extends StatelessWidget {
             "Don't have an Account ? ",
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
           ),
-          Text(
-            "Sign Up",
-            style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-                color: Color.fromARGB(255, 106, 91, 226)),
+          GestureDetector(
+             onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignUp()));
+              },
+            child: Text(
+              "Sign Up",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 106, 91, 226)),
+            ),
           )
         ],
       ),
