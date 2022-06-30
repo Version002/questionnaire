@@ -1,6 +1,9 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:questionnaire/homescreen.dart';
+import 'package:questionnaire/signin.dart';
 import 'package:questionnaire/widget/Utils.dart';
 
 final emailController = TextEditingController();
@@ -11,6 +14,26 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future signUp() async {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim());
+        Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()));
+      } on FirebaseAuthException catch (e) {
+        print(e);
+        final snackBar = SnackBar(
+          content: Text(e.message!),
+          backgroundColor: Colors.red,
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+        // Utils.showSnackBar(e.message);
+      }
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -30,7 +53,30 @@ class SignUp extends StatelessWidget {
                     const EmailForm(),
                     const PasswordForm(),
                     // const ConfirmationForm(),
-                    const SignupButton()
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 145.0, vertical: 50.0),
+                      child: TextButton(
+                        onPressed: signUp,
+                        child: const Text(
+                          "Sign up",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              const Color.fromARGB(255, 106, 91, 226)),
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          shape: MaterialStateProperty.all(
+                              const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0)),
+                                  side: BorderSide(
+                                    color: Color.fromARGB(255, 106, 91, 226),
+                                  ))),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -75,47 +121,16 @@ class PurpleContainer extends StatelessWidget {
   }
 }
 
-class SignupButton extends StatelessWidget {
-  const SignupButton({
-    Key? key,
-  }) : super(key: key);
+// class SignupButton extends StatelessWidget {
+//   const SignupButton({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 145.0, vertical: 50.0),
-      child: TextButton(
-        onPressed: signUp,
-        child: const Text(
-          "Sign up",
-          style: TextStyle(fontSize: 16),
-        ),
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(
-              const Color.fromARGB(255, 106, 91, 226)),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
-          shape: MaterialStateProperty.all(const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              side: BorderSide(
-                color: Color.fromARGB(255, 106, 91, 226),
-              ))),
-        ),
-      ),
-    );
-  }
-
-  Future signUp() async {
-   try {
-     await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim());
-   }on FirebaseAuthException catch (e) {
-    print(e);
-
-    Utils.showSnackBar(e.message);
-   }
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return
+//   }
+// }
 
 class ConfirmationForm extends StatelessWidget {
   const ConfirmationForm({
@@ -196,7 +211,8 @@ class PasswordForm extends StatelessWidget {
           ),
         ),
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (value) => value != null && value.length<6 ? 'Enter min 6 characters' : null,
+        validator: (value) =>
+            value != null && value.length < 6 ? 'Enter min 6 characters' : null,
       ),
     );
   }
