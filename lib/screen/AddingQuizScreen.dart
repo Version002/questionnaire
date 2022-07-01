@@ -18,21 +18,50 @@ class AddingQuizScreen extends StatefulWidget {
 class _AddingQuizScreenState extends State<AddingQuizScreen> {
   final quizNameController = TextEditingController();
   final quizIdController = TextEditingController();
+  final numberQuestionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     Future retrieveData() async {
       var collection = FirebaseFirestore.instance.collection('teacher');
-      var docSnapshot = await collection.doc('6kGiQ6ClblmZ8EwqNpU6').get();
+      var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
       if (docSnapshot.exists) {
         // final data = docSnapshot.data();
         Map<String, dynamic>? data = docSnapshot.data();
-        if(data?['quiz']==null) {
-          print('true');
+
+        if (data?['quiz'] == null) {
+          FirebaseFirestore.instance
+              .collection('teacher')
+              .doc('tDBJb5RjZVT4NTvD9W7D')
+              .set({
+            "quiz": [
+              {
+                'quizId': quizIdController.text,
+                'quizName': quizNameController.text,
+              }
+            ]
+          }, SetOptions(merge: true));
+          if (quizIdController.text != null &&
+              quizNameController.text != null) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreatingQuizScreen(numberQuestion: numberQuestionController.text,)));
+          }
+        } else {
+          print('yes');
+          print(data?['quiz'][0]['quizId']);
+          Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreatingQuizScreen(numberQuestion: numberQuestionController.text,)));
+          //condition second array
+          // final json = {
+          //   'quizId': quizIdController.text,
+          //   'quizName': quizNameController.text,
+          // };
+          // FirebaseFirestore.instance
+          //     .collection('teacher')
+              // .doc('tDBJb5RjZVT4NTvD9W7D')
+              // .updateData({"quiz": FieldValue.arrayUnion(json) });
+          // Firestore.instance.collection(city).document('Attractions').updateData({"data": FieldValue.arrayUnion(obj)});
         }
-        // var value = data?['some_field']; // <-- The value you want to retrieve.
-        // Call setState if needed.
-        
       }
       print(docSnapshot.data());
     }
@@ -95,6 +124,20 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
               textColor: Colors.white,
               // controller: state.firstname,
               labelText: 'quiz id',
+              prefixIcon: Image.asset(
+                'assets/question_icon.png',
+                height: 12,
+                width: 12,
+              ),
+              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+              RSTextFormField(
+              keyboardType: TextInputType.number,
+              controller: numberQuestionController,
+              mainColor: Colors.white,
+              textColor: Colors.white,
+              // controller: state.firstname,
+              labelText: 'number of questions',
               prefixIcon: Image.asset(
                 'assets/question_icon.png',
                 height: 12,
