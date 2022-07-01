@@ -17,7 +17,10 @@ class CreatingQuizScreen extends StatefulWidget {
   final String quizName;
   final String quizId;
 
-  CreatingQuizScreen({required this.numberQuestion, required this.quizId, required this.quizName});
+  CreatingQuizScreen(
+      {required this.numberQuestion,
+      required this.quizId,
+      required this.quizName});
 
   @override
   State<CreatingQuizScreen> createState() => _CreatingQuizScreenState();
@@ -29,52 +32,48 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
     final question = int.parse(widget.numberQuestion);
     final idQuiz = widget.quizId;
     final nameQuiz = widget.quizName;
+    int number;
+
     Future postQuestion() async {
-      
       var collection = FirebaseFirestore.instance.collection('teacher');
       var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
       print(questionController[0].text);
       if (docSnapshot.exists) {
         Map<String, dynamic>? data = docSnapshot.data();
-
-        
-          print(data?['quiz']);
-          FirebaseFirestore.instance
-              .collection('teacher')
-              .doc('tDBJb5RjZVT4NTvD9W7D')
-              .set({
-            "quiz": [
-              {
-                "quiz_id": idQuiz,
-                "quiz_name":nameQuiz,
-                "quiz_questions": [
-                  {
-                    "question_title":"what",
-                    "questions":[
-                      {
-                        "a_answer":"blue",
-                        "isCorrect": true,
-                      },
-                      {
-                         "b_answer":"red",
-                          "isCorrect":false,
-                      },
-                      {
-                        "c_answer":"blue",
-                        "isCorrect": true,
-                      },
-                      {
-                         "d_answer":"red",
-                          "isCorrect":false,
-                      },
-                      
-                    ]
-                  }
-                ]
-              }
-            ]
-          }, SetOptions(merge: true));
-        
+        FirebaseFirestore.instance
+            .collection('teacher')
+            .doc('tDBJb5RjZVT4NTvD9W7D')
+            .set({
+          "quiz": [
+            {
+              "quiz_id": idQuiz,
+              "quiz_name": nameQuiz,
+              "quiz_questions": [
+                {
+                  "question_title": questionController[0].text,
+                  "questions": [
+                    {
+                      "a_answer": aAnswerController[0].text,
+                      "isCorrect": true,
+                    },
+                    {
+                      "b_answer": bAnswerController[0].text,
+                      "isCorrect": false,
+                    },
+                    {
+                      "c_answer": cAnswerController[0].text,
+                      "isCorrect": true,
+                    },
+                    {
+                      "d_answer": dAnswerController[0].text,
+                      "isCorrect": false,
+                    },
+                  ]
+                }
+              ]
+            }
+          ]
+        }, SetOptions(merge: true));
       }
     }
 
@@ -124,12 +123,13 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: question,
                     itemBuilder: ((context, index) {
+                      
                       return questionList(index);
                     }))),
             Padding(
               padding: const EdgeInsets.only(top: 32.0),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 0.6,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.7,
                 child: TextButton(
                   onPressed: postQuestion,
                   child: const Text(

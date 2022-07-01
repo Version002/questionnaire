@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -9,16 +10,25 @@ class QuizScreen extends StatefulWidget {
 
 class _QuizScreenState extends State<QuizScreen> {
   Future retrieveQuestion() async {
-    
+    var collection = FirebaseFirestore.instance.collection('teacher');
+    var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic>? data = docSnapshot.data();
+      print(data);
+    }
   }
-  
+
   @override
+  void initState() {
+    retrieveQuestion();
+
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 106, 91, 226),
-      body:
-      Padding(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
