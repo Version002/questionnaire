@@ -4,6 +4,10 @@ import 'package:questionnaire/screen/AddingQuizScreen.dart';
 import 'package:questionnaire/style/app_color.dart';
 import 'package:questionnaire/widget/text/BlackText.dart';
 import 'package:questionnaire/widget/text/WhiteText.dart';
+import 'package:csv/csv.dart';
+import 'package:external_path/external_path.dart';
+import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 
 class ReportingScreen extends StatefulWidget {
   const ReportingScreen({Key? key}) : super(key: key);
@@ -29,9 +33,55 @@ class _ReportingScreenState extends State<ReportingScreen> {
     collection = FirebaseFirestore.instance.collection('teacher');
     docSnapshot = await collection.doc('ETX2Cdra8r4he1ElSrwC').get();
     data = docSnapshot.data()!;
-
-    print(data!['quiz'][0]['students'].length);
   }
+
+  void _generateCsvFile() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+    print(statuses[Permission.storage]);
+
+    List<dynamic> studentScore = [
+      {"name": "Vitou", "score": 94},
+      {"name": "Sokleng", "score": 84},
+    ];
+
+    List<List<dynamic>> rows = [];
+
+    List<dynamic> row = [];
+    row.add("name");
+    row.add("score");
+    rows.add(row);
+
+    for (int i = 0; i < studentScore.length; i++) {
+      List<dynamic> row = [];
+      row.add(studentScore[i]["name"]);
+      row.add(studentScore[i]["score"]);
+      rows.add(row);
+    }
+
+    String csv = const ListToCsvConverter().convert(rows);
+
+    String dir = await ExternalPath.getExternalStoragePublicDirectory(
+        ExternalPath.DIRECTORY_DOWNLOADS);
+    print("dir $dir");
+    String file = "$dir";
+
+    File f = File(file + "/filename.csv");
+
+    f.writeAsString(csv);
+  }
+
+  List score = [
+    '100',
+    '100',
+    '100',
+    '100',
+    '100',
+    '100',
+  ];
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -204,8 +254,8 @@ class _ReportingScreenState extends State<ReportingScreen> {
                           size: 20),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: fetchDocuments,
+                  TextButton(
+                    onPressed: _generateCsvFile,
                     child: Text(
                       'Export',
                       style: TextStyle(
@@ -214,7 +264,16 @@ class _ReportingScreenState extends State<ReportingScreen> {
                         color: Colors.red,
                       ),
                     ),
-                  ),
+                  )
+
+                  // Text(
+                  //   'Export',
+                  //   style: TextStyle(
+                  //     fontWeight: FontWeight.w500,
+                  //     fontSize: 20,
+                  //     color: Colors.red,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
