@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:questionnaire/style/app_color.dart';
 import 'package:questionnaire/widget/text/BlackText.dart';
@@ -11,6 +12,17 @@ class ReportingScreen extends StatefulWidget {
 }
 
 class _ReportingScreenState extends State<ReportingScreen> {
+  var collection;
+  var docSnapshot;
+  Map<String, dynamic>? data;
+  Future<dynamic> fetchDocuments() async {
+    collection = FirebaseFirestore.instance.collection('teacher');
+    docSnapshot = await collection.doc('ETX2Cdra8r4he1ElSrwC').get();
+    data = docSnapshot.data()!;
+
+    // print(docSnapshot.data()!['quiz'][0]['students'].length);
+  }
+
   List score = [
     '100',
     '100',
@@ -19,8 +31,16 @@ class _ReportingScreenState extends State<ReportingScreen> {
     '100',
     '100',
   ];
+
+  @override
+  void initState() {
+    fetchDocuments();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    fetchDocuments();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -209,13 +229,15 @@ class _ReportingScreenState extends State<ReportingScreen> {
                     child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        itemCount: score.length,
+                        itemCount:
+                            docSnapshot?.data()!['quiz'][0]['students'].length,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return const Padding(
+                          return Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              'Angelina',
+                              docSnapshot.data()!['quiz'][0]['students'][index]
+                                  ['student_name']!,
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15,
@@ -231,13 +253,15 @@ class _ReportingScreenState extends State<ReportingScreen> {
                     child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        itemCount: score.length,
+                        itemCount:
+                            docSnapshot?.data()!['quiz'][0]['students'].length,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          return const Padding(
+                          return Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              '100 Pt',
+                              docSnapshot?.data()!['quiz'][0]['students'][index]
+                                  ['student_score']!,
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15,
@@ -250,7 +274,6 @@ class _ReportingScreenState extends State<ReportingScreen> {
                 ],
               ),
             ),
-            
           ],
         ),
       ),

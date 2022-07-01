@@ -1,13 +1,13 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:questionnaire/homescreen.dart';
+import 'package:questionnaire/screen/ReportingScreen.dart';
 import 'package:questionnaire/signin.dart';
 import 'package:questionnaire/signup.dart';
 import 'package:questionnaire/student/scoreReview.dart';
+import 'package:questionnaire/student/test.dart';
 
 // void main() {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +18,7 @@ import 'package:questionnaire/student/scoreReview.dart';
 //   runApp(const MyApp());
 // }
 
- Future main() async {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
@@ -46,18 +46,17 @@ class MyApp extends StatelessWidget {
 }
 
 class MainPage extends StatelessWidget {
-  const MainPage({ Key? key }) : super(key: key);
+  const MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  StreamBuilder<User?>(
+    return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return HomeScreen();
+          return ReportingScreen();
         } else {
-        return SignIn();
-
+          return SignIn();
         }
       },
     );
