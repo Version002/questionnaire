@@ -20,7 +20,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
     docSnapshot = await collection.doc('ETX2Cdra8r4he1ElSrwC').get();
     data = docSnapshot.data()!;
 
-    print(docSnapshot.data()!['quiz'][0]['students'].length);
+    // print(docSnapshot.data()!['quiz'][0]['students'].length);
   }
 
   List score = [
@@ -233,14 +233,11 @@ class _ReportingScreenState extends State<ReportingScreen> {
                             docSnapshot?.data()!['quiz'][0]['students'].length,
                         physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
-                          print(docSnapshot?.data()!['quiz'][0]['students']
-                              [index]['student_name']!);
                           return Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              // docSnapshot.data()!['quiz'][0]['students'][index]
-                              //     ['student_name']!,
-                              'hi',
+                              docSnapshot.data()!['quiz'][0]['students'][index]
+                                  ['student_name']!,
                               style: TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 15,
