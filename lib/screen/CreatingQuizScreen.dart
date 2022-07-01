@@ -5,7 +5,9 @@ import 'package:questionnaire/widget/SmallUnderline.dart';
 import 'package:questionnaire/widget/text/WhiteText.dart';
 
 class CreatingQuizScreen extends StatefulWidget {
-  const CreatingQuizScreen({Key? key}) : super(key: key);
+  final String numberQuestion;
+
+  CreatingQuizScreen({required this.numberQuestion});
 
   @override
   State<CreatingQuizScreen> createState() => _CreatingQuizScreenState();
@@ -14,6 +16,8 @@ class CreatingQuizScreen extends StatefulWidget {
 class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
   @override
   Widget build(BuildContext context) {
+  final question = int.parse(widget.numberQuestion);
+
     return Scaffold(
       backgroundColor: cPrimary,
       body: SingleChildScrollView(
@@ -49,241 +53,140 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
                     text: 'Create Quiz', fontWeight: FontWeight.bold, size: 25),
               ],
             ),
-            SizedBox(height: 50,),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'question',
-              prefixIcon: Image.asset(
-                'assets/question_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
+            SizedBox(
+              height: 50,
             ),
-            SizedBox(height: 30,),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer a',
-              prefixIcon: Image.asset(
-                'assets/a_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer b',
-              prefixIcon: Image.asset(
-                'assets/b_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer c',
-              prefixIcon: Image.asset(
-                'assets/c_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer d',
-              prefixIcon: Image.asset(
-                'assets/d_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            SizedBox(height: 30,),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'correct answer',
-              prefixIcon: Image.asset(
-                'assets/correct_AnsIcon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            SizedBox(height: 20,),
-            SmallUnderline(),
+            Container(
+              width: MediaQuery.of(context).size.width*0.8,
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: question,
 
-            SizedBox(height: 50,),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'question',
-              prefixIcon: Image.asset(
-                'assets/question_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
+                itemBuilder: ((context, index) {
+                return Column(
+                children: [
+                  RSTextFormField(
+                    mainColor: Colors.white,
+                    textColor: Colors.white,
+                    // controller: state.firstname,
+                    labelText: 'question',
+                    prefixIcon: Image.asset(
+                      'assets/question_icon.png',
+                      height: 12,
+                      width: 12,
+                    ),
+                    labelTextStyle:
+                        TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  RSTextFormField(
+                    mainColor: Colors.white,
+                    textColor: Colors.white,
+                    // controller: state.firstname,
+                    labelText: 'answer a',
+                    prefixIcon: Image.asset(
+                      'assets/a_icon.png',
+                      height: 12,
+                      width: 12,
+                    ),
+                    labelTextStyle:
+                        TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  RSTextFormField(
+                    mainColor: Colors.white,
+                    textColor: Colors.white,
+                    // controller: state.firstname,
+                    labelText: 'answer b',
+                    prefixIcon: Image.asset(
+                      'assets/b_icon.png',
+                      height: 12,
+                      width: 12,
+                    ),
+                    labelTextStyle:
+                        TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  RSTextFormField(
+                    mainColor: Colors.white,
+                    textColor: Colors.white,
+                    // controller: state.firstname,
+                    labelText: 'answer c',
+                    prefixIcon: Image.asset(
+                      'assets/c_icon.png',
+                      height: 12,
+                      width: 12,
+                    ),
+                    labelTextStyle:
+                        TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  RSTextFormField(
+                    mainColor: Colors.white,
+                    textColor: Colors.white,
+                    // controller: state.firstname,
+                    labelText: 'answer d',
+                    prefixIcon: Image.asset(
+                      'assets/d_icon.png',
+                      height: 12,
+                      width: 12,
+                    ),
+                    labelTextStyle:
+                        TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  RSTextFormField(
+                    mainColor: Colors.white,
+                    textColor: Colors.white,
+                    // controller: state.firstname,
+                    labelText: 'correct answer',
+                    prefixIcon: Image.asset(
+                      'assets/correct_AnsIcon.png',
+                      height: 12,
+                      width: 12,
+                    ),
+                    labelTextStyle:
+                        TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  SmallUnderline(),
+                  SizedBox(
+                    height: 50,
+                  ),
+                ],
+              );
+              }))
             ),
-            SizedBox(height: 30,),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer a',
-              prefixIcon: Image.asset(
-                'assets/a_icon.png',
-                height: 12,
-                width: 12,
+            Padding(
+              padding: const EdgeInsets.only(top: 32.0),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    "Add",
+                    style: TextStyle(fontSize: 16, color: cPrimary),
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 255, 255, 255)),
+                    foregroundColor: MaterialStateProperty.all(cPrimary),
+                    shape: MaterialStateProperty.all(
+                        const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(5.0)),
+                            side: BorderSide(
+                              color: Colors.white,
+                            ))),
+                  ),
+                ),
               ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer b',
-              prefixIcon: Image.asset(
-                'assets/b_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer c',
-              prefixIcon: Image.asset(
-                'assets/c_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer d',
-              prefixIcon: Image.asset(
-                'assets/d_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            SizedBox(height: 30,),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'correct answer',
-              prefixIcon: Image.asset(
-                'assets/correct_AnsIcon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            SizedBox(height: 20,),
-            SmallUnderline(),
-
-
-
-            SizedBox(height: 50,),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'question',
-              prefixIcon: Image.asset(
-                'assets/question_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            SizedBox(height: 30,),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer a',
-              prefixIcon: Image.asset(
-                'assets/a_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer b',
-              prefixIcon: Image.asset(
-                'assets/b_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer c',
-              prefixIcon: Image.asset(
-                'assets/c_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'answer d',
-              prefixIcon: Image.asset(
-                'assets/d_icon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            SizedBox(height: 30,),
-            RSTextFormField(
-              mainColor: Colors.white,
-              textColor: Colors.white,
-              // controller: state.firstname,
-              labelText: 'correct answer',
-              prefixIcon: Image.asset(
-                'assets/correct_AnsIcon.png',
-                height: 12,
-                width: 12,
-              ),
-              labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            SizedBox(height: 20,),
-            SmallUnderline(),
+            )
           ],
         ),
       )),

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:questionnaire/screen/AddingQuizScreen.dart';
 import 'package:questionnaire/screen/CreatingQuizScreen.dart';
 import 'package:questionnaire/screen/ReportingScreen.dart';
 import 'package:questionnaire/widget/text/BlackText.dart';
@@ -47,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CreatingQuizScreen()));
+                        builder: (context) => AddingQuizScreen()));
               },
               child: Stack(
                 children: [
