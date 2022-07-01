@@ -37,6 +37,7 @@ dependencies:
   cloud_firestore: 2.5.3
   firebase_auth: 2.0.0
   email_validator: ^2.0.1
+  csv: ^5.0.1
 
 dev_dependencies:
   flutter_test:
