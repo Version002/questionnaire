@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:questionnaire/style/app_color.dart';
 import 'package:questionnaire/widget/RSTextFormField.dart';
@@ -11,11 +12,12 @@ final bAnswerController = <TextEditingController>[];
 final cAnswerController = <TextEditingController>[];
 final dAnswerController = <TextEditingController>[];
 
-
 class CreatingQuizScreen extends StatefulWidget {
   final String numberQuestion;
+  final String quizName;
+  final String quizId;
 
-  CreatingQuizScreen({required this.numberQuestion});
+  CreatingQuizScreen({required this.numberQuestion, required this.quizId, required this.quizName});
 
   @override
   State<CreatingQuizScreen> createState() => _CreatingQuizScreenState();
@@ -25,10 +27,55 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
   @override
   Widget build(BuildContext context) {
     final question = int.parse(widget.numberQuestion);
-
+    final idQuiz = widget.quizId;
+    final nameQuiz = widget.quizName;
     Future postQuestion() async {
-      print(questionController[0].text);
       
+      var collection = FirebaseFirestore.instance.collection('teacher');
+      var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
+      print(questionController[0].text);
+      if (docSnapshot.exists) {
+        Map<String, dynamic>? data = docSnapshot.data();
+
+        
+          print(data?['quiz']);
+          FirebaseFirestore.instance
+              .collection('teacher')
+              .doc('tDBJb5RjZVT4NTvD9W7D')
+              .set({
+            "quiz": [
+              {
+                "quiz_id": idQuiz,
+                "quiz_name":nameQuiz,
+                "quiz_questions": [
+                  {
+                    "question_title":"what",
+                    "questions":[
+                      {
+                        "a_answer":"blue",
+                        "isCorrect": true,
+                      },
+                      {
+                         "b_answer":"red",
+                          "isCorrect":false,
+                      },
+                      {
+                        "c_answer":"blue",
+                        "isCorrect": true,
+                      },
+                      {
+                         "d_answer":"red",
+                          "isCorrect":false,
+                      },
+                      
+                    ]
+                  }
+                ]
+              }
+            ]
+          }, SetOptions(merge: true));
+        
+      }
     }
 
     return Scaffold(
@@ -112,14 +159,14 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
 }
 
 Widget questionList(int index) {
-   if (questionController.length <= index) {
-      questionController.add(TextEditingController());
-      answerController.add(TextEditingController());
-      aAnswerController.add(TextEditingController());
-      bAnswerController.add(TextEditingController());
-      cAnswerController.add(TextEditingController());
-      dAnswerController.add(TextEditingController());
-    }
+  if (questionController.length <= index) {
+    questionController.add(TextEditingController());
+    answerController.add(TextEditingController());
+    aAnswerController.add(TextEditingController());
+    bAnswerController.add(TextEditingController());
+    cAnswerController.add(TextEditingController());
+    dAnswerController.add(TextEditingController());
+  }
 
   return Column(
     children: [

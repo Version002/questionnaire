@@ -22,54 +22,57 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Future retrieveData() async {
-      var collection = FirebaseFirestore.instance.collection('teacher');
-      var docSnapshot = await collection.doc('ETX2Cdra8r4he1ElSrwC').get();
-      if (docSnapshot.exists) {
-        // final data = docSnapshot.data();
-        Map<String, dynamic>? data = docSnapshot.data();
-        
-        if (data?['quiz'] == null) {
-          FirebaseFirestore.instance
-              .collection('teacher')
-              .doc('tDBJb5RjZVT4NTvD9W7D')
-              .set({
-            "quiz": [
-              {
-                'quizId': quizIdController.text,
-                'quizName': quizNameController.text,
-              }
-            ]
-          }, SetOptions(merge: true));
-          if (quizIdController.text != null &&
+    Future addData() async {
+      if (quizIdController.text != null &&
               quizNameController.text != null && numberQuestionController.text!=null) {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CreatingQuizScreen(numberQuestion: numberQuestionController.text,)));
+                MaterialPageRoute(builder: (context) => CreatingQuizScreen(numberQuestion: numberQuestionController.text,quizId: quizIdController.text,quizName: quizNameController.text,)));
           }
-        } else {
-          print('yes');
-          print(data?['quiz'][0]['quizId']);
-          if (quizIdController.text != null &&
-              quizNameController.text != null && numberQuestionController.text!=null) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CreatingQuizScreen(numberQuestion: numberQuestionController.text,)));
-          }
-          //condition second array
-          // final json = {
-          //   'quizId': quizIdController.text,
-          //   'quizName': quizNameController.text,
-          // };
-          // FirebaseFirestore.instance
-          //     .collection('teacher')
-              // .doc('tDBJb5RjZVT4NTvD9W7D')
-              // .updateData({"quiz": FieldValue.arrayUnion(json) });
-          // Firestore.instance.collection(city).document('Attractions').updateData({"data": FieldValue.arrayUnion(obj)});
-        }
-      }
-      print(docSnapshot.data());
-      print(docSnapshot.data()!['quiz'][0]['students'].length);
-      // print(data?['quiz']);
     }
+    // Future retrieveData() async {
+    //   var collection = FirebaseFirestore.instance.collection('teacher');
+    //   var docSnapshot = await collection.doc('ETX2Cdra8r4he1ElSrwC').get();
+    //   if (docSnapshot.exists) {
+    //     // final data = docSnapshot.data();
+    //     Map<String, dynamic>? data = docSnapshot.data();
+        
+    //     if (data?['quiz'] == null) {
+    //       FirebaseFirestore.instance
+    //           .collection('teacher')
+    //           .doc('tDBJb5RjZVT4NTvD9W7D')
+    //           .set({
+    //         "quiz": [
+    //           {
+    //             'quizId': quizIdController.text,
+    //             'quizName': quizNameController.text,
+    //           }
+    //         ]
+    //       }, SetOptions(merge: true));
+          
+    //     } else {
+    //       print('yes');
+    //       print(data?['quiz'][0]['quizId']);
+    //       if (quizIdController.text != null &&
+    //           quizNameController.text != null && numberQuestionController.text!=null) {
+    //         Navigator.push(context,
+    //             MaterialPageRoute(builder: (context) => CreatingQuizScreen(numberQuestion: numberQuestionController.text,quizId: quizIdController.text,quizName: quizNameController.text,)));
+    //       }
+    //       //condition second array
+    //       // final json = {
+    //       //   'quizId': quizIdController.text,
+    //       //   'quizName': quizNameController.text,
+    //       // };
+    //       // FirebaseFirestore.instance
+    //       //     .collection('teacher')
+    //           // .doc('tDBJb5RjZVT4NTvD9W7D')
+    //           // .updateData({"quiz": FieldValue.arrayUnion(json) });
+    //       // Firestore.instance.collection(city).document('Attractions').updateData({"data": FieldValue.arrayUnion(obj)});
+    //     }
+    //   }
+    //   print(docSnapshot.data());
+    //   print(docSnapshot.data()!['quiz'][0]['students'].length);
+    //   // print(data?['quiz']);
+    // }
 
     return Scaffold(
       backgroundColor: cPrimary,
@@ -155,7 +158,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
               child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.6,
                 child: TextButton(
-                  onPressed: retrieveData,
+                  onPressed: addData,
                   child: const Text(
                     "Add",
                     style: TextStyle(fontSize: 16, color: cPrimary),

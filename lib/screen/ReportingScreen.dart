@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:questionnaire/screen/AddingQuizScreen.dart';
 import 'package:questionnaire/style/app_color.dart';
 import 'package:questionnaire/widget/text/BlackText.dart';
 import 'package:questionnaire/widget/text/WhiteText.dart';
@@ -12,6 +13,15 @@ class ReportingScreen extends StatefulWidget {
 }
 
 class _ReportingScreenState extends State<ReportingScreen> {
+  @override
+  void initState() {
+    
+    fetchDocuments();
+      
+   
+    super.initState();
+  }
+
   var collection;
   var docSnapshot;
   Map<String, dynamic>? data;
@@ -20,27 +30,12 @@ class _ReportingScreenState extends State<ReportingScreen> {
     docSnapshot = await collection.doc('ETX2Cdra8r4he1ElSrwC').get();
     data = docSnapshot.data()!;
 
-    // print(docSnapshot.data()!['quiz'][0]['students'].length);
-  }
-
-  List score = [
-    '100',
-    '100',
-    '100',
-    '100',
-    '100',
-    '100',
-  ];
-
-  @override
-  void initState() {
-    fetchDocuments();
-    super.initState();
+    print(data!['quiz'][0]['students'].length);
   }
 
   @override
   Widget build(BuildContext context) {
-    fetchDocuments();
+    // fetchDocuments();
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -61,7 +56,8 @@ class _ReportingScreenState extends State<ReportingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () => Navigator.pop(context),
+                              onTap: () =>           Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddingQuizScreen())),
                               child: Container(
                                 width: 30,
                                 height: 30,
@@ -208,12 +204,15 @@ class _ReportingScreenState extends State<ReportingScreen> {
                           size: 20),
                     ],
                   ),
-                  Text(
-                    'Export',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 20,
-                      color: Colors.red,
+                  GestureDetector(
+                    onTap: fetchDocuments,
+                    child: Text(
+                      'Export',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                 ],
@@ -224,53 +223,63 @@ class _ReportingScreenState extends State<ReportingScreen> {
               child: Row(
                 children: [
                   SizedBox(width: 30),
-                  Container(
-                    width: 200,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount:
-                            docSnapshot?.data()!['quiz'][0]['students'].length,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              docSnapshot.data()!['quiz'][0]['students'][index]
-                                  ['student_name']!,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 15,
-                                color: Colors.black,
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
-                  SizedBox(width: 50),
-                  Container(
-                    width: 90,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount:
-                            docSnapshot?.data()!['quiz'][0]['students'].length,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Text(
-                              docSnapshot?.data()!['quiz'][0]['students'][index]
-                                  ['student_score']!,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                fontSize: 15,
-                                color: Colors.black,
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
+                  LayoutBuilder(builder: (context, constraints) {
+                    if (docSnapshot?.data()!['quiz'][0]['students'] == null) {
+                      return Center(
+                          child: Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).size.height * 0.1),
+                        child: CircularProgressIndicator(),
+                      ));
+                    }
+
+                    if (docSnapshot?.data()!['quiz'][0]['students'].length ==
+                        0) {
+                      return Container();
+                    } else {
+                      return Container(
+                        width: MediaQuery.of(context).size.width*0.8,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: docSnapshot
+                                ?.data()!['quiz'][0]['students']
+                                .length,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      docSnapshot?.data()!['quiz'][0]['students']
+                                          [index]['student_name'],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      docSnapshot?.data()!['quiz'][0]['students']
+                                          [index]['student_score'],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 15,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
+                      );
+                    }
+                    
+                  }),
+
+                 
                 ],
               ),
             ),

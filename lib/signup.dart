@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:questionnaire/homescreen.dart';
+import 'package:questionnaire/main.dart';
 import 'package:questionnaire/signin.dart';
 
 final emailController = TextEditingController();
@@ -35,7 +36,7 @@ class SignUp extends StatelessWidget {
         createUserFirebase(email: emailPost);
         
         Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignIn()));
+                    MaterialPageRoute(builder: (context) => MainPage ()));
       } on FirebaseAuthException catch (e) {
         print(e);
         final snackBar = SnackBar(

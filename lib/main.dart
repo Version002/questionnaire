@@ -6,6 +6,7 @@ import 'package:questionnaire/homescreen.dart';
 import 'package:questionnaire/screen/ReportingScreen.dart';
 import 'package:questionnaire/signin.dart';
 import 'package:questionnaire/signup.dart';
+import 'package:questionnaire/student/quiz.dart';
 import 'package:questionnaire/student/scoreReview.dart';
 import 'package:questionnaire/student/test.dart';
 
