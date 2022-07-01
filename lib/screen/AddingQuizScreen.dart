@@ -24,11 +24,11 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
   Widget build(BuildContext context) {
     Future retrieveData() async {
       var collection = FirebaseFirestore.instance.collection('teacher');
-      var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
+      var docSnapshot = await collection.doc('ETX2Cdra8r4he1ElSrwC').get();
       if (docSnapshot.exists) {
         // final data = docSnapshot.data();
         Map<String, dynamic>? data = docSnapshot.data();
-
+        
         if (data?['quiz'] == null) {
           FirebaseFirestore.instance
               .collection('teacher')
@@ -42,15 +42,18 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
             ]
           }, SetOptions(merge: true));
           if (quizIdController.text != null &&
-              quizNameController.text != null) {
+              quizNameController.text != null && numberQuestionController.text!=null) {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => CreatingQuizScreen(numberQuestion: numberQuestionController.text,)));
           }
         } else {
           print('yes');
           print(data?['quiz'][0]['quizId']);
-          Navigator.push(context,
+          if (quizIdController.text != null &&
+              quizNameController.text != null && numberQuestionController.text!=null) {
+            Navigator.push(context,
                 MaterialPageRoute(builder: (context) => CreatingQuizScreen(numberQuestion: numberQuestionController.text,)));
+          }
           //condition second array
           // final json = {
           //   'quizId': quizIdController.text,
@@ -64,6 +67,8 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
         }
       }
       print(docSnapshot.data());
+      print(docSnapshot.data()!['quiz'][0]['students'].length);
+      // print(data?['quiz']);
     }
 
     return Scaffold(
