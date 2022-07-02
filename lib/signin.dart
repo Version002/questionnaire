@@ -1,7 +1,7 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:questionnaire/signup.dart';
+import 'package:questionnaire/studentSignin.dart';
 
 final passwordController = TextEditingController();
 final userController = TextEditingController();
@@ -29,6 +29,8 @@ class SignIn extends StatelessWidget {
                     UsernameForm(),
                     PasswordForm(),
                     LoginButton(),
+                    Or(),
+                    StudentLoginButton(),
                     SignUpText()
                   ],
                 ),
@@ -37,6 +39,57 @@ class SignIn extends StatelessWidget {
           ],
         )),
       ),
+    );
+  }
+}
+
+class StudentLoginButton extends StatelessWidget {
+  const StudentLoginButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 105.0, vertical: 15.0),
+      child: TextButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: ((context) => StudentSignin())));
+        },
+        child: Text(
+          "Login as a Student",
+          style: TextStyle(fontSize: 16),
+        ),
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStateProperty.all(Color.fromARGB(255, 106, 91, 226)),
+          foregroundColor: MaterialStateProperty.all(Colors.white),
+          shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              side: BorderSide(
+                color: Color.fromARGB(255, 106, 91, 226),
+              ))),
+        ),
+      ),
+    );
+  }
+}
+
+class Or extends StatelessWidget {
+  const Or({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Center(
+          child: Text(
+        'Or',
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+      )),
     );
   }
 }
@@ -90,10 +143,10 @@ class SignUpText extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
           ),
           GestureDetector(
-             onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignUp()));
-              },
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => SignUp()));
+            },
             child: Text(
               "Sign Up",
               style: TextStyle(
@@ -137,7 +190,7 @@ class LoginButton extends StatelessWidget {
     );
   }
 
-   signIn() async {
+  signIn() async {
     // showDialog(context: context, builder: (context) => Center(child: CircularProgressIndicator(),));
     await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: userController.text.trim(),

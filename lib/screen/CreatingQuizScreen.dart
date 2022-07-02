@@ -12,29 +12,28 @@ final bAnswerController = <TextEditingController>[];
 final cAnswerController = <TextEditingController>[];
 final dAnswerController = <TextEditingController>[];
 
-
 // final quizController = [
 //   {
-//     questionController: TextEditingController(), 
+//     questionController: TextEditingController(),
 //     answerController: [
-//       TextEditingController(), 
-//             TextEditingController(), 
+//       TextEditingController(),
+//             TextEditingController(),
 
-//       TextEditingController(), 
+//       TextEditingController(),
 
-//       TextEditingController(), 
+//       TextEditingController(),
 
 //     ]
-//   }, 
+//   },
 //   {
 
 //   },
 //   {
 
-//   }, 
+//   },
 //   {
 
-//   }, 
+//   },
 // ]
 
 class CreatingQuizScreen extends StatefulWidget {
@@ -73,32 +72,33 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
             {
               "quiz_id": idQuiz,
               "quiz_name": nameQuiz,
-              "quiz_questions": 
-                [0,1,2].map((i) =>  {
-                  "question_title": questionController[i].text,
-                  "questions": [
-                    {
-                      "a_answer": aAnswerController[i].text,
-                      "isCorrect": true,
-                    },
-                    {
-                      "b_answer": bAnswerController[i].text,
-                      "isCorrect": false,
-                    },
-                    {
-                      "c_answer": cAnswerController[i].text,
-                      "isCorrect": true,
-                    },
-                    {
-                      "d_answer": dAnswerController[i].text,
-                      "isCorrect": false,
-                    },
-                  ]
-                }).toList()
-                  
-                
-               
-              
+              "quiz_questions": [0, 1, 2]
+                  .map((i) => {
+                        "question_title": questionController[i].text,
+                        "questions": [
+                          {
+                            "a_answer": aAnswerController[i].text,
+                            "isCorrect":
+                                answerController[i].text == 'a' ? true : false,
+                          },
+                          {
+                            "b_answer": bAnswerController[i].text,
+                            "isCorrect":
+                                answerController[i].text == 'b' ? true : false,
+                          },
+                          {
+                            "c_answer": cAnswerController[i].text,
+                            "isCorrect":
+                                answerController[i].text == 'c' ? true : false,
+                          },
+                          {
+                            "d_answer": dAnswerController[i].text,
+                            "isCorrect":
+                                answerController[i].text == 'd' ? true : false,
+                          },
+                        ]
+                      })
+                  .toList()
             }
           ]
         }, SetOptions(merge: true));
@@ -151,7 +151,6 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: question,
                     itemBuilder: ((context, index) {
-                      
                       return questionList(index);
                     }))),
             Padding(
