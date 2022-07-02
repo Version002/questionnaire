@@ -369,8 +369,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
         actions: <Widget>[
           TextButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomeScreen()));
+              Navigator.pop(context);
             },
             child: Text("Ok"),
           ),
