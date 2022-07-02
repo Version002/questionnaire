@@ -1,5 +1,14 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+
+String? hours;
+String? minutes;
+String? second;
+Duration dif = Duration(minutes: 15);
+Timer? countdownTimer;
+String strDigits(int n) => n.toString().padLeft(2, '0');
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({Key? key}) : super(key: key);
@@ -18,11 +27,34 @@ class _QuizScreenState extends State<QuizScreen> {
     }
   }
 
+  loadTimer() {
+    // countdownTimer?.cancel();
+    countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      final reduceSecondsBy = 1;
+      setState(() {
+        final seconds = dif.inSeconds - reduceSecondsBy;
+        dif = Duration(seconds: seconds);
+        print(dif);
+        minutes = strDigits(dif.inMinutes.remainder(60));
+        second = strDigits(dif.inSeconds.remainder(60));
+      });
+    });
+
+    print(countdownTimer);
+  }
+
   @override
   void initState() {
     retrieveQuestion();
-
+    loadTimer();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    countdownTimer?.cancel();
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -34,9 +66,16 @@ class _QuizScreenState extends State<QuizScreen> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 CancelButton(),
-                Timer(),
+                Text(
+                  "$minutes : $second",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22,
+                  ),
+                ),
                 QuizNumber(),
               ],
             ),
@@ -214,23 +253,23 @@ class QuizNumber extends StatelessWidget {
   }
 }
 
-class Timer extends StatelessWidget {
-  const Timer({
-    Key? key,
-  }) : super(key: key);
+// class Timers extends StatelessWidget {
+//   const Timers({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return const Text(
-      "10 : 45",
-      style: TextStyle(
-        color: Colors.white,
-        fontWeight: FontWeight.w600,
-        fontSize: 22,
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Text(
+//       "$minutes : 45",
+//       style: TextStyle(
+//         color: Colors.white,
+//         fontWeight: FontWeight.w600,
+//         fontSize: 22,
+//       ),
+//     );
+//   }
+// }
 
 class CancelButton extends StatelessWidget {
   const CancelButton({
