@@ -144,8 +144,10 @@ class questionWidget extends StatefulWidget {
 }
 
 class _questionWidgetState extends State<questionWidget> {
+  bool isCorrect = false;
   @override
   Widget build(BuildContext context) {
+ 
     return Column(
       children: [
         Container(
@@ -178,7 +180,9 @@ class _questionWidgetState extends State<questionWidget> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: 50,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            !isCorrect;
+                          },
                           child: const Text(
                             "Phnom Penh",
                             style: TextStyle(
@@ -188,7 +192,7 @@ class _questionWidgetState extends State<questionWidget> {
                           ),
                           style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                                isCorrect==false?MaterialStateProperty.all(Colors.white):MaterialStateProperty.all(Colors.yellow),
                             foregroundColor: MaterialStateProperty.all(
                                 const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
