@@ -12,6 +12,31 @@ final bAnswerController = <TextEditingController>[];
 final cAnswerController = <TextEditingController>[];
 final dAnswerController = <TextEditingController>[];
 
+
+// final quizController = [
+//   {
+//     questionController: TextEditingController(), 
+//     answerController: [
+//       TextEditingController(), 
+//             TextEditingController(), 
+
+//       TextEditingController(), 
+
+//       TextEditingController(), 
+
+//     ]
+//   }, 
+//   {
+
+//   },
+//   {
+
+//   }, 
+//   {
+
+//   }, 
+// ]
+
 class CreatingQuizScreen extends StatefulWidget {
   final String numberQuestion;
   final String quizName;
@@ -49,27 +74,30 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
               "quiz_id": idQuiz,
               "quiz_name": nameQuiz,
               "quiz_questions": [
-                {
-                  "question_title": questionController[0].text,
+                for(int i = 0; i<question;i++){
+                   {
+                  "question_title": questionController[i].text,
                   "questions": [
                     {
-                      "a_answer": aAnswerController[0].text,
+                      "a_answer": aAnswerController[i].text,
                       "isCorrect": true,
                     },
                     {
-                      "b_answer": bAnswerController[0].text,
+                      "b_answer": bAnswerController[i].text,
                       "isCorrect": false,
                     },
                     {
-                      "c_answer": cAnswerController[0].text,
+                      "c_answer": cAnswerController[i].text,
                       "isCorrect": true,
                     },
                     {
-                      "d_answer": dAnswerController[0].text,
+                      "d_answer": dAnswerController[i].text,
                       "isCorrect": false,
                     },
                   ]
                 }
+                }
+               
               ]
             }
           ]

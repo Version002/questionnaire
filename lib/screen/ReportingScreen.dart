@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:questionnaire/homescreen.dart';
 import 'package:questionnaire/screen/AddingQuizScreen.dart';
 import 'package:questionnaire/style/app_color.dart';
 import 'package:questionnaire/widget/text/BlackText.dart';
@@ -19,15 +20,14 @@ class ReportingScreen extends StatefulWidget {
 class _ReportingScreenState extends State<ReportingScreen> {
   @override
   void initState() {
-    
     fetchDocuments();
-      
-   
+
     super.initState();
   }
 
   var collection;
   var docSnapshot;
+  var number;
   Map<String, dynamic>? data;
   Future<dynamic> fetchDocuments() async {
     collection = FirebaseFirestore.instance.collection('teacher');
@@ -35,42 +35,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
     data = docSnapshot.data()!;
   }
 
-  void _generateCsvFile() async {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.storage,
-    ].request();
-    print(statuses[Permission.storage]);
-
-    List<dynamic> studentScore = [
-      {"name": "Vitou", "score": 94},
-      {"name": "Sokleng", "score": 84},
-    ];
-
-    List<List<dynamic>> rows = [];
-
-    List<dynamic> row = [];
-    row.add("name");
-    row.add("score");
-    rows.add(row);
-
-    for (int i = 0; i < studentScore.length; i++) {
-      List<dynamic> row = [];
-      row.add(studentScore[i]["name"]);
-      row.add(studentScore[i]["score"]);
-      rows.add(row);
-    }
-
-    String csv = const ListToCsvConverter().convert(rows);
-
-    String dir = await ExternalPath.getExternalStoragePublicDirectory(
-        ExternalPath.DIRECTORY_DOWNLOADS);
-    print("dir $dir");
-    String file = "$dir";
-
-    File f = File(file + "/filename.csv");
-
-    f.writeAsString(csv);
-  }
+  List<dynamic> studentScore = [];
 
   List score = [
     '100',
@@ -80,8 +45,6 @@ class _ReportingScreenState extends State<ReportingScreen> {
     '100',
     '100',
   ];
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -106,8 +69,11 @@ class _ReportingScreenState extends State<ReportingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () =>           Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddingQuizScreen())),
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          AddingQuizScreen())),
                               child: Container(
                                 width: 30,
                                 height: 30,
@@ -297,7 +263,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
                       return Container();
                     } else {
                       return Container(
-                        width: MediaQuery.of(context).size.width*0.8,
+                        width: MediaQuery.of(context).size.width * 0.8,
                         child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
@@ -306,14 +272,18 @@ class _ReportingScreenState extends State<ReportingScreen> {
                                 .length,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
+                              number = index;
+                              
+
                               return Padding(
                                 padding: EdgeInsets.all(8.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      docSnapshot?.data()!['quiz'][0]['students']
-                                          [index]['student_name'],
+                                      docSnapshot?.data()!['quiz'][0]
+                                          ['students'][index]['student_name'],
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15,
@@ -321,8 +291,8 @@ class _ReportingScreenState extends State<ReportingScreen> {
                                       ),
                                     ),
                                     Text(
-                                      docSnapshot?.data()!['quiz'][0]['students']
-                                          [index]['student_score'],
+                                      docSnapshot?.data()!['quiz'][0]
+                                          ['students'][index]['student_score'],
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 15,
@@ -335,15 +305,76 @@ class _ReportingScreenState extends State<ReportingScreen> {
                             }),
                       );
                     }
-                    
                   }),
-
-                 
                 ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _generateCsvFile() async {
+    Map<Permission, PermissionStatus> statuses = await [
+      Permission.storage,
+    ].request();
+    print(statuses[Permission.storage]);
+
+    List<List<dynamic>> rows = [];
+
+    List<dynamic> row = [];
+    row.add("name");
+    row.add("score");
+    rows.add(row);
+
+    for (int i = 0; i <= number; i++) {
+      
+
+      studentScore.add(
+        {
+          "name": docSnapshot?.data()!['quiz'][0]['students'][i]
+              ['student_name'],
+          "score": docSnapshot?.data()!['quiz'][0]['students'][i]
+              ['student_score']
+        },
+      );
+    }
+
+   
+
+    for (int i = 0; i < studentScore.length; i++) {
+      List<dynamic> row = [];
+      row.add(studentScore[i]["name"]);
+      row.add(studentScore[i]["score"]);
+      rows.add(row);
+    }
+
+    String csv = const ListToCsvConverter().convert(rows);
+
+    String dir = await ExternalPath.getExternalStoragePublicDirectory(
+        ExternalPath.DIRECTORY_DOWNLOADS);
+    print("dir $dir");
+    String file = "$dir";
+
+    File f = File(file + "/filename.csv");
+
+    f.writeAsString(csv);
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("Export To CSV"),
+        content: Text("You have success in exporting file"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()));
+            },
+            child: Text("Ok"),
+          ),
+        ],
       ),
     );
   }
