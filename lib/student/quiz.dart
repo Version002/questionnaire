@@ -7,10 +7,9 @@ Map<String, dynamic>? data;
 String? hours;
 String? minutes;
 String? second;
-Duration dif = Duration(minutes:1 );
+Duration dif = Duration(minutes: 15);
 Timer? countdownTimer;
 String strDigits(int n) => n.toString().padLeft(2, '0');
-bool isFetching = true;
 
 Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
@@ -24,7 +23,6 @@ Future retrieveQuestion() async {
   }
 }
 
-
 class QuizScreen extends StatefulWidget {
   const QuizScreen({Key? key}) : super(key: key);
 
@@ -33,20 +31,6 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  
-Future fetching() async {
-  
-  setState(() {
-    if(data?['quiz'] == null){
-    isFetching = true;
-
-  }else {
-      isFetching =false;
-    }
-
-  });
-  print(isFetching);
-}
   loadTimer() {
     // countdownTimer?.cancel();
     countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -54,17 +38,17 @@ Future fetching() async {
       setState(() {
         final seconds = dif.inSeconds - reduceSecondsBy;
         dif = Duration(seconds: seconds);
-        print(dif);
+        // print(dif);
 
         minutes = strDigits(dif.inMinutes.remainder(60));
         second = strDigits(dif.inSeconds.remainder(60));
-        if(seconds<1){
+        if (seconds < 1) {
           countdownTimer!.cancel();
         }
       });
     });
 
-    print(countdownTimer);
+    // print(countdownTimer);
   }
 
   @override
@@ -83,13 +67,12 @@ Future fetching() async {
 
   @override
   Widget build(BuildContext context) {
-    fetching();
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 106, 91, 226),
         body: SingleChildScrollView(
           child: LayoutBuilder(
             builder: ((context, constraints) {
-              if (isFetching == true) {
+              if (data?['quiz'] == null) {
                 return Center(
                     child: Padding(
                   padding: EdgeInsets.only(
@@ -144,10 +127,15 @@ class questionWidget extends StatefulWidget {
 }
 
 class _questionWidgetState extends State<questionWidget> {
-  bool isCorrect = false;
+  int correctAnswers = 0;
+  // bool isCorrect = false;
+  // List<List<bool>> isCorrect = [];
+   List<List<bool>> isCorrect = List.generate(data!.length, (i) => List.filled(4, false, growable: false), growable: false);
+  
+  
   @override
   Widget build(BuildContext context) {
- 
+    print(isCorrect);
     return Column(
       children: [
         Container(
@@ -158,12 +146,16 @@ class _questionWidgetState extends State<questionWidget> {
               itemCount: data!.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: ((context, index) {
-                print(data!.length);
+                // isCorrect[index]=[false, false, false, false];
+                // print(data!.length);
+                // List<bool> isCorrect[index] = [false, false, false, false];
+
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "In which city of Cambodia is the largest part?",
+                      data!['quiz'][0]['quiz_questions'][index]
+                          ['question_title'],
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -181,18 +173,28 @@ class _questionWidgetState extends State<questionWidget> {
                         height: 50,
                         child: TextButton(
                           onPressed: () {
-                            !isCorrect;
+                            setState(() {
+                              isCorrect[index] = [true, false, false, false];
+                            });
+                            if (isCorrect[index][0] ==
+                                data!['quiz'][0]['quiz_questions'][index]
+                                    ['questions'][0]['isCorrect']) {
+                              ++correctAnswers;
+                            }
+                            print(correctAnswers);
                           },
-                          child: const Text(
-                            "Phnom Penh",
+                          child: Text(
+                            data!['quiz'][0]['quiz_questions'][index]
+                                ['questions'][0]['a_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
                             ),
                           ),
                           style: ButtonStyle(
-                            backgroundColor:
-                                isCorrect==false?MaterialStateProperty.all(Colors.white):MaterialStateProperty.all(Colors.yellow),
+                            backgroundColor: isCorrect[index][0] == true
+                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                : MaterialStateProperty.all(Colors.white),
                             foregroundColor: MaterialStateProperty.all(
                                 const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
@@ -212,17 +214,29 @@ class _questionWidgetState extends State<questionWidget> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: 50,
                         child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Kompong Cham",
+                          onPressed: () {
+                            setState(() {
+                              isCorrect[index] = [false, true, false, false];
+                            });
+                            if (isCorrect[index][1] ==
+                                data!['quiz'][0]['quiz_questions'][index]
+                                    ['questions'][1]['isCorrect']) {
+                              ++correctAnswers;
+                            }
+                            print(correctAnswers);
+                          },
+                          child: Text(
+                            data!['quiz'][0]['quiz_questions'][index]
+                                ['questions'][1]['b_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
                             ),
                           ),
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                            backgroundColor: isCorrect[index][1] == true
+                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                : MaterialStateProperty.all(Colors.white),
                             foregroundColor: MaterialStateProperty.all(
                                 const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
@@ -242,17 +256,29 @@ class _questionWidgetState extends State<questionWidget> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: 50,
                         child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Siem Reap",
+                          onPressed: () {
+                            setState(() {
+                              isCorrect[index] = [false, false, true, false];
+                            });
+                            if (isCorrect[index][2] ==
+                                data!['quiz'][0]['quiz_questions'][index]
+                                    ['questions'][2]['isCorrect']) {
+                              ++correctAnswers;
+                            }
+                            print(correctAnswers);
+                          },
+                          child: Text(
+                            data!['quiz'][0]['quiz_questions'][index]
+                                ['questions'][2]['c_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
                             ),
                           ),
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                            backgroundColor: isCorrect[index][2] == true
+                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                : MaterialStateProperty.all(Colors.white),
                             foregroundColor: MaterialStateProperty.all(
                                 const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
@@ -272,17 +298,29 @@ class _questionWidgetState extends State<questionWidget> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: 50,
                         child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Sihanoukville",
+                          onPressed: () {
+                            setState(() {
+                              isCorrect[index] = [false, false, false, true];
+                            });
+                            if (isCorrect[index][3] ==
+                                data!['quiz'][0]['quiz_questions'][index]
+                                    ['questions'][3]['isCorrect']) {
+                              ++correctAnswers;
+                            }
+                            print(correctAnswers);
+                          },
+                          child: Text(
+                            data!['quiz'][0]['quiz_questions'][index]
+                                ['questions'][3]['d_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
                             ),
                           ),
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                            backgroundColor: isCorrect[index][3] == true
+                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                : MaterialStateProperty.all(Colors.white),
                             foregroundColor: MaterialStateProperty.all(
                                 const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
