@@ -7,7 +7,7 @@ Map<String, dynamic>? data;
 String? hours;
 String? minutes;
 String? second;
-Duration dif = Duration(minutes: 15);
+Duration dif = Duration(minutes: 1);
 Timer? countdownTimer;
 String strDigits(int n) => n.toString().padLeft(2, '0');
 
@@ -16,7 +16,7 @@ Future retrieveQuestion() async {
   var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
   if (docSnapshot.exists) {
     data = docSnapshot.data();
-    print(data);
+    // print(data);
     if (data?['quiz'] != null) {
       print('true');
     }
@@ -128,11 +128,13 @@ class questionWidget extends StatefulWidget {
 
 class _questionWidgetState extends State<questionWidget> {
   int correctAnswers = 0;
+  int number = 0;
   // bool isCorrect = false;
   // List<List<bool>> isCorrect = [];
-   List<List<bool>> isCorrect = List.generate(data!.length, (i) => List.filled(4, false, growable: false), growable: false);
-  
-  
+  List<List<bool>> isCorrect = List.generate(
+      data!.length, (i) => List.filled(4, false, growable: false),
+      growable: false);
+
   @override
   Widget build(BuildContext context) {
     print(isCorrect);
@@ -146,10 +148,20 @@ class _questionWidgetState extends State<questionWidget> {
               itemCount: data!.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: ((context, index) {
+                number = index;
                 // isCorrect[index]=[false, false, false, false];
                 // print(data!.length);
                 // List<bool> isCorrect[index] = [false, false, false, false];
-
+                print('test');
+                print(data!['quiz'][0]['quiz_questions'][index]['questions'][0]
+                    ['isCorrect']);
+                print(data!['quiz'][0]['quiz_questions'][index]['questions'][1]
+                    ['isCorrect']);
+                print(data!['quiz'][0]['quiz_questions'][index]['questions'][2]
+                    ['isCorrect']);
+                print(data!['quiz'][0]['quiz_questions'][index]['questions'][3]
+                    ['isCorrect']);
+                print('test');
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -176,12 +188,12 @@ class _questionWidgetState extends State<questionWidget> {
                             setState(() {
                               isCorrect[index] = [true, false, false, false];
                             });
-                            if (isCorrect[index][0] ==
-                                data!['quiz'][0]['quiz_questions'][index]
-                                    ['questions'][0]['isCorrect']) {
-                              ++correctAnswers;
-                            }
-                            print(correctAnswers);
+                            // if (isCorrect[index][0] ==
+                            //     data!['quiz'][0]['quiz_questions'][index]
+                            //         ['questions'][0]['isCorrect']) {
+                            //   ++correctAnswers;
+                            // }
+                            // print(correctAnswers);
                           },
                           child: Text(
                             data!['quiz'][0]['quiz_questions'][index]
@@ -218,12 +230,12 @@ class _questionWidgetState extends State<questionWidget> {
                             setState(() {
                               isCorrect[index] = [false, true, false, false];
                             });
-                            if (isCorrect[index][1] ==
-                                data!['quiz'][0]['quiz_questions'][index]
-                                    ['questions'][1]['isCorrect']) {
-                              ++correctAnswers;
-                            }
-                            print(correctAnswers);
+                            // if (isCorrect[index][1] ==
+                            //     data!['quiz'][0]['quiz_questions'][index]
+                            //         ['questions'][1]['isCorrect']) {
+                            //   ++correctAnswers;
+                            // }
+                            // print(correctAnswers);
                           },
                           child: Text(
                             data!['quiz'][0]['quiz_questions'][index]
@@ -260,12 +272,12 @@ class _questionWidgetState extends State<questionWidget> {
                             setState(() {
                               isCorrect[index] = [false, false, true, false];
                             });
-                            if (isCorrect[index][2] ==
-                                data!['quiz'][0]['quiz_questions'][index]
-                                    ['questions'][2]['isCorrect']) {
-                              ++correctAnswers;
-                            }
-                            print(correctAnswers);
+                            // if (isCorrect[index][2] ==
+                            //     data!['quiz'][0]['quiz_questions'][index]
+                            //         ['questions'][2]['isCorrect']) {
+                            //   ++correctAnswers;
+                            // }
+                            // print(correctAnswers);
                           },
                           child: Text(
                             data!['quiz'][0]['quiz_questions'][index]
@@ -302,12 +314,12 @@ class _questionWidgetState extends State<questionWidget> {
                             setState(() {
                               isCorrect[index] = [false, false, false, true];
                             });
-                            if (isCorrect[index][3] ==
-                                data!['quiz'][0]['quiz_questions'][index]
-                                    ['questions'][3]['isCorrect']) {
-                              ++correctAnswers;
-                            }
-                            print(correctAnswers);
+                            // if (isCorrect[index][3] ==
+                            //     data!['quiz'][0]['quiz_questions'][index]
+                            //         ['questions'][3]['isCorrect']) {
+                            //   ++correctAnswers;
+                            // }
+                            // print(correctAnswers);
                           },
                           child: Text(
                             data!['quiz'][0]['quiz_questions'][index]
@@ -338,29 +350,42 @@ class _questionWidgetState extends State<questionWidget> {
                 );
               })),
         ),
-        // Padding(
-        //   padding: const EdgeInsets.only(top: 32.0),
-        //   child: Container(
-        //     width: MediaQuery.of(context).size.width * 0.7,
-        //     child: TextButton(
-        //       onPressed: () {},
-        //       child: const Text(
-        //         "End",
-        //         style: TextStyle(fontSize: 16, color: cPrimary),
-        //       ),
-        //       style: ButtonStyle(
-        //         backgroundColor: MaterialStateProperty.all(
-        //             const Color.fromARGB(255, 255, 255, 255)),
-        //         foregroundColor: MaterialStateProperty.all(cPrimary),
-        //         shape: MaterialStateProperty.all(const RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.all(Radius.circular(5.0)),
-        //             side: BorderSide(
-        //               color: Colors.white,
-        //             ))),
-        //       ),
-        //     ),
-        //   ),
-        // )
+        Padding(
+          padding: const EdgeInsets.only(top: 32.0),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.7,
+            child: TextButton(
+              onPressed: () {
+                correctAnswers =0;
+                for (int i = 0; i <= number; i++) {
+                  for (int j = 0; j < 4; j++) {
+                    if (data!['quiz'][0]['quiz_questions'][i]['questions'][j]
+                            ['isCorrect']==true &&
+                        isCorrect[i][j]==true) {
+                          ++correctAnswers;
+                        }
+                  }
+                }
+                
+                print(correctAnswers);
+              },
+              child: const Text(
+                "Add",
+                style: TextStyle(fontSize: 16, color: cPrimary),
+              ),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(
+                    const Color.fromARGB(255, 255, 255, 255)),
+                foregroundColor: MaterialStateProperty.all(cPrimary),
+                shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    side: BorderSide(
+                      color: Colors.white,
+                    ))),
+              ),
+            ),
+          ),
+        )
       ],
     );
   }

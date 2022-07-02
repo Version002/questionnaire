@@ -79,22 +79,22 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
                           {
                             "a_answer": aAnswerController[i].text,
                             "isCorrect":
-                                answerController[i].text == 'a' ? true : false,
+                                answerController[i].text == 'a' || answerController[i].text == 'A' ? true : false,
                           },
                           {
                             "b_answer": bAnswerController[i].text,
                             "isCorrect":
-                                answerController[i].text == 'b' ? true : false,
+                                answerController[i].text == 'b' || answerController[i].text == 'B'? true : false,
                           },
                           {
                             "c_answer": cAnswerController[i].text,
                             "isCorrect":
-                                answerController[i].text == 'c' ? true : false,
+                                answerController[i].text == 'c' || answerController[i].text == 'C'? true : false,
                           },
                           {
                             "d_answer": dAnswerController[i].text,
                             "isCorrect":
-                                answerController[i].text == 'd' ? true : false,
+                                answerController[i].text == 'd'|| answerController[i].text == 'D' ? true : false,
                           },
                         ]
                       })
