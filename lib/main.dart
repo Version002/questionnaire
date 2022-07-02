@@ -9,6 +9,7 @@ import 'package:questionnaire/signup.dart';
 import 'package:questionnaire/student/quiz.dart';
 import 'package:questionnaire/student/scoreReview.dart';
 import 'package:questionnaire/student/test.dart';
+import 'package:questionnaire/verifyemail.dart';
 
 // void main() {
 //   WidgetsFlutterBinding.ensureInitialized();
@@ -55,7 +56,7 @@ class MainPage extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return HomeScreen();
+          return VerifyEmailPage();
         } else {
           return SignIn();
         }
