@@ -69,11 +69,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          AddingQuizScreen())),
+                              onTap: () => Navigator.pop(context),
                               child: Container(
                                 width: 30,
                                 height: 30,
@@ -329,9 +325,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
     rows.add(row);
 
     for (int i = 0; i <= number; i++) {
-      
-
-      studentScore.add(
+            studentScore.add(
         {
           "name": docSnapshot?.data()!['quiz'][0]['students'][i]
               ['student_name'],

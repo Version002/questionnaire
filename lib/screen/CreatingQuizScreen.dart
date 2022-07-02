@@ -74,7 +74,7 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
               "quiz_id": idQuiz,
               "quiz_name": nameQuiz,
               "quiz_questions": [
-                for(int i = 0; i<question;i++){
+                for(int i = 0; i<=question;i++){
                    {
                   "question_title": questionController[i].text,
                   "questions": [

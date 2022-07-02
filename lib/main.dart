@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MainPage(),
+      home: const QuizScreen(),
     );
   }
 }
@@ -55,7 +55,7 @@ class MainPage extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ReportingScreen();
+          return HomeScreen();
         } else {
           return SignIn();
         }
