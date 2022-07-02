@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:questionnaire/student/scoreReview.dart';
 import 'dart:async';
 import '../style/app_color.dart';
 
@@ -10,6 +11,7 @@ String? second;
 Duration dif = Duration(minutes: 1);
 Timer? countdownTimer;
 String strDigits(int n) => n.toString().padLeft(2, '0');
+int screen = 0;
 
 Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
@@ -67,6 +69,9 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      screen;
+    });
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 106, 91, 226),
         body: SingleChildScrollView(
@@ -106,7 +111,12 @@ class _QuizScreenState extends State<QuizScreen> {
                           ],
                         ),
                       ),
-                      questionWidget(),
+                      // questionWidget(),
+                      if (screen == 0) ...[
+                        questionWidget(),
+                      ] else ...[
+                        ScoreReview(),
+                      ]
 
                       // gonna do streambuilder for the answers later
                     ],
@@ -129,6 +139,7 @@ class questionWidget extends StatefulWidget {
 class _questionWidgetState extends State<questionWidget> {
   int correctAnswers = 0;
   int number = 0;
+
   // bool isCorrect = false;
   // List<List<bool>> isCorrect = [];
   List<List<bool>> isCorrect = List.generate(
@@ -149,19 +160,7 @@ class _questionWidgetState extends State<questionWidget> {
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: ((context, index) {
                 number = index;
-                // isCorrect[index]=[false, false, false, false];
-                // print(data!.length);
-                // List<bool> isCorrect[index] = [false, false, false, false];
-                print('test');
-                print(data!['quiz'][0]['quiz_questions'][index]['questions'][0]
-                    ['isCorrect']);
-                print(data!['quiz'][0]['quiz_questions'][index]['questions'][1]
-                    ['isCorrect']);
-                print(data!['quiz'][0]['quiz_questions'][index]['questions'][2]
-                    ['isCorrect']);
-                print(data!['quiz'][0]['quiz_questions'][index]['questions'][3]
-                    ['isCorrect']);
-                print('test');
+
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -356,21 +355,24 @@ class _questionWidgetState extends State<questionWidget> {
             width: MediaQuery.of(context).size.width * 0.7,
             child: TextButton(
               onPressed: () {
-                correctAnswers =0;
+                correctAnswers = 0;
                 for (int i = 0; i <= number; i++) {
                   for (int j = 0; j < 4; j++) {
                     if (data!['quiz'][0]['quiz_questions'][i]['questions'][j]
-                            ['isCorrect']==true &&
-                        isCorrect[i][j]==true) {
-                          ++correctAnswers;
-                        }
+                                ['isCorrect'] ==
+                            true &&
+                        isCorrect[i][j] == true) {
+                      ++correctAnswers;
+                    }
                   }
                 }
-                
+
                 print(correctAnswers);
+
+                screen = 1;
               },
               child: const Text(
-                "Add",
+                "End",
                 style: TextStyle(fontSize: 16, color: cPrimary),
               ),
               style: ButtonStyle(
@@ -442,6 +444,329 @@ class CancelButton extends StatelessWidget {
             size: 25,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ScoreReview extends StatefulWidget {
+  const ScoreReview({Key? key}) : super(key: key);
+
+  @override
+  State<ScoreReview> createState() => _ScoreReviewState();
+}
+
+class _ScoreReviewState extends State<ScoreReview> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: const [
+        PurpleContainer(),
+        PinkContainer(),
+        RetakeButton(),
+      ],
+    );
+  }
+}
+
+class RetakeButton extends StatefulWidget {
+  const RetakeButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<RetakeButton> createState() => _RetakeButtonState();
+}
+
+class _RetakeButtonState extends State<RetakeButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 32.0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.6,
+        child: TextButton(
+          onPressed: () {
+            screen = 0;
+          },
+          child: const Text(
+            "Retake",
+            style: TextStyle(fontSize: 16),
+          ),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+                const Color.fromARGB(255, 106, 91, 226)),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                side: BorderSide(
+                  color: Color.fromARGB(255, 106, 91, 226),
+                ))),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PinkContainer extends StatelessWidget {
+  const PinkContainer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width * 1,
+      height: MediaQuery.of(context).size.height * 0.4274,
+      decoration: BoxDecoration(
+        color: const Color(0xffEEEEFC),
+        borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+        border: Border.all(width: 1, color: const Color(0xffEEEEFC)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(
+          children: [
+            const Text(
+              "You have done the quiz",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                fontSize: 25,
+              ),
+            ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 15.0),
+              child: Text(
+                "3 times",
+                style: TextStyle(
+                  color: Color(0xFF6A5BE2),
+                  fontSize: 25,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Container(
+              height: 160,
+              width: 160,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 4,
+                  color: const Color(0xFF6A5BE2),
+                ),
+                borderRadius: BorderRadius.circular(100),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+               
+                  Center(
+                    child: Text(
+                      "Remaining Time",
+                      style: TextStyle(
+                        
+                          color: Colors.black,
+                          fontSize: 29,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PurpleContainer extends StatelessWidget {
+  const PurpleContainer({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 32.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 1,
+        height: MediaQuery.of(context).size.height * 0.262,
+        decoration: BoxDecoration(
+          color: const Color(0xFF6A5BE2),
+          borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+          border: Border.all(width: 1, color: const Color(0xFF6A5BE2)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 24.0, right: 24.0, left: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                alignment: AlignmentDirectional.topStart,
+                child: const Text(
+                  "QUIZ NAME",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w300,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                alignment: AlignmentDirectional.topStart,
+                child: const Text(
+                  "Computer Science Quiz",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 1,
+                height: 115,
+                decoration: BoxDecoration(
+                  color: const Color(0xffFF8FA3),
+                  borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(20.0),
+                      topLeft: Radius.circular(20.0)),
+                  border: Border.all(width: 1, color: const Color(0xffFF8FA3)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: 100,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          width: 2,
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text(
+                            "20",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 28),
+                          ),
+                          Text(
+                            "/50",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      child: Row(
+                        children: [
+                          Positioned(
+                            child: Image.asset(
+                              'assets/trophy.png',
+                              height: 80,
+                              width: 80,
+                              fit: BoxFit.fitWidth,
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                "You got 20",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(top: 3.0),
+                                child: Text(
+                                  "out of 50",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CloseButton extends StatelessWidget {
+  const CloseButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Navigator.of(context).pop();
+      },
+      child: Align(
+        alignment: Alignment.bottomRight,
+        child: Container(
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(
+                width: 1,
+                color: Colors.black,
+              )),
+          child: const Icon(
+            Icons.close_rounded,
+            color: Colors.black,
+            size: 25,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ScoreReviewText extends StatelessWidget {
+  const ScoreReviewText({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "Score Review",
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w700,
+        fontSize: 23,
       ),
     );
   }
