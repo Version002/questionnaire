@@ -73,9 +73,8 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
             {
               "quiz_id": idQuiz,
               "quiz_name": nameQuiz,
-              "quiz_questions": [
-                for(int i = 0; i<=question;i++){
-                   {
+              "quiz_questions": 
+                [0,1,2].map((i) =>  {
                   "question_title": questionController[i].text,
                   "questions": [
                     {
@@ -95,10 +94,11 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
                       "isCorrect": false,
                     },
                   ]
-                }
-                }
+                }).toList()
+                  
+                
                
-              ]
+              
             }
           ]
         }, SetOptions(merge: true));
