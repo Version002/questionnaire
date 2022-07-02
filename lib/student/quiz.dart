@@ -7,9 +7,10 @@ Map<String, dynamic>? data;
 String? hours;
 String? minutes;
 String? second;
-Duration dif = Duration(minutes: 15);
+Duration dif = Duration(minutes:1 );
 Timer? countdownTimer;
 String strDigits(int n) => n.toString().padLeft(2, '0');
+bool isFetching = true;
 
 Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
@@ -23,6 +24,7 @@ Future retrieveQuestion() async {
   }
 }
 
+
 class QuizScreen extends StatefulWidget {
   const QuizScreen({Key? key}) : super(key: key);
 
@@ -31,6 +33,20 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  
+Future fetching() async {
+  
+  setState(() {
+    if(data?['quiz'] == null){
+    isFetching = true;
+
+  }else {
+      isFetching =false;
+    }
+
+  });
+  print(isFetching);
+}
   loadTimer() {
     // countdownTimer?.cancel();
     countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -42,7 +58,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
         minutes = strDigits(dif.inMinutes.remainder(60));
         second = strDigits(dif.inSeconds.remainder(60));
-        if(seconds<0){
+        if(seconds<1){
           countdownTimer!.cancel();
         }
       });
@@ -67,12 +83,13 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    fetching();
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 106, 91, 226),
         body: SingleChildScrollView(
           child: LayoutBuilder(
             builder: ((context, constraints) {
-              if (data?['quiz'] == null) {
+              if (isFetching == true) {
                 return Center(
                     child: Padding(
                   padding: EdgeInsets.only(
