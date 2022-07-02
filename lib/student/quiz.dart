@@ -12,6 +12,7 @@ Duration dif = Duration(minutes: 1);
 Timer? countdownTimer;
 String strDigits(int n) => n.toString().padLeft(2, '0');
 int screen = 0;
+int correctAnswers = 0;
 
 Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
@@ -137,7 +138,6 @@ class questionWidget extends StatefulWidget {
 }
 
 class _questionWidgetState extends State<questionWidget> {
-  int correctAnswers = 0;
   int number = 0;
 
   // bool isCorrect = false;
@@ -462,7 +462,7 @@ class _ScoreReviewState extends State<ScoreReview> {
     return Column(
       children: const [
         PurpleContainer(),
-        PinkContainer(),
+        // PinkContainer(),
         RetakeButton(),
       ],
     );
@@ -509,80 +509,77 @@ class _RetakeButtonState extends State<RetakeButton> {
   }
 }
 
-class PinkContainer extends StatelessWidget {
-  const PinkContainer({
-    Key? key,
-  }) : super(key: key);
+// class PinkContainer extends StatelessWidget {
+//   const PinkContainer({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 1,
-      height: MediaQuery.of(context).size.height * 0.4274,
-      decoration: BoxDecoration(
-        color: const Color(0xffEEEEFC),
-        borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-        border: Border.all(width: 1, color: const Color(0xffEEEEFC)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: Column(
-          children: [
-            const Text(
-              "You have done the quiz",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-                fontSize: 25,
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 15.0),
-              child: Text(
-                "3 times",
-                style: TextStyle(
-                  color: Color(0xFF6A5BE2),
-                  fontSize: 25,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            Container(
-              height: 160,
-              width: 160,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 4,
-                  color: const Color(0xFF6A5BE2),
-                ),
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-               
-                  Center(
-                    child: Text(
-                      "Remaining Time",
-                      style: TextStyle(
-                        
-                          color: Colors.black,
-                          fontSize: 29,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: MediaQuery.of(context).size.width * 1,
+//       height: MediaQuery.of(context).size.height * 0.4274,
+//       decoration: BoxDecoration(
+//         color: const Color(0xffEEEEFC),
+//         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+//         border: Border.all(width: 1, color: const Color(0xffEEEEFC)),
+//       ),
+//       child: Padding(
+//         padding: const EdgeInsets.all(30.0),
+//         child: Column(
+//           children: [
+//             const Text(
+//               "You have done the quiz",
+//               style: TextStyle(
+//                 color: Colors.black,
+//                 fontWeight: FontWeight.w500,
+//                 fontSize: 25,
+//               ),
+//             ),
+//             const Padding(
+//               padding: EdgeInsets.symmetric(vertical: 15.0),
+//               child: Text(
+//                 "3 times",
+//                 style: TextStyle(
+//                   color: Color(0xFF6A5BE2),
+//                   fontSize: 25,
+//                   fontWeight: FontWeight.w500,
+//                 ),
+//               ),
+//             ),
+//             Container(
+//               height: 160,
+//               width: 160,
+//               decoration: BoxDecoration(
+//                 border: Border.all(
+//                   width: 4,
+//                   color: const Color(0xFF6A5BE2),
+//                 ),
+//                 borderRadius: BorderRadius.circular(100),
+//               ),
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.center,
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: const [
+//                   Center(
+//                     child: Text(
+//                       "Remaining Time",
+//                       style: TextStyle(
+//                         color: Colors.black,
+//                         fontSize: 29,
+//                         fontWeight: FontWeight.w500,
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class PurpleContainer extends StatelessWidget {
   const PurpleContainer({
@@ -656,9 +653,9 @@ class PurpleContainer extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children:  [
                           Text(
-                            "20",
+                            correctAnswers.toString(),
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
@@ -689,9 +686,9 @@ class PurpleContainer extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
+                            children:  [
                               Text(
-                                "You got 20",
+                                "You got $correctAnswers",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500),
