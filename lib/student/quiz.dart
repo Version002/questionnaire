@@ -39,8 +39,12 @@ class _QuizScreenState extends State<QuizScreen> {
         final seconds = dif.inSeconds - reduceSecondsBy;
         dif = Duration(seconds: seconds);
         print(dif);
+
         minutes = strDigits(dif.inMinutes.remainder(60));
         second = strDigits(dif.inSeconds.remainder(60));
+        if(seconds<0){
+          countdownTimer!.cancel();
+        }
       });
     });
 
