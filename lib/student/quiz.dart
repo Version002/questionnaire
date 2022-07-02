@@ -7,10 +7,9 @@ Map<String, dynamic>? data;
 String? hours;
 String? minutes;
 String? second;
-Duration dif = Duration(minutes:1 );
+Duration dif = Duration(minutes: 15);
 Timer? countdownTimer;
 String strDigits(int n) => n.toString().padLeft(2, '0');
-bool isFetching = true;
 
 Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
@@ -24,7 +23,6 @@ Future retrieveQuestion() async {
   }
 }
 
-
 class QuizScreen extends StatefulWidget {
   const QuizScreen({Key? key}) : super(key: key);
 
@@ -33,20 +31,6 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  
-Future fetching() async {
-  
-  setState(() {
-    if(data?['quiz'] == null){
-    isFetching = true;
-
-  }else {
-      isFetching =false;
-    }
-
-  });
-  print(isFetching);
-}
   loadTimer() {
     // countdownTimer?.cancel();
     countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -54,17 +38,17 @@ Future fetching() async {
       setState(() {
         final seconds = dif.inSeconds - reduceSecondsBy;
         dif = Duration(seconds: seconds);
-        print(dif);
+        // print(dif);
 
         minutes = strDigits(dif.inMinutes.remainder(60));
         second = strDigits(dif.inSeconds.remainder(60));
-        if(seconds<1){
+        if (seconds < 0) {
           countdownTimer!.cancel();
         }
       });
     });
 
-    print(countdownTimer);
+    // print(countdownTimer);
   }
 
   @override
@@ -83,13 +67,12 @@ Future fetching() async {
 
   @override
   Widget build(BuildContext context) {
-    fetching();
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 106, 91, 226),
         body: SingleChildScrollView(
           child: LayoutBuilder(
             builder: ((context, constraints) {
-              if (isFetching == true) {
+              if (data?['quiz'] == null) {
                 return Center(
                     child: Padding(
                   padding: EdgeInsets.only(
@@ -144,6 +127,9 @@ class questionWidget extends StatefulWidget {
 }
 
 class _questionWidgetState extends State<questionWidget> {
+  bool _isCorrect = false;
+  bool _isPressed = false;
+  int correctAnswers = 0;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -156,12 +142,13 @@ class _questionWidgetState extends State<questionWidget> {
               itemCount: data!.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: ((context, index) {
-                print(data!.length);
+                // print(data!.length);
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "In which city of Cambodia is the largest part?",
+                      data!['quiz'][0]['quiz_questions'][index]
+                          ['question_title'],
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -178,17 +165,38 @@ class _questionWidgetState extends State<questionWidget> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: 50,
                         child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Phnom Penh",
+                          onPressed: () {
+                            _isPressed = !_isPressed;
+                            if (_isPressed == true) {
+                              if (data!['quiz'][0]['quiz_questions'][index]
+                                      ['questions'][0]['isCorrect'] ==
+                                  true) {
+                                setState(() {
+                                  _isCorrect = !_isCorrect;
+                                  correctAnswers++;
+                                  // color = correct;
+                                });
+                              } else {
+                                setState(() {
+                                  _isCorrect = false;
+                                  // color = wrong;
+                                });
+                              }
+                            }
+                            print(correctAnswers);
+                          },
+                          child: Text(
+                            data!['quiz'][0]['quiz_questions'][index]
+                                ['questions'][0]['a_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
                             ),
                           ),
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                            backgroundColor: _isPressed
+                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                : MaterialStateProperty.all(Colors.white),
                             foregroundColor: MaterialStateProperty.all(
                                 const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
@@ -208,17 +216,35 @@ class _questionWidgetState extends State<questionWidget> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: 50,
                         child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Kompong Cham",
+                          onPressed: () {
+                            _isPressed = !_isPressed;
+                            if (data!['quiz'][0]['quiz_questions'][index]
+                                    ['questions'][1]['isCorrect'] ==
+                                true) {
+                              setState(() {
+                                _isCorrect = !_isCorrect;
+                                correctAnswers += 1;
+                                // color = correct;
+                              });
+                            } else {
+                              setState(() {
+                                _isCorrect = false;
+                                // color = wrong;
+                              });
+                            }
+                          },
+                          child: Text(
+                            data!['quiz'][0]['quiz_questions'][index]
+                                ['questions'][1]['b_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
                             ),
                           ),
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                            backgroundColor: _isPressed
+                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                : MaterialStateProperty.all(Colors.white),
                             foregroundColor: MaterialStateProperty.all(
                                 const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
@@ -238,17 +264,35 @@ class _questionWidgetState extends State<questionWidget> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: 50,
                         child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Siem Reap",
+                          onPressed: () {
+                            _isPressed = !_isPressed;
+                            if (data!['quiz'][0]['quiz_questions'][index]
+                                    ['questions'][2]['isCorrect'] ==
+                                true) {
+                              setState(() {
+                                _isCorrect = !_isCorrect;
+                                correctAnswers += 1;
+                                // color = correct;
+                              });
+                            } else {
+                              setState(() {
+                                _isCorrect = false;
+                                // color = wrong;
+                              });
+                            }
+                          },
+                          child: Text(
+                            data!['quiz'][0]['quiz_questions'][index]
+                                ['questions'][2]['c_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
                             ),
                           ),
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                            backgroundColor: _isPressed
+                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                : MaterialStateProperty.all(Colors.white),
                             foregroundColor: MaterialStateProperty.all(
                                 const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
@@ -268,17 +312,35 @@ class _questionWidgetState extends State<questionWidget> {
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: 50,
                         child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            "Sihanoukville",
+                          onPressed: () {
+                            _isPressed = !_isPressed;
+                            if (data!['quiz'][0]['quiz_questions'][index]
+                                    ['questions'][3]['isCorrect'] ==
+                                true) {
+                              setState(() {
+                                _isCorrect = !_isCorrect;
+                                correctAnswers += 1;
+                                // color = correct;
+                              });
+                            } else {
+                              setState(() {
+                                _isCorrect = false;
+                                // color = wrong;
+                              });
+                            }
+                          },
+                          child: Text(
+                            data!['quiz'][0]['quiz_questions'][index]
+                                ['questions'][3]['d_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
                             ),
                           ),
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(Colors.white),
+                            backgroundColor: _isPressed
+                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                : MaterialStateProperty.all(Colors.white),
                             foregroundColor: MaterialStateProperty.all(
                                 const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
