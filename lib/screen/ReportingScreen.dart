@@ -29,6 +29,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
   var number;
   var student;
   var teacher;
+  bool loading = true;
   Map<String, dynamic>? data;
   Future<dynamic> fetchDocuments() async {
     collection = FirebaseFirestore.instance.collection('teacher');
@@ -52,6 +53,13 @@ class _ReportingScreenState extends State<ReportingScreen> {
   @override
   Widget build(BuildContext context) {
     // fetchDocuments();
+    setState(() {
+      if(student==null){
+        loading=true;
+      }else{
+        loading =false;
+      }
+    });
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -252,7 +260,8 @@ class _ReportingScreenState extends State<ReportingScreen> {
                 children: [
                   // SizedBox(width: 30),
                   LayoutBuilder(builder: (context, constraints) {
-                    if (student == null) {
+                    if (loading=true) {
+                     
                       return Center(
                           child: Padding(
                         padding: EdgeInsets.only(
@@ -261,9 +270,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
                       ));
                     }
 
-                    if (student?.length == 0) {
-                      return Container();
-                    } else {
+                    else {
                       return Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: ListView.builder(
