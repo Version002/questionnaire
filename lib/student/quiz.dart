@@ -161,7 +161,7 @@ class _questionWidgetState extends State<questionWidget> {
     return Column(
       children: [
         Container(
-          height: 3000,
+          height: 500*data!['quiz'][0]['quiz_questions'].length*1.0,
           width: MediaQuery.of(context).size.width * 0.9,
           child: ListView.builder(
               scrollDirection: Axis.vertical,
@@ -169,7 +169,7 @@ class _questionWidgetState extends State<questionWidget> {
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: ((context, index) {
                 number = index;
-
+          
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
