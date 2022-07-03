@@ -21,18 +21,21 @@ class _ReportingScreenState extends State<ReportingScreen> {
   @override
   void initState() {
     fetchDocuments();
-
     super.initState();
   }
 
   var collection;
   var docSnapshot;
   var number;
+  var student;
+  var teacher;
   Map<String, dynamic>? data;
   Future<dynamic> fetchDocuments() async {
     collection = FirebaseFirestore.instance.collection('teacher');
-    docSnapshot = await collection.doc('ETX2Cdra8r4he1ElSrwC').get();
-    data = docSnapshot.data()!;
+    docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
+    data = await docSnapshot.data()!;
+    student = data!['students'];
+    teacher = data!['email'];
   }
 
   List<dynamic> studentScore = [];
@@ -126,9 +129,12 @@ class _ReportingScreenState extends State<ReportingScreen> {
               ],
             ),
             BlackText(
-                text: 'Rober John Son', fontWeight: FontWeight.w800, size: 25),
+                text: teacher.toString(),
+                fontWeight: FontWeight.w800,
+                size: 25),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
               child: Container(
                   height: 130,
                   decoration: BoxDecoration(
@@ -194,7 +200,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
                               height: 15,
                             ),
                             WhiteText(
-                                text: '25',
+                                text: student?.length.toString() ?? 'Empty',
                                 fontWeight: FontWeight.w700,
                                 size: 22)
                           ],
@@ -204,7 +210,8 @@ class _ReportingScreenState extends State<ReportingScreen> {
                   )),
             ),
             Padding(
-              padding: const EdgeInsets.all(25.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -240,12 +247,12 @@ class _ReportingScreenState extends State<ReportingScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.only(left: 34.0),
               child: Row(
                 children: [
-                  SizedBox(width: 30),
+                  // SizedBox(width: 30),
                   LayoutBuilder(builder: (context, constraints) {
-                    if (docSnapshot?.data()!['quiz'][0]['students'] == null) {
+                    if (student == null) {
                       return Center(
                           child: Padding(
                         padding: EdgeInsets.only(
@@ -254,8 +261,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
                       ));
                     }
 
-                    if (docSnapshot?.data()!['quiz'][0]['students'].length ==
-                        0) {
+                    if (student?.length == 0) {
                       return Container();
                     } else {
                       return Container(
@@ -263,40 +269,47 @@ class _ReportingScreenState extends State<ReportingScreen> {
                         child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: docSnapshot
-                                ?.data()!['quiz'][0]['students']
-                                .length,
+                            itemCount: student?.length,
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               number = index;
-                              
 
-                              return Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      docSnapshot?.data()!['quiz'][0]
-                                          ['students'][index]['student_name'],
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15,
-                                        color: Colors.black,
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 15.0),
+                                        child: Text(
+                                          student?[index]['student_name']
+                                                  .toString() ??
+                                              'Empty',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 18,
+                                            color: Colors.black,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      docSnapshot?.data()!['quiz'][0]
-                                          ['students'][index]['student_score'],
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 15,
-                                        color: Colors.black,
+                                      Text(
+                                        student?[index]['student_score']
+                                                .toString() ??
+                                            'Empty',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  ))
+                                ],
                               );
                             }),
                       );
@@ -325,17 +338,13 @@ class _ReportingScreenState extends State<ReportingScreen> {
     rows.add(row);
 
     for (int i = 0; i <= number; i++) {
-            studentScore.add(
+      studentScore.add(
         {
-          "name": docSnapshot?.data()!['quiz'][0]['students'][i]
-              ['student_name'],
-          "score": docSnapshot?.data()!['quiz'][0]['students'][i]
-              ['student_score']
+          "name": docSnapshot?.data()!['students'][i]['student_name'],
+          "score": docSnapshot?.data()!['students'][i]['student_score']
         },
       );
     }
-
-   
 
     for (int i = 0; i < studentScore.length; i++) {
       List<dynamic> row = [];

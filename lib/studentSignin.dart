@@ -1,12 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:questionnaire/student/quiz.dart';
 
-
 final userStudentController = TextEditingController();
 final quizIdController = TextEditingController();
-class StudentSignin extends StatelessWidget {
+
+var collection;
+var docSnapshot;
+var number;
+var quizID;
+Map<String, dynamic>? data;
+Future<dynamic> fetchDocuments() async {
+  collection = FirebaseFirestore.instance.collection('teacher');
+  docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
+  data = await docSnapshot.data()!;
+  quizID = data!['quiz'][0]['quiz_id'];
+}
+
+class StudentSignin extends StatefulWidget {
   const StudentSignin({Key? key}) : super(key: key);
+
+  @override
+  State<StudentSignin> createState() => _StudentSigninState();
+}
+
+class _StudentSigninState extends State<StudentSignin> {
+  @override
+  void initState() {
+    fetchDocuments();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +133,6 @@ class UsernameForm extends StatelessWidget {
         // keyboardType: TextInputType.emailAddress,
         cursorColor: Color.fromARGB(255, 106, 91, 226),
         decoration: InputDecoration(
-          
           prefixIcon: Icon(
             Icons.email,
             color: Color.fromARGB(255, 106, 91, 226),
@@ -190,8 +213,30 @@ class StartButton extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 145.0, vertical: 50.0),
       child: TextButton(
         onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => QuizScreen(studentName: userStudentController.text,))));
+          if (quizIdController.text == quizID) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: ((context) => QuizScreen(
+                          studentName: userStudentController.text,
+                        ))));
+          } else {
+            showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                title: Text("Incorrect Quiz ID"),
+                content: Text("You have entered the wrong Quiz ID"),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('ok'),
+                  ),
+                ],
+              ),
+            );
+          }
         },
         child: Text(
           "Start Quiz",
