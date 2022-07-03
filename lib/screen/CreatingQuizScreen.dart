@@ -114,7 +114,8 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
                       })
                   .toList()
             }
-          ]
+          ],
+          "students": [],
         }, SetOptions(merge: true));
       }
       Navigator.push(

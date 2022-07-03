@@ -44,7 +44,7 @@ class _QuizScreenState extends State<QuizScreen> {
   loadTimer() {
     // countdownTimer?.cancel();
     countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
-      final reduceSecondsBy = 1;
+      const reduceSecondsBy = 1;
       setState(() {
         final seconds = dif.inSeconds - reduceSecondsBy;
         dif = Duration(seconds: seconds);
@@ -54,6 +54,52 @@ class _QuizScreenState extends State<QuizScreen> {
         second = strDigits(dif.inSeconds.remainder(60));
         if (seconds < 1) {
           countdownTimer!.cancel();
+          dynamic postData = [];
+
+          if (data!['students'] != null) {
+            postData = data!['students'];
+
+            postData.add({
+              "student_name": studentUserName,
+              "student_score": correctAnswers /
+                  data!['quiz'][0]['quiz_questions'].length *
+                  100 /
+                  1.00,
+            });
+            final dataList = [];
+
+            for (int i = 0; i < postData.length; i++) {
+              dataList.add(i);
+            }
+
+            FirebaseFirestore.instance
+                .collection('teacher')
+                .doc('tDBJb5RjZVT4NTvD9W7D')
+                .set({
+              "students": dataList
+                  .map((e) => {
+                        "student_name": postData[e]['student_name'],
+                        "student_score": postData[e]['student_score'],
+                      })
+                  .toList(),
+            }, SetOptions(merge: true));
+          } else {
+            FirebaseFirestore.instance
+                .collection('teacher')
+                .doc('tDBJb5RjZVT4NTvD9W7D')
+                .set({
+              "students": [
+                {
+                  "student_name": studentUserName,
+                  "student_score": correctAnswers /
+                      data!['quiz'][0]['quiz_questions'].length *
+                      100 /
+                      1.00,
+                }
+              ]
+            }, SetOptions(merge: true));
+          }
+          Navigator.pop(context);
         }
       });
     });
@@ -64,7 +110,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   void initState() {
     dif = Duration(minutes: 1);
-    screen=0;
+    screen = 0;
     retrieveQuestion();
     loadTimer();
     super.initState();
@@ -161,7 +207,7 @@ class _questionWidgetState extends State<questionWidget> {
     return Column(
       children: [
         Container(
-          height: 500*data!['quiz'][0]['quiz_questions'].length*1.0,
+          height: 500 * data!['quiz'][0]['quiz_questions'].length * 1.0,
           width: MediaQuery.of(context).size.width * 0.9,
           child: ListView.builder(
               scrollDirection: Axis.vertical,
@@ -169,7 +215,7 @@ class _questionWidgetState extends State<questionWidget> {
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: ((context, index) {
                 number = index;
-          
+
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -355,9 +401,7 @@ class _questionWidgetState extends State<questionWidget> {
                 print(correctAnswers);
                 setState(() {
                   screen = 1;
-
                 });
-                
               },
               child: const Text(
                 "End",
@@ -390,8 +434,52 @@ class QuizNumber extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => StudentSignin()));
+          dynamic postData = [];
+
+          if (data!['students'] != null) {
+            postData = data!['students'];
+
+            postData.add({
+              "student_name": studentUserName,
+              "student_score": correctAnswers /
+                  data!['quiz'][0]['quiz_questions'].length *
+                  100 /
+                  1.00,
+            });
+            final dataList = [];
+
+            for (int i = 0; i < postData.length; i++) {
+              dataList.add(i);
+            }
+
+            FirebaseFirestore.instance
+                .collection('teacher')
+                .doc('tDBJb5RjZVT4NTvD9W7D')
+                .set({
+              "students": dataList
+                  .map((e) => {
+                        "student_name": postData[e]['student_name'],
+                        "student_score": postData[e]['student_score'],
+                      })
+                  .toList(),
+            }, SetOptions(merge: true));
+          } else {
+            FirebaseFirestore.instance
+                .collection('teacher')
+                .doc('tDBJb5RjZVT4NTvD9W7D')
+                .set({
+              "students": [
+                {
+                  "student_name": studentUserName,
+                  "student_score": correctAnswers /
+                      data!['quiz'][0]['quiz_questions'].length *
+                      100 /
+                      1.00,
+                }
+              ]
+            }, SetOptions(merge: true));
+          }
+          Navigator.pop(context);
         },
         icon: Icon(
           Icons.logout,
@@ -520,7 +608,10 @@ class _EndQuizButtonState extends State<EndQuizButton> {
 
       postData.add({
         "student_name": studentUserName,
-        "student_score": correctAnswers/data!['quiz'][0]['quiz_questions'].length*100/1.00,
+        "student_score": correctAnswers /
+            data!['quiz'][0]['quiz_questions'].length *
+            100 /
+            1.00,
       });
       final dataList = [];
 
@@ -546,9 +637,12 @@ class _EndQuizButtonState extends State<EndQuizButton> {
           .set({
         "students": [
           {
-          "student_name": studentUserName,
-          "student_score": correctAnswers/data!['quiz'][0]['quiz_questions'].length*100/1.00,
-        }
+            "student_name": studentUserName,
+            "student_score": correctAnswers /
+                data!['quiz'][0]['quiz_questions'].length *
+                100 /
+                1.00,
+          }
         ]
       }, SetOptions(merge: true));
     }
@@ -620,7 +714,7 @@ class PurpleContainer extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 alignment: AlignmentDirectional.topStart,
-                child:  Text(
+                child: Text(
                   data?['quiz'][0]['quiz_name'],
                   style: TextStyle(
                     color: Colors.white,
