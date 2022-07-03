@@ -620,8 +620,8 @@ class PurpleContainer extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 alignment: AlignmentDirectional.topStart,
-                child: const Text(
-                  "Computer Science Quiz",
+                child:  Text(
+                  data?['quiz'][0]['quiz_name'],
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
@@ -664,7 +664,7 @@ class PurpleContainer extends StatelessWidget {
                                 fontSize: 28),
                           ),
                           Text(
-                            "/50",
+                            "/100",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
