@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 BlackText(
-                    text: 'Hello, Anna!',
+                    text: 'Hello,',
                     fontWeight: FontWeight.w400,
                     size: 25),
                 IconButton(

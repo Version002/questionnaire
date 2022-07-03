@@ -203,7 +203,12 @@ class _questionWidgetState extends State<questionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(isCorrect);
+    if (data!['quiz'][0]['quiz_questions'].length ==
+        number) {
+      data!['quiz'][0]['quiz_questions'].shuffle();
+      
+    }
+    print('te---${data!['quiz'][0]['quiz_questions'].shuffle()}');
     return Column(
       children: [
         Container(
