@@ -1,7 +1,9 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:questionnaire/studentSignin.dart';
 import 'dart:async';
 import '../style/app_color.dart';
 
@@ -61,6 +63,8 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void initState() {
+    dif = Duration(minutes: 1);
+    screen=0;
     retrieveQuestion();
     loadTimer();
     super.initState();
@@ -76,6 +80,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     studentUserName = widget.studentName;
+
     setState(() {
       screen;
     });
@@ -103,7 +108,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         padding: const EdgeInsets.only(top: 30, bottom: 30),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             CancelButton(),
                             Text(
@@ -164,7 +169,6 @@ class _questionWidgetState extends State<questionWidget> {
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: ((context, index) {
                 number = index;
-                
 
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -349,8 +353,11 @@ class _questionWidgetState extends State<questionWidget> {
                 }
 
                 print(correctAnswers);
+                setState(() {
+                  screen = 1;
 
-                screen = 1;
+                });
+                
               },
               child: const Text(
                 "End",
@@ -381,20 +388,15 @@ class QuizNumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 13.5),
-      decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(25)),
-          border: Border.all(width: 1, color: Colors.white)),
-      child: const Text(
-        "#  10",
-        style: TextStyle(
+    return IconButton(
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => StudentSignin()));
+        },
+        icon: Icon(
+          Icons.logout,
           color: Colors.white,
-          fontWeight: FontWeight.w600,
-          fontSize: 20,
-        ),
-      ),
-    );
+        ));
   }
 }
 
@@ -477,7 +479,9 @@ class _RetakeButtonState extends State<RetakeButton> {
         width: MediaQuery.of(context).size.width * 0.6,
         child: TextButton(
           onPressed: () {
-            screen = 0;
+            setState(() {
+              screen = 0;
+            });
           },
           child: const Text(
             "Retake",
@@ -509,20 +513,46 @@ class EndQuizButton extends StatefulWidget {
 }
 
 class _EndQuizButtonState extends State<EndQuizButton> {
+  dynamic postData = [];
   Future postScore() async {
-    print('student $studentUserName');
-    print(correctAnswers);
-    FirebaseFirestore.instance
-        .collection('teacher')
-        .doc('tDBJb5RjZVT4NTvD9W7D')
-        .set({
-      "students": [
-        {
+    if (data!['students'] != null) {
+      postData = data!['students'];
+
+      postData.add({
+        "student_name": studentUserName,
+        "student_score": correctAnswers,
+      });
+      final dataList = [];
+
+      for (int i = 0; i < postData.length; i++) {
+        dataList.add(i);
+      }
+
+      FirebaseFirestore.instance
+          .collection('teacher')
+          .doc('tDBJb5RjZVT4NTvD9W7D')
+          .set({
+        "students": dataList
+            .map((e) => {
+                  "student_name": postData[e]['student_name'],
+                  "student_score": postData[e]['student_score'],
+                })
+            .toList(),
+      }, SetOptions(merge: true));
+    } else {
+      FirebaseFirestore.instance
+          .collection('teacher')
+          .doc('tDBJb5RjZVT4NTvD9W7D')
+          .set({
+        "students": [
+          {
           "student_name": studentUserName,
           "student_score": correctAnswers,
         }
-      ]
-    }, SetOptions(merge: true));
+        ]
+      }, SetOptions(merge: true));
+    }
+    Navigator.pop(context);
   }
 
   @override
