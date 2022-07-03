@@ -520,7 +520,7 @@ class _EndQuizButtonState extends State<EndQuizButton> {
 
       postData.add({
         "student_name": studentUserName,
-        "student_score": correctAnswers/data!['quiz'][0]['quiz_questions'].length*100,
+        "student_score": correctAnswers/data!['quiz'][0]['quiz_questions'].length*100/1.00,
       });
       final dataList = [];
 
@@ -547,7 +547,7 @@ class _EndQuizButtonState extends State<EndQuizButton> {
         "students": [
           {
           "student_name": studentUserName,
-          "student_score": correctAnswers/data!['quiz'][0]['quiz_questions'].length*100,
+          "student_score": correctAnswers/data!['quiz'][0]['quiz_questions'].length*100/1.00,
         }
         ]
       }, SetOptions(merge: true));
