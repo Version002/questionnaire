@@ -17,7 +17,7 @@ String strDigits(int n) => n.toString().padLeft(2, '0');
 int screen = 0;
 int correctAnswers = 0;
 String studentUserName = '';
-
+var randomItem ;
 Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
   var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
@@ -27,7 +27,9 @@ Future retrieveQuestion() async {
     if (data?['quiz'] != null) {
       print('true');
     }
-
+    randomItem = (data?['quiz'][0]['quiz_questions'].toList()..shuffle());
+    print('test');
+    print('yess---$randomItem');
     
   }
 }
@@ -209,7 +211,7 @@ class _questionWidgetState extends State<questionWidget> {
           width: MediaQuery.of(context).size.width * 0.9,
           child: ListView.builder(
               scrollDirection: Axis.vertical,
-              itemCount: data!['quiz'][0]['quiz_questions'].length,
+              itemCount: randomItem.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: ((context, index) {
                 number = index;
@@ -218,7 +220,7 @@ class _questionWidgetState extends State<questionWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      data!['quiz'][0]['quiz_questions'][index]
+                      randomItem[index]
                           ['question_title'],
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -242,7 +244,7 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            data!['quiz'][0]['quiz_questions'][index]
+                            randomItem[index]
                                 ['questions'][0]['a_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
@@ -278,7 +280,7 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            data!['quiz'][0]['quiz_questions'][index]
+                            randomItem[index]
                                 ['questions'][1]['b_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
@@ -314,7 +316,7 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            data!['quiz'][0]['quiz_questions'][index]
+                            randomItem[index]
                                 ['questions'][2]['c_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
@@ -350,7 +352,7 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            data!['quiz'][0]['quiz_questions'][index]
+                            randomItem[index]
                                 ['questions'][3]['d_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
@@ -387,7 +389,7 @@ class _questionWidgetState extends State<questionWidget> {
                 correctAnswers = 0;
                 for (int i = 0; i <= number; i++) {
                   for (int j = 0; j < 4; j++) {
-                    if (data!['quiz'][0]['quiz_questions'][i]['questions'][j]
+                    if (randomItem[i]['questions'][j]
                                 ['isCorrect'] ==
                             true &&
                         isCorrect[i][j] == true) {
