@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,7 @@ class SignUp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     Future createUserFirebase({required String email}) async {
+    Future createUserFirebase({required String email}) async {
       final docTeacher = FirebaseFirestore.instance.collection('teacher').doc();
       final json = {
         'email': email,
@@ -24,19 +23,17 @@ class SignUp extends StatelessWidget {
       await docTeacher.set(json);
     }
 
-
     Future signUp() async {
       try {
-        
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailController.text.trim(),
             password: passwordController.text.trim());
         final emailPost = emailController.text;
-        
+
         createUserFirebase(email: emailPost);
-        
-        Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MainPage ()));
+
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MainPage()));
       } on FirebaseAuthException catch (e) {
         print(e);
         final snackBar = SnackBar(
@@ -50,7 +47,6 @@ class SignUp extends StatelessWidget {
       }
     }
 
-   
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -94,12 +90,47 @@ class SignUp extends StatelessWidget {
                         ),
                       ),
                     ),
+                    SignInText(),
                   ],
                 ),
               ],
             ),
           ],
         )),
+      ),
+    );
+  }
+}
+
+class SignInText extends StatelessWidget {
+  SignInText({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Have an account ? ",
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => SignIn()));
+            },
+            child: Text(
+              "Sign In",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 106, 91, 226)),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -139,7 +139,7 @@ class SignUpText extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            "Don't have an Account ? ",
+            "Don't have an account ? ",
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
           ),
           GestureDetector(

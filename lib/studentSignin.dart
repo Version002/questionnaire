@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:questionnaire/signin.dart';
 import 'package:questionnaire/student/quiz.dart';
 import 'package:questionnaire/style/app_color.dart';
 
@@ -38,8 +39,6 @@ class _StudentSigninState extends State<StudentSignin> {
 
   @override
   Widget build(BuildContext context) {
-   
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -59,6 +58,7 @@ class _StudentSigninState extends State<StudentSignin> {
                       UsernameForm(),
                       IdForm(),
                       StartButton(),
+                      SignUpText(),
                     ],
                   )
                 ],
@@ -66,6 +66,40 @@ class _StudentSigninState extends State<StudentSignin> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class SignUpText extends StatelessWidget {
+  SignUpText({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Not a student ? ",
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+          ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => SignIn()));
+            },
+            child: Text(
+              "Sign In",
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 106, 91, 226)),
+            ),
+          )
+        ],
       ),
     );
   }
