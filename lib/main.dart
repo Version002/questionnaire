@@ -9,6 +9,7 @@ import 'package:questionnaire/signup.dart';
 import 'package:questionnaire/student/quiz.dart';
 import 'package:questionnaire/student/scoreReview.dart';
 import 'package:questionnaire/student/test.dart';
+import 'package:questionnaire/style/app_color.dart';
 import 'package:questionnaire/verifyemail.dart';
 
 // void main() {
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: primaryColor,
       ),
       home: const MainPage(),
     );
@@ -56,7 +57,7 @@ class MainPage extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return HomeScreen();
+          return VerifyEmailPage();
         } else {
           return SignIn();
         }
@@ -64,3 +65,16 @@ class MainPage extends StatelessWidget {
     );
   }
 }
+
+MaterialColor? primaryColor = MaterialColor(0xFF6A5BE2, <int, Color>{
+  50: Color(0xFF6A5BE2),
+  100: Color(0xFF6A5BE2),
+  200: Color(0xFF6A5BE2),
+  300: Color(0xFF6A5BE2),
+  400: Color(0xFF6A5BE2),
+  500: Color(0xFF6A5BE2),
+  600: Color(0xFF6A5BE2),
+  700: Color(0xFF6A5BE2),
+  800: Color(0xFF6A5BE2),
+  900: Color(0xFF6A5BE2),
+});

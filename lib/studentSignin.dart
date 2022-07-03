@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:questionnaire/student/quiz.dart';
+import 'package:questionnaire/style/app_color.dart';
 
 final userStudentController = TextEditingController();
 final quizIdController = TextEditingController();
@@ -10,12 +11,15 @@ var collection;
 var docSnapshot;
 var number;
 var quizID;
+var students;
 Map<String, dynamic>? data;
 Future<dynamic> fetchDocuments() async {
   collection = FirebaseFirestore.instance.collection('teacher');
   docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
   data = await docSnapshot.data()!;
   quizID = data!['quiz'][0]['quiz_id'];
+  students = data!['students'];
+  // print(students?.length());
 }
 
 class StudentSignin extends StatefulWidget {
@@ -215,29 +219,69 @@ class StartButton extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 145.0, vertical: 50.0),
       child: TextButton(
         onPressed: () {
-          if (quizIdController.text == quizID) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: ((context) => QuizScreen(
-                          studentName: userStudentController.text,
-                        ))));
-          } else {
-            showDialog(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                title: Text("Incorrect Quiz ID"),
-                content: Text("You have entered the wrong Quiz ID"),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('ok'),
-                  ),
-                ],
-              ),
+          bool isTaken = false;
+          if (students != Null) {
+            for (int i = 0; i < students.length; i++) {
+              if (userStudentController.text == students[i]['student_name']) {
+                isTaken = true;
+              } else {
+                isTaken = false;
+              }
+            }
+          }
+          if (isTaken == true) {
+            final snackBar = SnackBar(
+              content: Text('Username is already taken'),
+              backgroundColor: cPrimary,
             );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+            // showDialog(
+            //   context: context,
+            //   builder: (ctx) => AlertDialog(
+            //     title: Text("Username Taken"),
+            //     content: Text("Your username is already taken"),
+            //     actions: <Widget>[
+            //       TextButton(
+            //         onPressed: () {
+            //           Navigator.pop(context);
+            //         },
+            //         child: Text('ok'),
+            //       ),
+            //     ],
+            //   ),
+            // );
+          } else {
+            if (quizIdController.text == quizID) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => QuizScreen(
+                            studentName: userStudentController.text,
+                          ))));
+            } else {
+              final snackBar = SnackBar(
+                content: Text('Incorrect Quiz ID'),
+                backgroundColor: cPrimary,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+              // showDialog(
+              //   context: context,
+              //   builder: (ctx) => AlertDialog(
+              //     title: Text("Incorrect Quiz ID"),
+              //     content: Text("You have entered the wrong Quiz ID"),
+              //     actions: <Widget>[
+              //       TextButton(
+              //         onPressed: () {
+              //           Navigator.pop(context);
+              //         },
+              //         child: Text('ok'),
+              //       ),
+              //     ],
+              //   ),
+              // );
+            }
           }
         },
         child: Text(
