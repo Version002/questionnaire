@@ -1,5 +1,5 @@
-import 'dart:ffi';
-
+import 'dart:ffi'; 
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +27,8 @@ Future retrieveQuestion() async {
     if (data?['quiz'] != null) {
       print('true');
     }
+
+    
   }
 }
 
@@ -41,6 +43,7 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
+  
   loadTimer() {
     // countdownTimer?.cancel();
     countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -61,10 +64,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
             postData.add({
               "student_name": studentUserName,
-              "student_score": correctAnswers /
-                  data!['quiz'][0]['quiz_questions'].length *
-                  100 /
-                  1.00,
+              "student_score":  correctAnswers
             });
             final dataList = [];
 
@@ -91,10 +91,7 @@ class _QuizScreenState extends State<QuizScreen> {
               "students": [
                 {
                   "student_name": studentUserName,
-                  "student_score": correctAnswers /
-                      data!['quiz'][0]['quiz_questions'].length *
-                      100 /
-                      1.00,
+                  "student_score":  correctAnswers
                 }
               ]
             }, SetOptions(merge: true));
@@ -126,7 +123,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     studentUserName = widget.studentName;
-
+    print(data!['quiz'][0]['quiz_questions']);
     setState(() {
       screen;
     });
@@ -203,12 +200,8 @@ class _questionWidgetState extends State<questionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (data!['quiz'][0]['quiz_questions'].length ==
-        number) {
-      data!['quiz'][0]['quiz_questions'].shuffle();
-      
-    }
-    print('te---${data!['quiz'][0]['quiz_questions'].shuffle()}');
+    
+   
     return Column(
       children: [
         Container(
@@ -402,6 +395,9 @@ class _questionWidgetState extends State<questionWidget> {
                     }
                   }
                 }
+                correctAnswers = (correctAnswers /
+                  data!['quiz'][0]['quiz_questions'].length *
+                  100.ceil()) as int;
 
                 print(correctAnswers);
                 setState(() {
@@ -446,10 +442,9 @@ class QuizNumber extends StatelessWidget {
 
             postData.add({
               "student_name": studentUserName,
-              "student_score": correctAnswers /
-                  data!['quiz'][0]['quiz_questions'].length *
-                  100 /
-                  1.00,
+              "student_score": correctAnswers
+                  
+            ,
             });
             final dataList = [];
 
@@ -476,10 +471,7 @@ class QuizNumber extends StatelessWidget {
               "students": [
                 {
                   "student_name": studentUserName,
-                  "student_score": correctAnswers /
-                      data!['quiz'][0]['quiz_questions'].length *
-                      100 /
-                      1.00,
+                  "student_score": correctAnswers 
                 }
               ]
             }, SetOptions(merge: true));
@@ -613,10 +605,7 @@ class _EndQuizButtonState extends State<EndQuizButton> {
 
       postData.add({
         "student_name": studentUserName,
-        "student_score": correctAnswers /
-            data!['quiz'][0]['quiz_questions'].length *
-            100 /
-            1.00,
+        "student_score": correctAnswers 
       });
       final dataList = [];
 
@@ -643,10 +632,8 @@ class _EndQuizButtonState extends State<EndQuizButton> {
         "students": [
           {
             "student_name": studentUserName,
-            "student_score": correctAnswers /
-                data!['quiz'][0]['quiz_questions'].length *
-                100 /
-                1.00,
+            "student_score": correctAnswers 
+            
           }
         ]
       }, SetOptions(merge: true));
