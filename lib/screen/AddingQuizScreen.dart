@@ -127,6 +127,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
               labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
             ),
             RSTextFormField(
+              keyboardType: TextInputType.number,
               controller: quizIdController,
               mainColor: Colors.white,
               textColor: Colors.white,

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:questionnaire/student/quiz.dart';
 
+
+final userStudentController = TextEditingController();
+final quizIdController = TextEditingController();
 class StudentSignin extends StatelessWidget {
   const StudentSignin({Key? key}) : super(key: key);
 
@@ -102,9 +105,11 @@ class UsernameForm extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 16.0, left: 28.0, right: 28.0),
       child: TextField(
+        controller: userStudentController,
         // keyboardType: TextInputType.emailAddress,
         cursorColor: Color.fromARGB(255, 106, 91, 226),
         decoration: InputDecoration(
+          
           prefixIcon: Icon(
             Icons.email,
             color: Color.fromARGB(255, 106, 91, 226),
@@ -141,6 +146,7 @@ class IdForm extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: 16.0, left: 28.0, right: 28.0),
       child: TextField(
+        controller: quizIdController,
         cursorColor: Color.fromARGB(255, 106, 91, 226),
         keyboardType: TextInputType.number,
         inputFormatters: <TextInputFormatter>[
@@ -185,7 +191,7 @@ class StartButton extends StatelessWidget {
       child: TextButton(
         onPressed: () {
           Navigator.push(
-              context, MaterialPageRoute(builder: ((context) => QuizScreen())));
+              context, MaterialPageRoute(builder: ((context) => QuizScreen(studentName: userStudentController.text,))));
         },
         child: Text(
           "Start Quiz",

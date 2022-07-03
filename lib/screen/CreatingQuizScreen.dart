@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:questionnaire/homescreen.dart';
 import 'package:questionnaire/style/app_color.dart';
 import 'package:questionnaire/widget/RSTextFormField.dart';
 import 'package:questionnaire/widget/SmallUnderline.dart';
@@ -57,8 +58,13 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
     final idQuiz = widget.quizId;
     final nameQuiz = widget.quizName;
     int number;
+    final questionAddList = [];
 
     Future postQuestion() async {
+      for (int i = 0; i < question; i++) {
+        questionAddList.add(i);
+      }
+      print('question $questionAddList');
       var collection = FirebaseFirestore.instance.collection('teacher');
       var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
       print(questionController[0].text);
@@ -72,29 +78,37 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
             {
               "quiz_id": idQuiz,
               "quiz_name": nameQuiz,
-              "quiz_questions": [0, 1, 2]
+              "quiz_questions": questionAddList
                   .map((i) => {
                         "question_title": questionController[i].text,
                         "questions": [
                           {
                             "a_answer": aAnswerController[i].text,
-                            "isCorrect":
-                                answerController[i].text == 'a' || answerController[i].text == 'A' ? true : false,
+                            "isCorrect": answerController[i].text == 'a' ||
+                                    answerController[i].text == 'A'
+                                ? true
+                                : false,
                           },
                           {
                             "b_answer": bAnswerController[i].text,
-                            "isCorrect":
-                                answerController[i].text == 'b' || answerController[i].text == 'B'? true : false,
+                            "isCorrect": answerController[i].text == 'b' ||
+                                    answerController[i].text == 'B'
+                                ? true
+                                : false,
                           },
                           {
                             "c_answer": cAnswerController[i].text,
-                            "isCorrect":
-                                answerController[i].text == 'c' || answerController[i].text == 'C'? true : false,
+                            "isCorrect": answerController[i].text == 'c' ||
+                                    answerController[i].text == 'C'
+                                ? true
+                                : false,
                           },
                           {
                             "d_answer": dAnswerController[i].text,
-                            "isCorrect":
-                                answerController[i].text == 'd'|| answerController[i].text == 'D' ? true : false,
+                            "isCorrect": answerController[i].text == 'd' ||
+                                    answerController[i].text == 'D'
+                                ? true
+                                : false,
                           },
                         ]
                       })
@@ -103,6 +117,8 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
           ]
         }, SetOptions(merge: true));
       }
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
 
     return Scaffold(

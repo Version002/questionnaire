@@ -1,6 +1,7 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:questionnaire/student/scoreReview.dart';
 import 'dart:async';
 import '../style/app_color.dart';
 
@@ -13,6 +14,7 @@ Timer? countdownTimer;
 String strDigits(int n) => n.toString().padLeft(2, '0');
 int screen = 0;
 int correctAnswers = 0;
+String studentUserName = '';
 
 Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
@@ -27,8 +29,11 @@ Future retrieveQuestion() async {
 }
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({Key? key}) : super(key: key);
+  final String studentName;
 
+  QuizScreen({
+    required this.studentName,
+  });
   @override
   State<QuizScreen> createState() => _QuizScreenState();
 }
@@ -70,6 +75,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    studentUserName = widget.studentName;
     setState(() {
       screen;
     });
@@ -131,7 +137,7 @@ class _QuizScreenState extends State<QuizScreen> {
 }
 
 class questionWidget extends StatefulWidget {
-  const questionWidget({Key? key}) : super(key: key);
+  questionWidget({Key? key}) : super(key: key);
 
   @override
   State<questionWidget> createState() => _questionWidgetState();
@@ -140,8 +146,6 @@ class questionWidget extends StatefulWidget {
 class _questionWidgetState extends State<questionWidget> {
   int number = 0;
 
-  // bool isCorrect = false;
-  // List<List<bool>> isCorrect = [];
   List<List<bool>> isCorrect = List.generate(
       data!.length, (i) => List.filled(4, false, growable: false),
       growable: false);
@@ -156,10 +160,11 @@ class _questionWidgetState extends State<questionWidget> {
           width: MediaQuery.of(context).size.width * 0.9,
           child: ListView.builder(
               scrollDirection: Axis.vertical,
-              itemCount: data!.length,
+              itemCount: data!['quiz'][0]['quiz_questions'].length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: ((context, index) {
                 number = index;
+                
 
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -187,12 +192,6 @@ class _questionWidgetState extends State<questionWidget> {
                             setState(() {
                               isCorrect[index] = [true, false, false, false];
                             });
-                            // if (isCorrect[index][0] ==
-                            //     data!['quiz'][0]['quiz_questions'][index]
-                            //         ['questions'][0]['isCorrect']) {
-                            //   ++correctAnswers;
-                            // }
-                            // print(correctAnswers);
                           },
                           child: Text(
                             data!['quiz'][0]['quiz_questions'][index]
@@ -229,12 +228,6 @@ class _questionWidgetState extends State<questionWidget> {
                             setState(() {
                               isCorrect[index] = [false, true, false, false];
                             });
-                            // if (isCorrect[index][1] ==
-                            //     data!['quiz'][0]['quiz_questions'][index]
-                            //         ['questions'][1]['isCorrect']) {
-                            //   ++correctAnswers;
-                            // }
-                            // print(correctAnswers);
                           },
                           child: Text(
                             data!['quiz'][0]['quiz_questions'][index]
@@ -271,12 +264,6 @@ class _questionWidgetState extends State<questionWidget> {
                             setState(() {
                               isCorrect[index] = [false, false, true, false];
                             });
-                            // if (isCorrect[index][2] ==
-                            //     data!['quiz'][0]['quiz_questions'][index]
-                            //         ['questions'][2]['isCorrect']) {
-                            //   ++correctAnswers;
-                            // }
-                            // print(correctAnswers);
                           },
                           child: Text(
                             data!['quiz'][0]['quiz_questions'][index]
@@ -313,12 +300,6 @@ class _questionWidgetState extends State<questionWidget> {
                             setState(() {
                               isCorrect[index] = [false, false, false, true];
                             });
-                            // if (isCorrect[index][3] ==
-                            //     data!['quiz'][0]['quiz_questions'][index]
-                            //         ['questions'][3]['isCorrect']) {
-                            //   ++correctAnswers;
-                            // }
-                            // print(correctAnswers);
                           },
                           child: Text(
                             data!['quiz'][0]['quiz_questions'][index]
@@ -464,6 +445,15 @@ class _ScoreReviewState extends State<ScoreReview> {
         PurpleContainer(),
         // PinkContainer(),
         RetakeButton(),
+        SizedBox(
+          height: 30,
+        ),
+
+        Text(
+          "or",
+          style: TextStyle(fontSize: 13, color: Colors.white),
+        ),
+        EndQuizButton(),
       ],
     );
   }
@@ -500,7 +490,7 @@ class _RetakeButtonState extends State<RetakeButton> {
             shape: MaterialStateProperty.all(const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 side: BorderSide(
-                  color: Color.fromARGB(255, 106, 91, 226),
+                  color: Colors.white,
                 ))),
           ),
         ),
@@ -509,77 +499,59 @@ class _RetakeButtonState extends State<RetakeButton> {
   }
 }
 
-// class PinkContainer extends StatelessWidget {
-//   const PinkContainer({
-//     Key? key,
-//   }) : super(key: key);
+class EndQuizButton extends StatefulWidget {
+  const EndQuizButton({
+    Key? key,
+  }) : super(key: key);
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: MediaQuery.of(context).size.width * 1,
-//       height: MediaQuery.of(context).size.height * 0.4274,
-//       decoration: BoxDecoration(
-//         color: const Color(0xffEEEEFC),
-//         borderRadius: const BorderRadius.all(Radius.circular(20.0)),
-//         border: Border.all(width: 1, color: const Color(0xffEEEEFC)),
-//       ),
-//       child: Padding(
-//         padding: const EdgeInsets.all(30.0),
-//         child: Column(
-//           children: [
-//             const Text(
-//               "You have done the quiz",
-//               style: TextStyle(
-//                 color: Colors.black,
-//                 fontWeight: FontWeight.w500,
-//                 fontSize: 25,
-//               ),
-//             ),
-//             const Padding(
-//               padding: EdgeInsets.symmetric(vertical: 15.0),
-//               child: Text(
-//                 "3 times",
-//                 style: TextStyle(
-//                   color: Color(0xFF6A5BE2),
-//                   fontSize: 25,
-//                   fontWeight: FontWeight.w500,
-//                 ),
-//               ),
-//             ),
-//             Container(
-//               height: 160,
-//               width: 160,
-//               decoration: BoxDecoration(
-//                 border: Border.all(
-//                   width: 4,
-//                   color: const Color(0xFF6A5BE2),
-//                 ),
-//                 borderRadius: BorderRadius.circular(100),
-//               ),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.center,
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: const [
-//                   Center(
-//                     child: Text(
-//                       "Remaining Time",
-//                       style: TextStyle(
-//                         color: Colors.black,
-//                         fontSize: 29,
-//                         fontWeight: FontWeight.w500,
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  State<EndQuizButton> createState() => _EndQuizButtonState();
+}
+
+class _EndQuizButtonState extends State<EndQuizButton> {
+  Future postScore() async {
+    print('student $studentUserName');
+    print(correctAnswers);
+    FirebaseFirestore.instance
+        .collection('teacher')
+        .doc('tDBJb5RjZVT4NTvD9W7D')
+        .set({
+      "students": [
+        {
+          "student_name": studentUserName,
+          "student_score": correctAnswers,
+        }
+      ]
+    }, SetOptions(merge: true));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 32.0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.6,
+        child: TextButton(
+          onPressed: postScore,
+          child: const Text(
+            "End",
+            style: TextStyle(fontSize: 16),
+          ),
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(
+                const Color.fromARGB(255, 106, 91, 226)),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                side: BorderSide(
+                  color: Colors.white,
+                ))),
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 class PurpleContainer extends StatelessWidget {
   const PurpleContainer({
@@ -653,7 +625,7 @@ class PurpleContainer extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children:  [
+                        children: [
                           Text(
                             correctAnswers.toString(),
                             style: TextStyle(
@@ -686,7 +658,7 @@ class PurpleContainer extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children:  [
+                            children: [
                               Text(
                                 "You got $correctAnswers",
                                 style: TextStyle(
