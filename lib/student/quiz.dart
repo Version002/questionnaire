@@ -22,7 +22,7 @@ String studentUserName = '';
 var randomItem;
 Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
-  var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
+  var docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
   if (docSnapshot.exists) {
     data = docSnapshot.data();
     // print(data);
@@ -76,7 +76,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
             FirebaseFirestore.instance
                 .collection('teacher')
-                .doc('tDBJb5RjZVT4NTvD9W7D')
+                .doc('VbWzEnRYiyi4TJB0yfBs')
                 .set({
               "students": dataList
                   .map((e) => {
@@ -88,7 +88,7 @@ class _QuizScreenState extends State<QuizScreen> {
           } else {
             FirebaseFirestore.instance
                 .collection('teacher')
-                .doc('tDBJb5RjZVT4NTvD9W7D')
+                .doc('VbWzEnRYiyi4TJB0yfBs')
                 .set({
               "students": [
                 {
@@ -446,7 +446,7 @@ class QuizNumber extends StatelessWidget {
 
             FirebaseFirestore.instance
                 .collection('teacher')
-                .doc('tDBJb5RjZVT4NTvD9W7D')
+                .doc('VbWzEnRYiyi4TJB0yfBs')
                 .set({
               "students": dataList
                   .map((e) => {
@@ -458,7 +458,7 @@ class QuizNumber extends StatelessWidget {
           } else {
             FirebaseFirestore.instance
                 .collection('teacher')
-                .doc('tDBJb5RjZVT4NTvD9W7D')
+                .doc('VbWzEnRYiyi4TJB0yfBs')
                 .set({
               "students": [
                 {
@@ -605,7 +605,7 @@ class _EndQuizButtonState extends State<EndQuizButton> {
 
       FirebaseFirestore.instance
           .collection('teacher')
-          .doc('tDBJb5RjZVT4NTvD9W7D')
+          .doc('VbWzEnRYiyi4TJB0yfBs')
           .set({
         "students": dataList
             .map((e) => {
@@ -617,7 +617,7 @@ class _EndQuizButtonState extends State<EndQuizButton> {
     } else {
       FirebaseFirestore.instance
           .collection('teacher')
-          .doc('tDBJb5RjZVT4NTvD9W7D')
+          .doc('VbWzEnRYiyi4TJB0yfBs')
           .set({
         "students": [
           {"student_name": studentUserName, "student_score": correctAnswers}

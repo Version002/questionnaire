@@ -66,13 +66,13 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
       }
       print('question $questionAddList');
       var collection = FirebaseFirestore.instance.collection('teacher');
-      var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
+      var docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
       print(questionController[0].text);
       if (docSnapshot.exists) {
         Map<String, dynamic>? data = docSnapshot.data();
         FirebaseFirestore.instance
             .collection('teacher')
-            .doc('tDBJb5RjZVT4NTvD9W7D')
+            .doc('VbWzEnRYiyi4TJB0yfBs')
             .set({
           "quiz": [
             {

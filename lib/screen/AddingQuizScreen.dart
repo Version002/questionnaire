@@ -24,10 +24,17 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
   Widget build(BuildContext context) {
     Future addData() async {
       if (quizIdController.text != null &&
-              quizNameController.text != null && numberQuestionController.text!=null) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => CreatingQuizScreen(numberQuestion: numberQuestionController.text,quizId: quizIdController.text,quizName: quizNameController.text,)));
-          }
+          quizNameController.text != null &&
+          numberQuestionController.text != null) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CreatingQuizScreen(
+                      numberQuestion: numberQuestionController.text,
+                      quizId: quizIdController.text,
+                      quizName: quizNameController.text,
+                    )));
+      }
     }
     // Future retrieveData() async {
     //   var collection = FirebaseFirestore.instance.collection('teacher');
@@ -35,11 +42,11 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
     //   if (docSnapshot.exists) {
     //     // final data = docSnapshot.data();
     //     Map<String, dynamic>? data = docSnapshot.data();
-        
+
     //     if (data?['quiz'] == null) {
     //       FirebaseFirestore.instance
     //           .collection('teacher')
-    //           .doc('tDBJb5RjZVT4NTvD9W7D')
+    //           .doc('VbWzEnRYiyi4TJB0yfBs')
     //           .set({
     //         "quiz": [
     //           {
@@ -48,7 +55,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
     //           }
     //         ]
     //       }, SetOptions(merge: true));
-          
+
     //     } else {
     //       print('yes');
     //       print(data?['quiz'][0]['quizId']);
@@ -64,7 +71,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
     //       // };
     //       // FirebaseFirestore.instance
     //       //     .collection('teacher')
-    //           // .doc('tDBJb5RjZVT4NTvD9W7D')
+    //           // .doc('VbWzEnRYiyi4TJB0yfBs')
     //           // .updateData({"quiz": FieldValue.arrayUnion(json) });
     //       // Firestore.instance.collection(city).document('Attractions').updateData({"data": FieldValue.arrayUnion(obj)});
     //     }
@@ -140,7 +147,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
               ),
               labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
             ),
-              RSTextFormField(
+            RSTextFormField(
               keyboardType: TextInputType.number,
               controller: numberQuestionController,
               mainColor: Colors.white,
