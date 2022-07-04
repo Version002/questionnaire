@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:questionnaire/main.dart';
 import 'package:questionnaire/screen/AddingQuizScreen.dart';
 import 'package:questionnaire/screen/CreatingQuizScreen.dart';
 import 'package:questionnaire/screen/ReportingScreen.dart';
@@ -28,15 +29,14 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 BlackText(
-                    text: 'Hello,',
-                    fontWeight: FontWeight.w400,
-                    size: 25),
+                    text: 'Hello,', fontWeight: FontWeight.w400, size: 25),
                 IconButton(
-                    onPressed: () {
-                      FirebaseAuth.instance.signOut();
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => MainPage()));
                     },
                     icon: Icon(Icons.logout)),
-                
               ],
             ),
             BlackText(

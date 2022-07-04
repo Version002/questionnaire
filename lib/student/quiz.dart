@@ -1,8 +1,10 @@
-import 'dart:ffi'; 
+import 'dart:ffi';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:questionnaire/main.dart';
+import 'package:questionnaire/signin.dart';
 import 'package:questionnaire/studentSignin.dart';
 import 'dart:async';
 import '../style/app_color.dart';
@@ -17,7 +19,7 @@ String strDigits(int n) => n.toString().padLeft(2, '0');
 int screen = 0;
 int correctAnswers = 0;
 String studentUserName = '';
-var randomItem ;
+var randomItem;
 Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
   var docSnapshot = await collection.doc('tDBJb5RjZVT4NTvD9W7D').get();
@@ -30,7 +32,6 @@ Future retrieveQuestion() async {
     randomItem = (data?['quiz'][0]['quiz_questions'].toList()..shuffle());
     print('test');
     print('yess---$randomItem');
-    
   }
 }
 
@@ -45,7 +46,6 @@ class QuizScreen extends StatefulWidget {
 }
 
 class _QuizScreenState extends State<QuizScreen> {
-  
   loadTimer() {
     // countdownTimer?.cancel();
     countdownTimer = Timer.periodic(Duration(seconds: 1), (timer) {
@@ -66,7 +66,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
             postData.add({
               "student_name": studentUserName,
-              "student_score":  correctAnswers
+              "student_score": correctAnswers
             });
             final dataList = [];
 
@@ -93,7 +93,7 @@ class _QuizScreenState extends State<QuizScreen> {
               "students": [
                 {
                   "student_name": studentUserName,
-                  "student_score":  correctAnswers
+                  "student_score": correctAnswers
                 }
               ]
             }, SetOptions(merge: true));
@@ -125,7 +125,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     studentUserName = widget.studentName;
-    print(data!['quiz'][0]['quiz_questions']);
+    // print(data!['quiz'][0]['quiz_questions']);
     setState(() {
       screen;
     });
@@ -202,8 +202,6 @@ class _questionWidgetState extends State<questionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    
-   
     return Column(
       children: [
         Container(
@@ -220,8 +218,7 @@ class _questionWidgetState extends State<questionWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      randomItem[index]
-                          ['question_title'],
+                      randomItem[index]['question_title'],
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -244,8 +241,7 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            randomItem[index]
-                                ['questions'][0]['a_answer'],
+                            randomItem[index]['questions'][0]['a_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
@@ -280,8 +276,7 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            randomItem[index]
-                                ['questions'][1]['b_answer'],
+                            randomItem[index]['questions'][1]['b_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
@@ -316,8 +311,7 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            randomItem[index]
-                                ['questions'][2]['c_answer'],
+                            randomItem[index]['questions'][2]['c_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
@@ -352,8 +346,7 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            randomItem[index]
-                                ['questions'][3]['d_answer'],
+                            randomItem[index]['questions'][3]['d_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
@@ -389,17 +382,16 @@ class _questionWidgetState extends State<questionWidget> {
                 correctAnswers = 0;
                 for (int i = 0; i <= number; i++) {
                   for (int j = 0; j < 4; j++) {
-                    if (randomItem[i]['questions'][j]
-                                ['isCorrect'] ==
-                            true &&
+                    if (randomItem[i]['questions'][j]['isCorrect'] == true &&
                         isCorrect[i][j] == true) {
                       ++correctAnswers;
                     }
                   }
                 }
                 correctAnswers = (correctAnswers /
-                  data!['quiz'][0]['quiz_questions'].length *
-                  100.ceil()) as int;
+                        data!['quiz'][0]['quiz_questions'].length *
+                        100)
+                    .ceil() as int;
 
                 print(correctAnswers);
                 setState(() {
@@ -444,9 +436,7 @@ class QuizNumber extends StatelessWidget {
 
             postData.add({
               "student_name": studentUserName,
-              "student_score": correctAnswers
-                  
-            ,
+              "student_score": correctAnswers,
             });
             final dataList = [];
 
@@ -473,7 +463,7 @@ class QuizNumber extends StatelessWidget {
               "students": [
                 {
                   "student_name": studentUserName,
-                  "student_score": correctAnswers 
+                  "student_score": correctAnswers
                 }
               ]
             }, SetOptions(merge: true));
@@ -605,10 +595,8 @@ class _EndQuizButtonState extends State<EndQuizButton> {
     if (data!['students'] != null) {
       postData = data!['students'];
 
-      postData.add({
-        "student_name": studentUserName,
-        "student_score": correctAnswers 
-      });
+      postData.add(
+          {"student_name": studentUserName, "student_score": correctAnswers});
       final dataList = [];
 
       for (int i = 0; i < postData.length; i++) {
@@ -632,15 +620,14 @@ class _EndQuizButtonState extends State<EndQuizButton> {
           .doc('tDBJb5RjZVT4NTvD9W7D')
           .set({
         "students": [
-          {
-            "student_name": studentUserName,
-            "student_score": correctAnswers 
-            
-          }
+          {"student_name": studentUserName, "student_score": correctAnswers}
         ]
       }, SetOptions(merge: true));
     }
-    Navigator.pop(context);
+    // Navigator.pop(context);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => MainPage()));
+    countdownTimer?.cancel();
   }
 
   @override
@@ -786,7 +773,7 @@ class PurpleContainer extends StatelessWidget {
                               Padding(
                                 padding: EdgeInsets.only(top: 3.0),
                                 child: Text(
-                                  "out of 50",
+                                  "out of 100",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w500),

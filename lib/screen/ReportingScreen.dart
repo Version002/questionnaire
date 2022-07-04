@@ -29,7 +29,6 @@ class _ReportingScreenState extends State<ReportingScreen> {
   var number;
   var student;
   var teacher;
-  bool loading = true;
   Map<String, dynamic>? data;
   Future<dynamic> fetchDocuments() async {
     collection = FirebaseFirestore.instance.collection('teacher');
@@ -37,6 +36,10 @@ class _ReportingScreenState extends State<ReportingScreen> {
     data = await docSnapshot.data()!;
     student = data!['students'];
     teacher = data!['email'];
+    setState(() {
+      student;
+      teacher;
+    });
   }
 
   List<dynamic> studentScore = [];
@@ -52,14 +55,6 @@ class _ReportingScreenState extends State<ReportingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // fetchDocuments();
-    setState(() {
-      if(student==null){
-        loading=true;
-      }else{
-        loading =false;
-      }
-    });
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -136,86 +131,92 @@ class _ReportingScreenState extends State<ReportingScreen> {
                 ),
               ],
             ),
-            BlackText(
-                text: teacher.toString(),
-                fontWeight: FontWeight.w800,
-                size: 25),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-              child: Container(
-                  height: 130,
-                  decoration: BoxDecoration(
-                    color: cPrimary,
-                    borderRadius: BorderRadius.circular(10),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  BlackText(
+                      text: teacher?.toString() ?? '',
+                      fontWeight: FontWeight.w800,
+                      size: 25),
+                  SizedBox(
+                    height: 30,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/test_icon.png',
-                              height: 30,
-                              width: 30,
-                              fit: BoxFit.fitWidth,
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            WhiteText(
-                                text: 'tests',
-                                fontWeight: FontWeight.w300,
-                                size: 15),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            WhiteText(
-                                text: '25',
-                                fontWeight: FontWeight.w700,
-                                size: 22)
-                          ],
-                        ),
+                  Container(
+                      height: 130,
+                      decoration: BoxDecoration(
+                        color: cPrimary,
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      Container(
-                        height: 80,
-                        width: 1,
-                        color: Colors.white,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              'assets/student_icon.png',
-                              height: 30,
-                              width: 30,
-                              fit: BoxFit.fitWidth,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/test_icon.png',
+                                  height: 30,
+                                  width: 30,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                WhiteText(
+                                    text: 'tests',
+                                    fontWeight: FontWeight.w300,
+                                    size: 15),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                WhiteText(
+                                    text: '1',
+                                    fontWeight: FontWeight.w700,
+                                    size: 22)
+                              ],
                             ),
-                            SizedBox(
-                              height: 10,
+                          ),
+                          Container(
+                            height: 80,
+                            width: 1,
+                            color: Colors.white,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  'assets/student_icon.png',
+                                  height: 30,
+                                  width: 30,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                WhiteText(
+                                    text: 'student',
+                                    fontWeight: FontWeight.w300,
+                                    size: 15),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                WhiteText(
+                                    text: student?.length.toString() ?? '',
+                                    fontWeight: FontWeight.w700,
+                                    size: 22)
+                              ],
                             ),
-                            WhiteText(
-                                text: 'student',
-                                fontWeight: FontWeight.w300,
-                                size: 15),
-                            SizedBox(
-                              height: 15,
-                            ),
-                            WhiteText(
-                                text: student?.length.toString() ?? 'Empty',
-                                fontWeight: FontWeight.w700,
-                                size: 22)
-                          ],
-                        ),
-                      ),
-                    ],
-                  )),
+                          ),
+                        ],
+                      )),
+                ],
+              ),
             ),
             Padding(
               padding:
@@ -242,15 +243,6 @@ class _ReportingScreenState extends State<ReportingScreen> {
                       ),
                     ),
                   )
-
-                  // Text(
-                  //   'Export',
-                  //   style: TextStyle(
-                  //     fontWeight: FontWeight.w500,
-                  //     fontSize: 20,
-                  //     color: Colors.red,
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -260,17 +252,15 @@ class _ReportingScreenState extends State<ReportingScreen> {
                 children: [
                   // SizedBox(width: 30),
                   LayoutBuilder(builder: (context, constraints) {
-                    if (loading=true) {
-                     
+                    if (student == null) {
                       return Center(
                           child: Padding(
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).size.height * 0.1),
                         child: CircularProgressIndicator(),
                       ));
-                    }
-
-                    else {
+                    } else {
+                      //change here
                       return Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: ListView.builder(
@@ -375,7 +365,8 @@ class _ReportingScreenState extends State<ReportingScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text("Export To CSV"),
-        content: Text("You have success in exporting file"),
+        content: Text(
+            "You have success in exporting file, please only do in one time"),
         actions: <Widget>[
           TextButton(
             onPressed: () {
