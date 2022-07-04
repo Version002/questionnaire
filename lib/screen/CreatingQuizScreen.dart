@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_key_in_widget_constructors, unused_local_variable, sized_box_for_whitespace
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:questionnaire/homescreen.dart';
@@ -42,7 +44,7 @@ class CreatingQuizScreen extends StatefulWidget {
   final String quizName;
   final String quizId;
 
-  CreatingQuizScreen(
+  const CreatingQuizScreen(
       {required this.numberQuestion,
       required this.quizId,
       required this.quizName});
@@ -57,17 +59,17 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
     final question = int.parse(widget.numberQuestion);
     final idQuiz = widget.quizId;
     final nameQuiz = widget.quizName;
-    int number;
+    // int number;
     final questionAddList = [];
 
     Future postQuestion() async {
       for (int i = 0; i < question; i++) {
         questionAddList.add(i);
       }
-      print('question $questionAddList');
+      // print('question $questionAddList');
       var collection = FirebaseFirestore.instance.collection('teacher');
       var docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
-      print(questionController[0].text);
+      // print(questionController[0].text);
       if (docSnapshot.exists) {
         Map<String, dynamic>? data = docSnapshot.data();
         FirebaseFirestore.instance

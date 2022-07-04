@@ -1,7 +1,10 @@
+// ignore_for_file: must_be_immutable, use_key_in_widget_constructors, file_names
+
 import 'package:flutter/material.dart';
 
 class RSTextFormField extends StatelessWidget {
-   RSTextFormField({this.hintText,
+  RSTextFormField({
+    this.hintText,
     this.validator,
     this.onSaved,
     this.hintTextStyle,
@@ -23,8 +26,8 @@ class RSTextFormField extends StatelessWidget {
     this.maxLines = 1,
     this.minLines = 1,
     this.prefix,
-    this.mainColor=Colors.black,
-    this.textColor=Colors.black,
+    this.mainColor = Colors.black,
+    this.textColor = Colors.black,
   });
   final String? hintText;
   final String? labelText;
@@ -80,7 +83,8 @@ class RSTextFormField extends StatelessWidget {
           hintStyle: hintTextStyle,
           labelStyle: labelTextStyle,
           prefix: prefix,
-          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),/**/
+          contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          /**/
           focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(30),
               borderSide: BorderSide(color: mainColor!)),
@@ -89,12 +93,12 @@ class RSTextFormField extends StatelessWidget {
               borderRadius: BorderRadius.circular(30),
               borderSide: BorderSide(color: mainColor!)),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              borderSide: BorderSide(color: mainColor!),
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            borderSide: BorderSide(color: mainColor!),
           ),
           errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30)),
-              borderSide: BorderSide(color: Colors.red),
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            borderSide: BorderSide(color: Colors.red),
           ),
           suffixIcon: suffixIcon,
           fillColor: Colors.white.withOpacity(0.04),
@@ -114,4 +118,3 @@ class RSTextFormField extends StatelessWidget {
     );
   }
 }
-

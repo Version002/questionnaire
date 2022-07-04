@@ -3,14 +3,37 @@ import 'package:flutter/material.dart';
 import 'package:questionnaire/signup.dart';
 import 'package:questionnaire/studentSignin.dart';
 
+// import 'main.dart';
+import 'style/app_color.dart';
+
 final passwordController = TextEditingController();
 final userController = TextEditingController();
 
-class SignIn extends StatelessWidget {
-  SignIn({Key? key}) : super(key: key);
+class SignIn extends StatefulWidget {
+  const SignIn({Key? key}) : super(key: key);
 
   @override
+  State<SignIn> createState() => _SignInState();
+}
+
+class _SignInState extends State<SignIn> {
+  @override
   Widget build(BuildContext context) {
+    Future signIn() async {
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: userController.text.trim(),
+            password: passwordController.text.trim());
+      } on FirebaseAuthException catch (e) {
+        // print(e);
+        final snackBar = SnackBar(
+          content: Text(e.message!),
+          backgroundColor: cPrimary,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -23,12 +46,36 @@ class SignIn extends StatelessWidget {
                 PurpleContainer(),
                 Column(
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                     Logo(),
                     Signin(),
                     UsernameForm(),
                     PasswordForm(),
-                    LoginButton(),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 145.0, vertical: 15.0),
+                      child: TextButton(
+                        onPressed: signIn,
+                        child: Text(
+                          "Login",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Color.fromARGB(255, 106, 91, 226)),
+                          foregroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5.0)),
+                                  side: BorderSide(
+                                    color: Color.fromARGB(255, 106, 91, 226),
+                                  ))),
+                        ),
+                      ),
+                    ),
+                    // LoginButton(),
                     Or(),
                     StudentLoginButton(),
                     SignUpText()
@@ -95,7 +142,7 @@ class Or extends StatelessWidget {
 }
 
 class Logo extends StatelessWidget {
-  Logo({
+  const Logo({
     Key? key,
   }) : super(key: key);
 
@@ -103,9 +150,9 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       child: Image.asset(
-        'assets/logo.png',
-        height: 158,
-        width: 190,
+        'assets/quiz.png',
+        height: 130,
+        width: 130,
         fit: BoxFit.fitWidth,
       ),
     );
@@ -113,7 +160,7 @@ class Logo extends StatelessWidget {
 }
 
 class PurpleContainer extends StatelessWidget {
-  PurpleContainer({
+  const PurpleContainer({
     Key? key,
   }) : super(key: key);
 
@@ -128,7 +175,7 @@ class PurpleContainer extends StatelessWidget {
 }
 
 class SignUpText extends StatelessWidget {
-  SignUpText({
+  const SignUpText({
     Key? key,
   }) : super(key: key);
 
@@ -161,45 +208,54 @@ class SignUpText extends StatelessWidget {
   }
 }
 
-class LoginButton extends StatelessWidget {
-  LoginButton({
-    Key? key,
-  }) : super(key: key);
+// class LoginButton extends StatelessWidget {
+//   LoginButton({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 145.0, vertical: 15.0),
-      child: TextButton(
-        onPressed: signIn,
-        child: Text(
-          "Login",
-          style: TextStyle(fontSize: 16),
-        ),
-        style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all(Color.fromARGB(255, 106, 91, 226)),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              side: BorderSide(
-                color: Color.fromARGB(255, 106, 91, 226),
-              ))),
-        ),
-      ),
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: EdgeInsets.symmetric(horizontal: 145.0, vertical: 15.0),
+//       child: TextButton(
+//         onPressed: signIn,
+//         child: Text(
+//           "Login",
+//           style: TextStyle(fontSize: 16),
+//         ),
+//         style: ButtonStyle(
+//           backgroundColor:
+//               MaterialStateProperty.all(Color.fromARGB(255, 106, 91, 226)),
+//           foregroundColor: MaterialStateProperty.all(Colors.white),
+//           shape: MaterialStateProperty.all(RoundedRectangleBorder(
+//               borderRadius: BorderRadius.all(Radius.circular(5.0)),
+//               side: BorderSide(
+//                 color: Color.fromARGB(255, 106, 91, 226),
+//               ))),
+//         ),
+//       ),
+//     );
+//   }
 
-  signIn() async {
-    // showDialog(context: context, builder: (context) => Center(child: CircularProgressIndicator(),));
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: userController.text.trim(),
-        password: passwordController.text.trim());
-  }
-}
+// Future signIn() async {
+//   try {
+//     await FirebaseAuth.instance.signInWithEmailAndPassword(
+//         email: userController.text.trim(),
+//         password: passwordController.text.trim());
+//   } on FirebaseAuthException catch (e) {
+//     print(e);
+//     final snackBar = SnackBar(
+//         content: Text(e.message!),
+//         backgroundColor: cPrimary,
+//       );
+
+//       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+//   }
+// }
+// }
 
 class PasswordForm extends StatelessWidget {
-  PasswordForm({
+  const PasswordForm({
     Key? key,
   }) : super(key: key);
 
@@ -242,7 +298,7 @@ class PasswordForm extends StatelessWidget {
 }
 
 class UsernameForm extends StatelessWidget {
-  UsernameForm({
+  const UsernameForm({
     Key? key,
   }) : super(key: key);
 
@@ -282,7 +338,7 @@ class UsernameForm extends StatelessWidget {
 }
 
 class Signin extends StatelessWidget {
-  Signin({
+  const Signin({
     Key? key,
   }) : super(key: key);
 

@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:questionnaire/homescreen.dart';
+// import 'package:questionnaire/homescreen.dart';
 import 'package:questionnaire/main.dart';
 import 'package:questionnaire/signin.dart';
+import 'package:questionnaire/style/app_color.dart';
 
 final emailController = TextEditingController();
 final passwordController = TextEditingController();
@@ -35,10 +36,10 @@ class SignUp extends StatelessWidget {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => MainPage()));
       } on FirebaseAuthException catch (e) {
-        print(e);
+        // print(e);
         final snackBar = SnackBar(
           content: Text(e.message!),
-          backgroundColor: Colors.red,
+          backgroundColor: cPrimary,
         );
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -59,7 +60,7 @@ class SignUp extends StatelessWidget {
                 const PurpleContainer(),
                 Column(
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                     const Logo(),
                     const Signup(),
                     // const UsernameForm(),
@@ -103,7 +104,7 @@ class SignUp extends StatelessWidget {
 }
 
 class SignInText extends StatelessWidget {
-  SignInText({
+  const SignInText({
     Key? key,
   }) : super(key: key);
 
@@ -145,9 +146,9 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       child: Image.asset(
-        'assets/logo.png',
-        height: 158,
-        width: 190,
+        'assets/quiz.png',
+        height: 130,
+        width: 130,
         fit: BoxFit.fitWidth,
       ),
     );

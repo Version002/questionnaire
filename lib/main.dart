@@ -2,14 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:questionnaire/homescreen.dart';
-import 'package:questionnaire/screen/ReportingScreen.dart';
 import 'package:questionnaire/signin.dart';
-import 'package:questionnaire/signup.dart';
-import 'package:questionnaire/student/quiz.dart';
-import 'package:questionnaire/student/scoreReview.dart';
-import 'package:questionnaire/student/test.dart';
-import 'package:questionnaire/style/app_color.dart';
 import 'package:questionnaire/verifyemail.dart';
 
 // void main() {
@@ -66,7 +59,7 @@ class MainPage extends StatelessWidget {
   }
 }
 
-MaterialColor? primaryColor = MaterialColor(0xFF6A5BE2, <int, Color>{
+MaterialColor? primaryColor = const MaterialColor(0xFF6A5BE2, <int, Color>{
   50: Color(0xFF6A5BE2),
   100: Color(0xFF6A5BE2),
   200: Color(0xFF6A5BE2),
