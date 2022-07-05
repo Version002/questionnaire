@@ -25,6 +25,12 @@ class SignUp extends StatelessWidget {
     }
 
     Future signUp() async {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => Center(
+                child: CircularProgressIndicator(),
+              ));
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailController.text.trim(),
@@ -46,6 +52,7 @@ class SignUp extends StatelessWidget {
 
         // Utils.showSnackBar(e.message);
       }
+      navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
 
     return Scaffold(

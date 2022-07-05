@@ -4,6 +4,7 @@ import 'package:questionnaire/signup.dart';
 import 'package:questionnaire/studentSignin.dart';
 
 // import 'main.dart';
+import 'main.dart';
 import 'style/app_color.dart';
 
 final passwordController = TextEditingController();
@@ -20,10 +21,18 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     Future signIn() async {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => Center(
+                child: CircularProgressIndicator(),
+              ));
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: userController.text.trim(),
             password: passwordController.text.trim());
+        print(userController.text.trim());
+        print(passwordController.text.trim());
       } on FirebaseAuthException catch (e) {
         // print(e);
         final snackBar = SnackBar(
@@ -32,6 +41,7 @@ class _SignInState extends State<SignIn> {
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+      navigatorKey.currentState!.popUntil((route) => route.isFirst);
     }
 
     return Scaffold(

@@ -30,17 +30,17 @@ class _ReportingScreenState extends State<ReportingScreen> {
   var docSnapshot;
   var number;
   var student;
-  var teacher;
+  var quiz;
   Map<String, dynamic>? data;
   Future<dynamic> fetchDocuments() async {
     collection = FirebaseFirestore.instance.collection('teacher');
     docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
     data = await docSnapshot.data()!;
     student = data!['students'];
-    teacher = data!['email'];
+    quiz = data!['quiz'][0]['quiz_id'];
     setState(() {
       student;
-      teacher;
+      quiz;
     });
   }
 
@@ -138,7 +138,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
               child: Column(
                 children: [
                   // BlackText(
-                  //     text: teacher?.toString() ?? '',
+                  //     text: quiz?.toString() ?? '',
                   //     fontWeight: FontWeight.w800,
                   //     size: 25),
                   SizedBox(
@@ -169,14 +169,14 @@ class _ReportingScreenState extends State<ReportingScreen> {
                                   height: 10,
                                 ),
                                 WhiteText(
-                                    text: 'tests',
+                                    text: 'Quiz ID',
                                     fontWeight: FontWeight.w300,
                                     size: 15),
                                 SizedBox(
                                   height: 15,
                                 ),
                                 WhiteText(
-                                    text: '1',
+                                    text: quiz?.toString() ?? 'Loading...',
                                     fontWeight: FontWeight.w700,
                                     size: 22)
                               ],
@@ -202,7 +202,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
                                   height: 10,
                                 ),
                                 WhiteText(
-                                    text: 'student',
+                                    text: 'Students',
                                     fontWeight: FontWeight.w300,
                                     size: 15),
                                 SizedBox(

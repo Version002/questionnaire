@@ -436,7 +436,7 @@ class _questionWidgetState extends State<questionWidget> {
                 });
               },
               child: const Text(
-                "End",
+                "Submit",
                 style: TextStyle(fontSize: 16, color: cPrimary),
               ),
               style: ButtonStyle(
@@ -676,7 +676,7 @@ class _EndQuizButtonState extends State<EndQuizButton> {
         child: TextButton(
           onPressed: postScore,
           child: const Text(
-            "End",
+            "Submit the quiz",
             style: TextStyle(fontSize: 16),
           ),
           style: ButtonStyle(
