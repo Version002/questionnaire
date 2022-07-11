@@ -58,10 +58,16 @@ class _StudentSigninState extends State<StudentSignin> {
     
 
     if(dt.compareTo(startQuiz) > 0 && dt.compareTo(endQuiz)<0) {
-      inTime = true;
+      setState(() {
+        
+        inTime = true;
+      });
     }else {
-      inTime = false;
+      setState(() {
+        inTime = false;
+      });
     }
+
 
 
     print(startQuiz);

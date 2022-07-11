@@ -26,11 +26,19 @@ Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
   var docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
   if (docSnapshot.exists) {
+
     data = docSnapshot.data();
+    
+
     // print(data);
     if (data?['quiz'] != null) {
       print('true');
     }
+    
+    int time = int.parse(data?['quiz'][0]['quiz_duration']);
+    print('time $time');
+    dif = Duration(minutes: time);
+    // print(dif);
     randomItem = (data?['quiz'][0]['quiz_questions'].toList()..shuffle());
     randomItem.length = data?['quiz'][0]['quiz_studentquestion'];
     print('test');
@@ -111,7 +119,6 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void initState() {
-    dif = Duration(minutes: 10);
     screen = 0;
     retrieveQuestion();
     loadTimer();
@@ -555,7 +562,6 @@ class ScoreReview extends StatefulWidget {
 }
 
 class _ScoreReviewState extends State<ScoreReview> {
-  
   @override
   Widget build(BuildContext context) {
     print('yes');
@@ -566,19 +572,18 @@ class _ScoreReviewState extends State<ScoreReview> {
         // PinkContainer(),
         if (data?['quiz'][0]['quiz_multiTaking'] == true) ...[
           Column(
-          children: const [
-            RetakeButton(),
-            SizedBox(
-              height: 30,
-            ),
-            Text(
-              "or",
-              style: TextStyle(fontSize: 13, color: Colors.white),
-            ),
-          ],
-        ),
+            children: const [
+              RetakeButton(),
+              SizedBox(
+                height: 30,
+              ),
+              Text(
+                "or",
+                style: TextStyle(fontSize: 13, color: Colors.white),
+              ),
+            ],
+          ),
         ],
-        
 
         EndQuizButton(),
       ],
@@ -604,6 +609,45 @@ class _RetakeButtonState extends State<RetakeButton> {
         width: MediaQuery.of(context).size.width * 0.6,
         child: TextButton(
           onPressed: () {
+            dynamic postData = [];
+
+            if (data!['students'] != null) {
+              postData = data!['students'];
+
+              postData.add({
+                "student_name": studentUserName,
+                "student_score": correctAnswers,
+              });
+              final dataList = [];
+
+              for (int i = 0; i < postData.length; i++) {
+                dataList.add(i);
+              }
+
+              FirebaseFirestore.instance
+                  .collection('teacher')
+                  .doc('VbWzEnRYiyi4TJB0yfBs')
+                  .set({
+                "students": dataList
+                    .map((e) => {
+                          "student_name": postData[e]['student_name'],
+                          "student_score": postData[e]['student_score'],
+                        })
+                    .toList(),
+              }, SetOptions(merge: true));
+            } else {
+              FirebaseFirestore.instance
+                  .collection('teacher')
+                  .doc('VbWzEnRYiyi4TJB0yfBs')
+                  .set({
+                "students": [
+                  {
+                    "student_name": studentUserName,
+                    "student_score": correctAnswers
+                  }
+                ]
+              }, SetOptions(merge: true));
+            }
             setState(() {
               screen = 0;
             });
