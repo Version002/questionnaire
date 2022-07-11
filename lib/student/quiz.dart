@@ -5,6 +5,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:questionnaire/main.dart';
 // import 'package:questionnaire/signin.dart';
 // import 'package:questionnaire/studentSignin.dart';
@@ -26,15 +27,13 @@ Future retrieveQuestion() async {
   var collection = FirebaseFirestore.instance.collection('teacher');
   var docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
   if (docSnapshot.exists) {
-
     data = docSnapshot.data();
-    
 
     // print(data);
     if (data?['quiz'] != null) {
       print('true');
     }
-    
+
     int time = int.parse(data?['quiz'][0]['quiz_duration']);
     print('time $time');
     dif = Duration(minutes: time);
@@ -478,10 +477,13 @@ class QuizNumber extends StatelessWidget {
 
           if (data!['students'] != null) {
             postData = data!['students'];
-
+            DateTime now = DateTime.now();
+            String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
+            //  DateTime dt = DateTime.parse(formattedDate);
             postData.add({
               "student_name": studentUserName,
               "student_score": correctAnswers,
+              "time": formattedDate,
             });
             final dataList = [];
 
@@ -497,10 +499,13 @@ class QuizNumber extends StatelessWidget {
                   .map((e) => {
                         "student_name": postData[e]['student_name'],
                         "student_score": postData[e]['student_score'],
+                        "time": postData[e]['time'],
                       })
                   .toList(),
             }, SetOptions(merge: true));
           } else {
+            DateTime now = DateTime.now();
+            String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
             FirebaseFirestore.instance
                 .collection('teacher')
                 .doc('VbWzEnRYiyi4TJB0yfBs')
@@ -508,7 +513,8 @@ class QuizNumber extends StatelessWidget {
               "students": [
                 {
                   "student_name": studentUserName,
-                  "student_score": correctAnswers
+                  "student_score": correctAnswers,
+                  "time": formattedDate,
                 }
               ]
             }, SetOptions(merge: true));
@@ -613,10 +619,13 @@ class _RetakeButtonState extends State<RetakeButton> {
 
             if (data!['students'] != null) {
               postData = data!['students'];
-
+              DateTime now = DateTime.now();
+              String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
+              //  DateTime dt = DateTime.parse(formattedDate);
               postData.add({
                 "student_name": studentUserName,
                 "student_score": correctAnswers,
+                "time": formattedDate,
               });
               final dataList = [];
 
@@ -632,10 +641,13 @@ class _RetakeButtonState extends State<RetakeButton> {
                     .map((e) => {
                           "student_name": postData[e]['student_name'],
                           "student_score": postData[e]['student_score'],
+                          "time": postData[e]['time'],
                         })
                     .toList(),
               }, SetOptions(merge: true));
             } else {
+              DateTime now = DateTime.now();
+              String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
               FirebaseFirestore.instance
                   .collection('teacher')
                   .doc('VbWzEnRYiyi4TJB0yfBs')
@@ -643,7 +655,8 @@ class _RetakeButtonState extends State<RetakeButton> {
                 "students": [
                   {
                     "student_name": studentUserName,
-                    "student_score": correctAnswers
+                    "student_score": correctAnswers,
+                    "time": formattedDate,
                   }
                 ]
               }, SetOptions(merge: true));
@@ -685,37 +698,52 @@ class _EndQuizButtonState extends State<EndQuizButton> {
   dynamic postData = [];
   Future postScore() async {
     if (data!['students'] != null) {
-      postData = data!['students'];
+     dynamic postData = [];
 
-      postData.add(
-          {"student_name": studentUserName, "student_score": correctAnswers});
-      final dataList = [];
+          if (data!['students'] != null) {
+            postData = data!['students'];
+            DateTime now = DateTime.now();
+            String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
+            //  DateTime dt = DateTime.parse(formattedDate);
+            postData.add({
+              "student_name": studentUserName,
+              "student_score": correctAnswers,
+              "time": formattedDate,
+            });
+            final dataList = [];
 
-      for (int i = 0; i < postData.length; i++) {
-        dataList.add(i);
-      }
+            for (int i = 0; i < postData.length; i++) {
+              dataList.add(i);
+            }
 
-      FirebaseFirestore.instance
-          .collection('teacher')
-          .doc('VbWzEnRYiyi4TJB0yfBs')
-          .set({
-        "students": dataList
-            .map((e) => {
-                  "student_name": postData[e]['student_name'],
-                  "student_score": postData[e]['student_score'],
-                })
-            .toList(),
-      }, SetOptions(merge: true));
-    } else {
-      FirebaseFirestore.instance
-          .collection('teacher')
-          .doc('VbWzEnRYiyi4TJB0yfBs')
-          .set({
-        "students": [
-          {"student_name": studentUserName, "student_score": correctAnswers}
-        ]
-      }, SetOptions(merge: true));
-    }
+            FirebaseFirestore.instance
+                .collection('teacher')
+                .doc('VbWzEnRYiyi4TJB0yfBs')
+                .set({
+              "students": dataList
+                  .map((e) => {
+                        "student_name": postData[e]['student_name'],
+                        "student_score": postData[e]['student_score'],
+                        "time": postData[e]['time'],
+                      })
+                  .toList(),
+            }, SetOptions(merge: true));
+          } else {
+            DateTime now = DateTime.now();
+            String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
+            FirebaseFirestore.instance
+                .collection('teacher')
+                .doc('VbWzEnRYiyi4TJB0yfBs')
+                .set({
+              "students": [
+                {
+                  "student_name": studentUserName,
+                  "student_score": correctAnswers,
+                  "time": formattedDate,
+                }
+              ]
+            }, SetOptions(merge: true));
+          }}
     // Navigator.pop(context);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => MainPage()));
