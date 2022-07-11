@@ -113,6 +113,9 @@ class StudentLoginButton extends StatelessWidget {
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: ((context) => StudentSignin())));
+          // Navigator.pop(context);
+          // Navigator.push(context,
+          //     MaterialPageRoute(builder: ((context) => StudentSignin())));
         },
         child: Text(
           "Login as a Student",

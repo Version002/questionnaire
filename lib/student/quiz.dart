@@ -37,7 +37,7 @@ Future retrieveQuestion() async {
     int time = int.parse(data?['quiz'][0]['quiz_duration']);
     print('time $time');
     dif = Duration(minutes: time);
-    // print(dif);
+    
     randomItem = (data?['quiz'][0]['quiz_questions'].toList()..shuffle());
     randomItem.length = data?['quiz'][0]['quiz_studentquestion'];
     print('test');
@@ -247,13 +247,15 @@ class _questionWidgetState extends State<questionWidget> {
               itemCount: randomItem.length,
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: ((context, index) {
+                // print(randomItem[index]['questions'][0]['a_answer']);
                 number = index;
 
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      randomItem[index]['question_title'],
+                      randomItem[index]['question_title']==''?'Empty':randomItem[index]['question_title'],
+                                            
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
@@ -276,7 +278,8 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            randomItem[index]['questions'][0]['a_answer'],
+                            randomItem[index]['questions'][0]['a_answer']==''?'Empty':randomItem[index]['questions'][0]['a_answer']
+                                            ,
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
@@ -313,7 +316,7 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            randomItem[index]['questions'][1]['b_answer'],
+                            randomItem[index]['questions'][1]['b_answer']==''?'Empty':randomItem[index]['questions'][1]['b_answer'],
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
@@ -350,7 +353,8 @@ class _questionWidgetState extends State<questionWidget> {
                             });
                           },
                           child: Text(
-                            randomItem[index]['questions'][2]['c_answer'],
+                            randomItem[index]['questions'][2]['c_answer']==''?'Empty':randomItem[index]['questions'][2]['c_answer']
+                                            ,
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 21,
@@ -385,7 +389,8 @@ class _questionWidgetState extends State<questionWidget> {
                           });
                         },
                         child: Text(
-                          randomItem[index]['questions'][3]['d_answer'],
+                          randomItem[index]['questions'][3]['d_answer']==""?'Empty':randomItem[index]['questions'][3]['d_answer']
+                                            ,
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 21,

@@ -283,12 +283,14 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
 
 Widget questionList(int index) {
   if (questionController.length <= index) {
+    
     questionController.add(TextEditingController());
     answerController.add(TextEditingController());
     aAnswerController.add(TextEditingController());
     bAnswerController.add(TextEditingController());
     cAnswerController.add(TextEditingController());
     dAnswerController.add(TextEditingController());
+
     
   }
 

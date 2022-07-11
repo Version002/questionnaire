@@ -32,6 +32,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
   var student;
   var quiz;
   Map<String, dynamic>? data;
+  
   Future<dynamic> fetchDocuments() async {
     collection = FirebaseFirestore.instance.collection('teacher');
     docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
@@ -58,6 +59,9 @@ class _ReportingScreenState extends State<ReportingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {
+      fetchDocuments();
+    });
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -251,6 +255,40 @@ class _ReportingScreenState extends State<ReportingScreen> {
               ),
             ),
             Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 30),
+              child: Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                    child: Text('Name',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          
+                          color: Colors.black,
+                        )),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: Text('Date Submit',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.black,
+                        )),
+                  ),
+                  Container(
+                    child: Text('Score',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.black,
+                        )),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.only(left: 34.0),
               child: Row(
                 children: [
@@ -284,7 +322,8 @@ class _ReportingScreenState extends State<ReportingScreen> {
                                     padding:
                                         const EdgeInsets.only(bottom: 15.0),
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width * 0.25,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.25,
                                       child: Text(
                                         student?[index]['student_name']
                                                 .toString() ??
@@ -297,22 +336,21 @@ class _ReportingScreenState extends State<ReportingScreen> {
                                       ),
                                     ),
                                   ),
-                                   Container(
-                                    width: MediaQuery.of(context).size.width * 0.4,
-                                     child: Text(
-                                      student?[index]['time']
-                                              .toString() ??
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    child: Text(
+                                      student?[index]['time'].toString() ??
                                           'Empty',
                                       style: TextStyle(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 18,
                                         color: Colors.black,
                                       ),
+                                    ),
                                   ),
-                                   ),
                                   Text(
-                                    '${student?[index]['student_score']
-                                            .toString()} pt' ??
+                                    '${student?[index]['student_score'].toString()} pt' ??
                                         'Empty',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,

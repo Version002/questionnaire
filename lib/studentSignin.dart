@@ -72,7 +72,7 @@ class _StudentSigninState extends State<StudentSignin> {
 
     print(startQuiz);
     print(endQuiz);
-    print(now);
+    print(dt);
     print(inTime);
     return Scaffold(
       body: SingleChildScrollView(
