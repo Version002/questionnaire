@@ -38,33 +38,46 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
     final hours = dateTime.hour.toString().padLeft(2, '0');
     final minutes = dateTime.hour.toString().padLeft(2, '0');
     Future addData() async {
-      if (quizIdController.text != null &&
-          quizNameController.text != null &&
-          numberQuestionController.text != null && numberQuesStuController.text != null && startDayController.text != null && endDayController.text !=null && durationController!= null) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => CreatingQuizScreen(
-                      numberQuestion: numberQuestionController.text,
-                      quizId: quizIdController.text,
-                      quizName: quizNameController.text,
-                      studentQuestion: numberQuesStuController.text,
-                      startDay: startDayController.text,
-                      endDay: endDayController.text,
-                      duration: durationController.text,
-                      multi: _checkbox,
-                    )));
+      int studentQues = int.parse(numberQuesStuController.text);
+      int ques = int.parse(numberQuestionController.text);
+      if (studentQues > ques) {
+        final snackBar = SnackBar(
+          content: Text(
+              'students\' questions need to be smaller or equal to overall question',style: TextStyle(color: cPrimary),),
+          backgroundColor: Colors.white,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      } else {
+        if (quizIdController.text != null &&
+            quizNameController.text != null &&
+            numberQuestionController.text != null &&
+            numberQuesStuController.text != null &&
+            startDayController.text != null &&
+            endDayController.text != null &&
+            durationController != null) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CreatingQuizScreen(
+                        numberQuestion: numberQuestionController.text,
+                        quizId: quizIdController.text,
+                        quizName: quizNameController.text,
+                        studentQuestion: numberQuesStuController.text,
+                        startDay: startDayController.text,
+                        endDay: endDayController.text,
+                        duration: durationController.text,
+                        multi: _checkbox,
+                      )));
+        }
       }
     }
 
-
     return Scaffold(
-      backgroundColor: cPrimary,
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
+        backgroundColor: cPrimary,
+        body: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: SingleChildScrollView(
+            child: Column(children: [
               Row(
                 children: [
                   GestureDetector(
@@ -155,7 +168,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
                 mainColor: Colors.white,
                 textColor: Colors.white,
                 // controller: state.firstname,
-                labelText: 'students question display',
+                labelText: 'number question display',
                 prefixIcon: Image.asset(
                   'assets/question_icon.png',
                   height: 12,
@@ -207,7 +220,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
                 labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
               ),
               RSTextFormField(
-                onTap: ()async{
+                onTap: () async {
                   pickDateNTimeEnd();
                 },
                 keyboardType: TextInputType.number,
@@ -223,22 +236,24 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
                 ),
                 labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
               ),
-                Row(
-                  children: [
-                    Checkbox(
-                        checkColor: Colors.white,
-                        activeColor: cPrimary,
-                      value: _checkbox,
-                      onChanged: (value) {
-                        setState(() {
-                          _checkbox = !_checkbox;
-                        });
-                      },
-                    ),
-                    Text('multi taking',style: TextStyle(color: Colors.white),),
-
-                  ],
-                ),
+              Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    activeColor: cPrimary,
+                    value: _checkbox,
+                    onChanged: (value) {
+                      setState(() {
+                        _checkbox = !_checkbox;
+                      });
+                    },
+                  ),
+                  Text(
+                    'multi taking',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.only(top: 32.0),
                 child: SizedBox(
@@ -264,9 +279,9 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
                   ),
                 ),
               ),
-        ]),
-      ),
-    ));
+            ]),
+          ),
+        ));
   }
 
   Future pickDateNTime() async {
