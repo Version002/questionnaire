@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:questionnaire/homescreen.dart';
+import 'package:questionnaire/studentSignin.dart';
 import 'package:questionnaire/style/app_color.dart';
 import 'package:questionnaire/widget/RSTextFormField.dart';
 import 'package:questionnaire/widget/SmallUnderline.dart';
@@ -13,39 +14,23 @@ final bAnswerController = <TextEditingController>[];
 final cAnswerController = <TextEditingController>[];
 final dAnswerController = <TextEditingController>[];
 
-// final quizController = [
-//   {
-//     questionController: TextEditingController(),
-//     answerController: [
-//       TextEditingController(),
-//             TextEditingController(),
-
-//       TextEditingController(),
-
-//       TextEditingController(),
-
-//     ]
-//   },
-//   {
-
-//   },
-//   {
-
-//   },
-//   {
-
-//   },
-// ]
-
 class CreatingQuizScreen extends StatefulWidget {
   final String numberQuestion;
   final String quizName;
   final String quizId;
+  final String studentQuestion;
+  final String startDay;
+  final String endDay;
+  final String duration;
 
   CreatingQuizScreen(
       {required this.numberQuestion,
       required this.quizId,
-      required this.quizName});
+      required this.quizName,
+      required this.studentQuestion,
+      required this.startDay,
+      required this.endDay,
+      required this.duration});
 
   @override
   State<CreatingQuizScreen> createState() => _CreatingQuizScreenState();
@@ -54,72 +39,159 @@ class CreatingQuizScreen extends StatefulWidget {
 class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
   @override
   Widget build(BuildContext context) {
+    final studentQuestionVar = int.parse(widget.studentQuestion);
+    final startDayVar = widget.startDay;
+    final endDayVar = widget.endDay;
+    final durationVar = widget.duration;
     final question = int.parse(widget.numberQuestion);
     final idQuiz = widget.quizId;
     final nameQuiz = widget.quizName;
+
     int number;
     final questionAddList = [];
 
+    //  dynamic postData = [];
+
+    dynamic postQuiz = [];
     Future postQuestion() async {
       for (int i = 0; i < question; i++) {
         questionAddList.add(i);
       }
       print('question $questionAddList');
+
       var collection = FirebaseFirestore.instance.collection('teacher');
       var docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
+      Map<String, dynamic>? data = docSnapshot.data();
       print(questionController[0].text);
       if (docSnapshot.exists) {
-        Map<String, dynamic>? data = docSnapshot.data();
-        FirebaseFirestore.instance
-            .collection('teacher')
-            .doc('VbWzEnRYiyi4TJB0yfBs')
-            .set({
-          "quiz": [
-            {
-              "quiz_id": idQuiz,
-              "quiz_name": nameQuiz,
-              "quiz_questions": questionAddList
-                  .map((i) => {
-                        "question_title": questionController[i].text,
-                        "questions": [
-                          {
-                            "a_answer": aAnswerController[i].text,
-                            "isCorrect": answerController[i].text == 'a' ||
-                                    answerController[i].text == 'A'
-                                ? true
-                                : false,
-                          },
-                          {
-                            "b_answer": bAnswerController[i].text,
-                            "isCorrect": answerController[i].text == 'b' ||
-                                    answerController[i].text == 'B'
-                                ? true
-                                : false,
-                          },
-                          {
-                            "c_answer": cAnswerController[i].text,
-                            "isCorrect": answerController[i].text == 'c' ||
-                                    answerController[i].text == 'C'
-                                ? true
-                                : false,
-                          },
-                          {
-                            "d_answer": dAnswerController[i].text,
-                            "isCorrect": answerController[i].text == 'd' ||
-                                    answerController[i].text == 'D'
-                                ? true
-                                : false,
-                          },
-                        ]
-                      })
-                  .toList()
-            }
-          ],
-          "students": [],
-        }, SetOptions(merge: true));
+        if (data!['quiz'] != null) {
+          postQuiz = data['quiz'];
+          print(postQuiz.length);
+
+          postQuiz.add({
+            "quiz_id": idQuiz,
+            "quiz_name": nameQuiz,
+            "quiz_duration": durationVar,
+            "quiz_startday": startDayVar,
+            "quiz_endday": endDayVar,
+            "quiz_studentquestion": studentQuestionVar,
+            "quiz_questions": questionAddList
+                .map((i) => {
+                      "question_title": questionController[i].text,
+                      "questions": [
+                        {
+                          "a_answer": aAnswerController[i].text,
+                          "isCorrect": answerController[i].text == 'a' ||
+                                  answerController[i].text == 'A'
+                              ? true
+                              : false,
+                        },
+                        {
+                          "b_answer": bAnswerController[i].text,
+                          "isCorrect": answerController[i].text == 'b' ||
+                                  answerController[i].text == 'B'
+                              ? true
+                              : false,
+                        },
+                        {
+                          "c_answer": cAnswerController[i].text,
+                          "isCorrect": answerController[i].text == 'c' ||
+                                  answerController[i].text == 'C'
+                              ? true
+                              : false,
+                        },
+                        {
+                          "d_answer": dAnswerController[i].text,
+                          "isCorrect": answerController[i].text == 'd' ||
+                                  answerController[i].text == 'D'
+                              ? true
+                              : false,
+                        },
+                      ]
+                    })
+                .toList()
+          });
+
+          print(postQuiz[0]['quiz_questions']);
+          final dataList = [];
+
+          for (int i = 0; i < postQuiz.length; i++) {
+            dataList.add(i);
+          }
+          print(dataList);
+          // "student_name": postData[e]['student_name'],
+
+          FirebaseFirestore.instance
+              .collection('teacher')
+              .doc('VbWzEnRYiyi4TJB0yfBs')
+              .set({
+            "quiz": dataList
+                .map((e) => {
+                      {
+                        "quiz_id": postQuiz[e]['quiz_id'],
+                        "quiz_name": postQuiz[e]['quiz_name'],
+                        "quiz_questions": postQuiz[e]['quiz_questions']
+                      }
+                    })
+                .toList(),
+            // "students": data[students],
+          }, SetOptions(merge: true));
+        } else {
+          FirebaseFirestore.instance
+              .collection('teacher')
+              .doc('VbWzEnRYiyi4TJB0yfBs')
+              .set({
+            "quiz": [
+              {
+                "quiz_id": idQuiz,
+                "quiz_name": nameQuiz,
+                "quiz_duration": durationVar,
+                "quiz_startday": startDayVar,
+                "quiz_endday": endDayVar,
+                "quiz_studentquestion": studentQuestionVar,
+                "quiz_questions": questionAddList
+                    .map((i) => {
+                          "question_title": questionController[i].text,
+                          "questions": [
+                            {
+                              "a_answer": aAnswerController[i].text,
+                              "isCorrect": answerController[i].text == 'a' ||
+                                      answerController[i].text == 'A'
+                                  ? true
+                                  : false,
+                            },
+                            {
+                              "b_answer": bAnswerController[i].text,
+                              "isCorrect": answerController[i].text == 'b' ||
+                                      answerController[i].text == 'B'
+                                  ? true
+                                  : false,
+                            },
+                            {
+                              "c_answer": cAnswerController[i].text,
+                              "isCorrect": answerController[i].text == 'c' ||
+                                      answerController[i].text == 'C'
+                                  ? true
+                                  : false,
+                            },
+                            {
+                              "d_answer": dAnswerController[i].text,
+                              "isCorrect": answerController[i].text == 'd' ||
+                                      answerController[i].text == 'D'
+                                  ? true
+                                  : false,
+                            },
+                          ]
+                        })
+                    .toList()
+              }
+            ],
+            "students": [],
+          }, SetOptions(merge: true));
+        }
       }
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      // Navigator.push(
+      //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
 
     return Scaffold(
