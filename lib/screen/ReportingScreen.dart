@@ -346,13 +346,15 @@ class _ReportingScreenState extends State<ReportingScreen> {
     List<dynamic> row = [];
     row.add("name");
     row.add("score");
+    row.add("date");
     rows.add(row);
 
     for (int i = 0; i <= number; i++) {
       studentScore.add(
         {
           "name": docSnapshot?.data()!['students'][i]['student_name'],
-          "score": docSnapshot?.data()!['students'][i]['student_score']
+          "score": docSnapshot?.data()!['students'][i]['time'],
+          "date": docSnapshot?.data()!['students'][i]['student_score'],
         },
       );
     }
@@ -360,6 +362,8 @@ class _ReportingScreenState extends State<ReportingScreen> {
     for (int i = 0; i < studentScore.length; i++) {
       List<dynamic> row = [];
       row.add(studentScore[i]["name"]);
+      row.add(studentScore[i]["date"]);
+
       row.add(studentScore[i]["score"]);
       rows.add(row);
     }
