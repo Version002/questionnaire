@@ -555,21 +555,31 @@ class ScoreReview extends StatefulWidget {
 }
 
 class _ScoreReviewState extends State<ScoreReview> {
+  
   @override
   Widget build(BuildContext context) {
+    print('yes');
+    print(data?['quiz'][0]['quiz_multiTaking']);
     return Column(
-      children: const [
+      children: [
         PurpleContainer(),
         // PinkContainer(),
-        RetakeButton(),
-        SizedBox(
-          height: 30,
+        if (data?['quiz'][0]['quiz_multiTaking'] == true) ...[
+          Column(
+          children: const [
+            RetakeButton(),
+            SizedBox(
+              height: 30,
+            ),
+            Text(
+              "or",
+              style: TextStyle(fontSize: 13, color: Colors.white),
+            ),
+          ],
         ),
+        ],
+        
 
-        Text(
-          "or",
-          style: TextStyle(fontSize: 13, color: Colors.white),
-        ),
         EndQuizButton(),
       ],
     );

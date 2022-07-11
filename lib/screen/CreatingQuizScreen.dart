@@ -24,6 +24,7 @@ class CreatingQuizScreen extends StatefulWidget {
   final String startDay;
   final String endDay;
   final String duration;
+  final bool multi;
 
   const CreatingQuizScreen(
       {required this.numberQuestion,
@@ -32,7 +33,8 @@ class CreatingQuizScreen extends StatefulWidget {
       required this.studentQuestion,
       required this.startDay,
       required this.endDay,
-      required this.duration});
+      required this.duration,
+      required this.multi});
 
   @override
   State<CreatingQuizScreen> createState() => _CreatingQuizScreenState();
@@ -48,6 +50,7 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
     final question = int.parse(widget.numberQuestion);
     final idQuiz = widget.quizId;
     final nameQuiz = widget.quizName;
+    final multi = widget.multi;
     // int number;
     final questionAddList = [];
 
@@ -150,6 +153,7 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
                 "quiz_startday": startDayVar,
                 "quiz_endday": endDayVar,
                 "quiz_studentquestion": studentQuestionVar,
+                "quiz_multiTaking": multi,
                 "quiz_questions": questionAddList
                     .map((i) => {
                           "question_title": questionController[i].text,

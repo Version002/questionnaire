@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:questionnaire/signin.dart';
 import 'package:questionnaire/student/quiz.dart';
 import 'package:questionnaire/style/app_color.dart';
@@ -47,12 +48,16 @@ class _StudentSigninState extends State<StudentSignin> {
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
+     DateTime dt = DateTime.parse(formattedDate);
+  print(dt); // 2020-01-02 03:04:05.000
+
      DateTime endQuiz = DateTime.parse(endDay);
      DateTime startQuiz = DateTime.parse(startDay);
   // print(dt); // 2020-01-02 03:04:05.000
     
 
-    if(now.compareTo(startQuiz) > 0 && now.compareTo(endQuiz)<0) {
+    if(dt.compareTo(startQuiz) > 0 && dt.compareTo(endQuiz)<0) {
       inTime = true;
     }else {
       inTime = false;

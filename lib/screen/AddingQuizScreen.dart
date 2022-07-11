@@ -24,6 +24,7 @@ class AddingQuizScreen extends StatefulWidget {
 }
 
 class _AddingQuizScreenState extends State<AddingQuizScreen> {
+  bool _checkbox = false;
   DateTime dateTime = DateTime(2022, 11, 7, 5, 30);
   final quizNameController = TextEditingController();
   final quizIdController = TextEditingController();
@@ -51,6 +52,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
                       startDay: startDayController.text,
                       endDay: endDayController.text,
                       duration: durationController.text,
+                      multi: _checkbox,
                     )));
       }
     }
@@ -221,6 +223,22 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
                 ),
                 labelTextStyle: TextStyle(color: Colors.white, fontSize: 16),
               ),
+                Row(
+                  children: [
+                    Checkbox(
+                        checkColor: Colors.white,
+                        activeColor: cPrimary,
+                      value: _checkbox,
+                      onChanged: (value) {
+                        setState(() {
+                          _checkbox = !_checkbox;
+                        });
+                      },
+                    ),
+                    Text('multi taking',style: TextStyle(color: Colors.white),),
+
+                  ],
+                ),
               Padding(
                 padding: const EdgeInsets.only(top: 32.0),
                 child: SizedBox(
@@ -245,12 +263,10 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
                     ),
                   ),
                 ),
-              )
-            ],
-          ),
-        ),
+              ),
+        ]),
       ),
-    );
+    ));
   }
 
   Future pickDateNTime() async {
