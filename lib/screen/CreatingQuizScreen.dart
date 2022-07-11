@@ -65,79 +65,79 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
       Map<String, dynamic>? data = docSnapshot.data();
       print(questionController[0].text);
       if (docSnapshot.exists) {
-        if (data!['quiz'] != null) {
-          postQuiz = data['quiz'];
-          print(postQuiz.length);
+        // if (data!['quiz'] != null) {
+        //   postQuiz = data['quiz'];
+        //   print(postQuiz.length);
 
-          postQuiz.add({
-            "quiz_id": idQuiz,
-            "quiz_name": nameQuiz,
-            "quiz_duration": durationVar,
-            "quiz_startday": startDayVar,
-            "quiz_endday": endDayVar,
-            "quiz_studentquestion": studentQuestionVar,
-            "quiz_questions": questionAddList
-                .map((i) => {
-                      "question_title": questionController[i].text,
-                      "questions": [
-                        {
-                          "a_answer": aAnswerController[i].text,
-                          "isCorrect": answerController[i].text == 'a' ||
-                                  answerController[i].text == 'A'
-                              ? true
-                              : false,
-                        },
-                        {
-                          "b_answer": bAnswerController[i].text,
-                          "isCorrect": answerController[i].text == 'b' ||
-                                  answerController[i].text == 'B'
-                              ? true
-                              : false,
-                        },
-                        {
-                          "c_answer": cAnswerController[i].text,
-                          "isCorrect": answerController[i].text == 'c' ||
-                                  answerController[i].text == 'C'
-                              ? true
-                              : false,
-                        },
-                        {
-                          "d_answer": dAnswerController[i].text,
-                          "isCorrect": answerController[i].text == 'd' ||
-                                  answerController[i].text == 'D'
-                              ? true
-                              : false,
-                        },
-                      ]
-                    })
-                .toList()
-          });
+        //   postQuiz.add({
+        //     "quiz_id": idQuiz,
+        //     "quiz_name": nameQuiz,
+        //     "quiz_duration": durationVar,
+        //     "quiz_startday": startDayVar,
+        //     "quiz_endday": endDayVar,
+        //     "quiz_studentquestion": studentQuestionVar,
+        //     "quiz_questions": questionAddList
+        //         .map((i) => {
+        //               "question_title": questionController[i].text,
+        //               "questions": [
+        //                 {
+        //                   "a_answer": aAnswerController[i].text,
+        //                   "isCorrect": answerController[i].text == 'a' ||
+        //                           answerController[i].text == 'A'
+        //                       ? true
+        //                       : false,
+        //                 },
+        //                 {
+        //                   "b_answer": bAnswerController[i].text,
+        //                   "isCorrect": answerController[i].text == 'b' ||
+        //                           answerController[i].text == 'B'
+        //                       ? true
+        //                       : false,
+        //                 },
+        //                 {
+        //                   "c_answer": cAnswerController[i].text,
+        //                   "isCorrect": answerController[i].text == 'c' ||
+        //                           answerController[i].text == 'C'
+        //                       ? true
+        //                       : false,
+        //                 },
+        //                 {
+        //                   "d_answer": dAnswerController[i].text,
+        //                   "isCorrect": answerController[i].text == 'd' ||
+        //                           answerController[i].text == 'D'
+        //                       ? true
+        //                       : false,
+        //                 },
+        //               ]
+        //             })
+        //         .toList()
+        //   });
 
-          print(postQuiz[0]['quiz_questions']);
-          final dataList = [];
+        //   print(postQuiz[0]['quiz_questions']);
+        //   final dataList = [];
 
-          for (int i = 0; i < postQuiz.length; i++) {
-            dataList.add(i);
-          }
-          print(dataList);
-          // "student_name": postData[e]['student_name'],
+        //   for (int i = 0; i < postQuiz.length; i++) {
+        //     dataList.add(i);
+        //   }
+        //   print(dataList);
+        //   // "student_name": postData[e]['student_name'],
 
-          FirebaseFirestore.instance
-              .collection('teacher')
-              .doc('VbWzEnRYiyi4TJB0yfBs')
-              .set({
-            "quiz": dataList
-                .map((e) => {
-                      {
-                        "quiz_id": postQuiz[e]['quiz_id'],
-                        "quiz_name": postQuiz[e]['quiz_name'],
-                        "quiz_questions": postQuiz[e]['quiz_questions']
-                      }
-                    })
-                .toList(),
-            // "students": data[students],
-          }, SetOptions(merge: true));
-        } else {
+        //   FirebaseFirestore.instance
+        //       .collection('teacher')
+        //       .doc('VbWzEnRYiyi4TJB0yfBs')
+        //       .set({
+        //     "quiz": dataList
+        //         .map((e) => {
+        //               {
+        //                 "quiz_id": postQuiz[e]['quiz_id'],
+        //                 "quiz_name": postQuiz[e]['quiz_name'],
+        //                 "quiz_questions": postQuiz[e]['quiz_questions']
+        //               }
+        //             })
+        //         .toList(),
+        //     // "students": data[students],
+        //   }, SetOptions(merge: true));
+        // } else {
           FirebaseFirestore.instance
               .collection('teacher')
               .doc('VbWzEnRYiyi4TJB0yfBs')
@@ -189,11 +189,13 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
             ],
             "students": [],
           }, SetOptions(merge: true));
+          Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
       }
       // Navigator.push(
       //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
-    }
+    // }
 
     return Scaffold(
       backgroundColor: cPrimary,
@@ -283,6 +285,7 @@ Widget questionList(int index) {
     bAnswerController.add(TextEditingController());
     cAnswerController.add(TextEditingController());
     dAnswerController.add(TextEditingController());
+    
   }
 
   return Column(

@@ -15,12 +15,17 @@ var docSnapshot;
 var number;
 var quizID;
 var students;
+var startDay;
+var endDay;
+bool inTime = true;
 Map<String, dynamic>? data;
 Future<dynamic> fetchDocuments() async {
   collection = FirebaseFirestore.instance.collection('teacher');
   docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
   data = await docSnapshot.data()!;
   quizID = data!['quiz'][0]['quiz_id'];
+  startDay = data!['quiz'][0]['quiz_startday'];
+  endDay = data!['quiz'][0]['quiz_endday'];
   students = data!['students'];
   // print(students?.length());
 }
@@ -41,6 +46,23 @@ class _StudentSigninState extends State<StudentSignin> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+     DateTime endQuiz = DateTime.parse(endDay);
+     DateTime startQuiz = DateTime.parse(startDay);
+  // print(dt); // 2020-01-02 03:04:05.000
+    
+
+    if(now.compareTo(startQuiz) > 0 && now.compareTo(endQuiz)<0) {
+      inTime = true;
+    }else {
+      inTime = false;
+    }
+
+
+    print(startQuiz);
+    print(endQuiz);
+    print(now);
+    print(inTime);
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -288,7 +310,7 @@ class StartButton extends StatelessWidget {
             //   ),
             // );
           } else {
-            if (quizIdController.text == quizID) {
+            if (quizIdController.text == quizID && inTime == true) {
               Navigator.push(
                   context,
                   MaterialPageRoute(

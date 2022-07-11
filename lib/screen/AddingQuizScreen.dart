@@ -265,7 +265,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
     setState(() {
       dateTime = newDateTime;
       print(newDateTime);
-      String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(newDateTime);
+      String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(newDateTime);
       startDayController.text = formattedDate;
       print(startDayController.text);
     });
@@ -283,7 +283,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
     setState(() {
       dateTime = newDateTime;
       print(newDateTime);
-      String formattedDate = DateFormat('yyyy-MM-dd – kk:mm').format(newDateTime);
+      String formattedDate = DateFormat('yyyy-MM-dd kk:mm').format(newDateTime);
       endDayController.text = formattedDate;
       print(endDayController.text);
     });
