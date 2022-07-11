@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -52,7 +54,7 @@ class _StudentSigninState extends State<StudentSignin> {
                   Column(
                     children: [
                       SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.05),
+                          height: MediaQuery.of(context).size.height * 0.1),
                       Logo(),
                       StudentLogin(),
                       UsernameForm(),
@@ -72,7 +74,7 @@ class _StudentSigninState extends State<StudentSignin> {
 }
 
 class SignUpText extends StatelessWidget {
-  SignUpText({
+  const SignUpText({
     Key? key,
   }) : super(key: key);
 
@@ -106,7 +108,7 @@ class SignUpText extends StatelessWidget {
 }
 
 class PurpleContainer extends StatelessWidget {
-  PurpleContainer({
+  const PurpleContainer({
     Key? key,
   }) : super(key: key);
 
@@ -121,7 +123,7 @@ class PurpleContainer extends StatelessWidget {
 }
 
 class Logo extends StatelessWidget {
-  Logo({
+  const Logo({
     Key? key,
   }) : super(key: key);
 
@@ -129,9 +131,9 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       child: Image.asset(
-        'assets/logo.png',
-        height: 158,
-        width: 190,
+        'assets/quiz.png',
+        height: 130,
+        width: 130,
         fit: BoxFit.fitWidth,
       ),
     );
@@ -139,7 +141,7 @@ class Logo extends StatelessWidget {
 }
 
 class StudentLogin extends StatelessWidget {
-  StudentLogin({
+  const StudentLogin({
     Key? key,
   }) : super(key: key);
 
@@ -160,7 +162,7 @@ class StudentLogin extends StatelessWidget {
 }
 
 class UsernameForm extends StatelessWidget {
-  UsernameForm({
+  const UsernameForm({
     Key? key,
   }) : super(key: key);
 
@@ -200,7 +202,7 @@ class UsernameForm extends StatelessWidget {
 }
 
 class IdForm extends StatelessWidget {
-  IdForm({
+  const IdForm({
     Key? key,
   }) : super(key: key);
 
@@ -243,7 +245,7 @@ class IdForm extends StatelessWidget {
 }
 
 class StartButton extends StatelessWidget {
-  StartButton({
+  const StartButton({
     Key? key,
   }) : super(key: key);
 

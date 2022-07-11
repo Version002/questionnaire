@@ -1,11 +1,13 @@
-import 'dart:ffi';
-import 'dart:math';
+// import 'dart:ffi';
+// import 'dart:math';
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print, use_key_in_widget_constructors, camel_case_types, sized_box_for_whitespace
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:questionnaire/main.dart';
-import 'package:questionnaire/signin.dart';
-import 'package:questionnaire/studentSignin.dart';
+// import 'package:questionnaire/signin.dart';
+// import 'package:questionnaire/studentSignin.dart';
 import 'dart:async';
 import '../style/app_color.dart';
 
@@ -13,7 +15,7 @@ Map<String, dynamic>? data;
 String? hours;
 String? minutes;
 String? second;
-Duration dif = Duration(minutes: 1);
+Duration dif = Duration(minutes: 10);
 Timer? countdownTimer;
 String strDigits(int n) => n.toString().padLeft(2, '0');
 int screen = 0;
@@ -39,7 +41,7 @@ Future retrieveQuestion() async {
 class QuizScreen extends StatefulWidget {
   final String studentName;
 
-  QuizScreen({
+  const QuizScreen({
     required this.studentName,
   });
   @override
@@ -109,7 +111,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void initState() {
-    dif = Duration(minutes: 1);
+    dif = Duration(minutes: 10);
     screen = 0;
     retrieveQuestion();
     loadTimer();
@@ -118,6 +120,7 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   void dispose() {
+    // ignore: todo
     // TODO: implement dispose
     countdownTimer?.cancel();
     super.dispose();
@@ -151,12 +154,17 @@ class _QuizScreenState extends State<QuizScreen> {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 30, bottom: 30),
+                        padding: const EdgeInsets.only(top: 30, bottom: 60),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            CancelButton(),
+                            // CancelButton(),
+                            // Spacer(),
+                            Logo(),
+                            // Container(
+                            //   width: MediaQuery.of(context).size.width * 0.1,
+                            // ),
                             Text(
                               "$minutes : $second",
                               style: TextStyle(
@@ -165,7 +173,9 @@ class _QuizScreenState extends State<QuizScreen> {
                                 fontSize: 22,
                               ),
                             ),
+                            // Spacer(),
                             QuizNumber(),
+                            // Spacer()
                           ],
                         ),
                       ),
@@ -187,8 +197,26 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 }
 
+class Logo extends StatelessWidget {
+  const Logo({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      child: Image.asset(
+        'assets/quiz.png',
+        height: 50,
+        width: 50,
+        fit: BoxFit.fitWidth,
+      ),
+    );
+  }
+}
+
 class questionWidget extends StatefulWidget {
-  questionWidget({Key? key}) : super(key: key);
+  const questionWidget({Key? key}) : super(key: key);
 
   @override
   State<questionWidget> createState() => _questionWidgetState();
@@ -228,7 +256,7 @@ class _questionWidgetState extends State<questionWidget> {
                       ),
                     ),
                     SizedBox(
-                      height: 100,
+                      height: 50,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 32.0),
@@ -250,10 +278,12 @@ class _questionWidgetState extends State<questionWidget> {
                           ),
                           style: ButtonStyle(
                             backgroundColor: isCorrect[index][0] == true
-                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                ? MaterialStateProperty.all(cPink)
                                 : MaterialStateProperty.all(Colors.white),
-                            foregroundColor: MaterialStateProperty.all(
-                                const Color.fromARGB(255, 106, 91, 226)),
+                            foregroundColor: isCorrect[index][0] == true
+                                ? MaterialStateProperty.all(Colors.white)
+                                : MaterialStateProperty.all(
+                                    const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
                                 const RoundedRectangleBorder(
                                     borderRadius:
@@ -285,10 +315,12 @@ class _questionWidgetState extends State<questionWidget> {
                           ),
                           style: ButtonStyle(
                             backgroundColor: isCorrect[index][1] == true
-                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                ? MaterialStateProperty.all(cPink)
                                 : MaterialStateProperty.all(Colors.white),
-                            foregroundColor: MaterialStateProperty.all(
-                                const Color.fromARGB(255, 106, 91, 226)),
+                            foregroundColor: isCorrect[index][1] == true
+                                ? MaterialStateProperty.all(Colors.white)
+                                : MaterialStateProperty.all(
+                                    const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
                                 const RoundedRectangleBorder(
                                     borderRadius:
@@ -320,10 +352,12 @@ class _questionWidgetState extends State<questionWidget> {
                           ),
                           style: ButtonStyle(
                             backgroundColor: isCorrect[index][2] == true
-                                ? MaterialStateProperty.all(Colors.yellow[300])
+                                ? MaterialStateProperty.all(cPink)
                                 : MaterialStateProperty.all(Colors.white),
-                            foregroundColor: MaterialStateProperty.all(
-                                const Color.fromARGB(255, 106, 91, 226)),
+                            foregroundColor: isCorrect[index][2] == true
+                                ? MaterialStateProperty.all(Colors.white)
+                                : MaterialStateProperty.all(
+                                    const Color.fromARGB(255, 106, 91, 226)),
                             shape: MaterialStateProperty.all(
                                 const RoundedRectangleBorder(
                                     borderRadius:
@@ -335,47 +369,49 @@ class _questionWidgetState extends State<questionWidget> {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 32.0),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        height: 50,
-                        child: TextButton(
-                          onPressed: () {
-                            setState(() {
-                              isCorrect[index] = [false, false, false, true];
-                            });
-                          },
-                          child: Text(
-                            randomItem[index]['questions'][3]['d_answer'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 21,
-                            ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: 50,
+                      child: TextButton(
+                        onPressed: () {
+                          setState(() {
+                            isCorrect[index] = [false, false, false, true];
+                          });
+                        },
+                        child: Text(
+                          randomItem[index]['questions'][3]['d_answer'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 21,
                           ),
-                          style: ButtonStyle(
-                            backgroundColor: isCorrect[index][3] == true
-                                ? MaterialStateProperty.all(Colors.yellow[300])
-                                : MaterialStateProperty.all(Colors.white),
-                            foregroundColor: MaterialStateProperty.all(
-                                const Color.fromARGB(255, 106, 91, 226)),
-                            shape: MaterialStateProperty.all(
-                                const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15.0)),
-                                    side: BorderSide(
-                                      color: Color.fromARGB(255, 106, 91, 226),
-                                    ))),
-                          ),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: isCorrect[index][3] == true
+                              ? MaterialStateProperty.all(cPink)
+                              : MaterialStateProperty.all(Colors.white),
+                          foregroundColor: isCorrect[index][3] == true
+                              ? MaterialStateProperty.all(Colors.white)
+                              : MaterialStateProperty.all(
+                                  const Color.fromARGB(255, 106, 91, 226)),
+                          shape: MaterialStateProperty.all(
+                              const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15.0)),
+                                  side: BorderSide(
+                                    color: Color.fromARGB(255, 106, 91, 226),
+                                  ))),
                         ),
                       ),
                     ),
+                    SizedBox(
+                      height: 40,
+                    )
                   ],
                 );
               })),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 32.0),
+          padding: const EdgeInsets.only(top: 10.0),
           child: Container(
             width: MediaQuery.of(context).size.width * 0.7,
             child: TextButton(
@@ -389,6 +425,7 @@ class _questionWidgetState extends State<questionWidget> {
                     }
                   }
                 }
+                // ignore: unnecessary_cast
                 correctAnswers = (correctAnswers /
                         data!['quiz'][0]['quiz_questions'].length *
                         100)
@@ -400,7 +437,7 @@ class _questionWidgetState extends State<questionWidget> {
                 });
               },
               child: const Text(
-                "End",
+                "Submit",
                 style: TextStyle(fontSize: 16, color: cPrimary),
               ),
               style: ButtonStyle(
@@ -640,7 +677,7 @@ class _EndQuizButtonState extends State<EndQuizButton> {
         child: TextButton(
           onPressed: postScore,
           child: const Text(
-            "End",
+            "Submit the quiz",
             style: TextStyle(fontSize: 16),
           ),
           style: ButtonStyle(

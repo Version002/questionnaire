@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_key_in_widget_constructors, unused_local_variable, sized_box_for_whitespace
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:questionnaire/homescreen.dart';
@@ -23,7 +25,7 @@ class CreatingQuizScreen extends StatefulWidget {
   final String endDay;
   final String duration;
 
-  CreatingQuizScreen(
+  const CreatingQuizScreen(
       {required this.numberQuestion,
       required this.quizId,
       required this.quizName,
@@ -46,8 +48,7 @@ class _CreatingQuizScreenState extends State<CreatingQuizScreen> {
     final question = int.parse(widget.numberQuestion);
     final idQuiz = widget.quizId;
     final nameQuiz = widget.quizName;
-
-    int number;
+    // int number;
     final questionAddList = [];
 
     //  dynamic postData = [];

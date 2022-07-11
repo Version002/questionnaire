@@ -1,9 +1,11 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:questionnaire/homescreen.dart';
 import 'dart:async';
 
-import 'package:questionnaire/student/quiz.dart';
+// import 'package:questionnaire/student/quiz.dart';
 
 class VerifyEmailPage extends StatefulWidget {
   const VerifyEmailPage({Key? key}) : super(key: key);
@@ -33,7 +35,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
     // call after email verification!
     await FirebaseAuth.instance.currentUser!.reload();
 
-    if (this.mounted) {
+    if (mounted) {
       setState(() {
         isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
       });
@@ -47,9 +49,9 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
 
-      if (this.mounted) setState((() => canResendEmail = false));
+      if (mounted) setState((() => canResendEmail = false));
       await Future.delayed(Duration(seconds: 5));
-      if (this.mounted) {
+      if (mounted) {
         setState(
           () => canResendEmail = true,
         );

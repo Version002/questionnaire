@@ -1,7 +1,9 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, sized_box_for_whitespace, avoid_print, unnecessary_string_interpolations
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:questionnaire/homescreen.dart';
-import 'package:questionnaire/screen/AddingQuizScreen.dart';
+// import 'package:questionnaire/homescreen.dart';
+// import 'package:questionnaire/screen/AddingQuizScreen.dart';
 import 'package:questionnaire/style/app_color.dart';
 import 'package:questionnaire/widget/text/BlackText.dart';
 import 'package:questionnaire/widget/text/WhiteText.dart';
@@ -28,17 +30,17 @@ class _ReportingScreenState extends State<ReportingScreen> {
   var docSnapshot;
   var number;
   var student;
-  var teacher;
+  var quiz;
   Map<String, dynamic>? data;
   Future<dynamic> fetchDocuments() async {
     collection = FirebaseFirestore.instance.collection('teacher');
     docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
     data = await docSnapshot.data()!;
     student = data!['students'];
-    teacher = data!['email'];
+    quiz = data!['quiz'][0]['quiz_id'];
     setState(() {
       student;
-      teacher;
+      quiz;
     });
   }
 
@@ -135,10 +137,10 @@ class _ReportingScreenState extends State<ReportingScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(
                 children: [
-                  BlackText(
-                      text: teacher?.toString() ?? '',
-                      fontWeight: FontWeight.w800,
-                      size: 25),
+                  // BlackText(
+                  //     text: quiz?.toString() ?? '',
+                  //     fontWeight: FontWeight.w800,
+                  //     size: 25),
                   SizedBox(
                     height: 30,
                   ),
@@ -167,14 +169,14 @@ class _ReportingScreenState extends State<ReportingScreen> {
                                   height: 10,
                                 ),
                                 WhiteText(
-                                    text: 'tests',
+                                    text: 'Quiz ID',
                                     fontWeight: FontWeight.w300,
                                     size: 15),
                                 SizedBox(
                                   height: 15,
                                 ),
                                 WhiteText(
-                                    text: '1',
+                                    text: quiz?.toString() ?? 'Loading...',
                                     fontWeight: FontWeight.w700,
                                     size: 22)
                               ],
@@ -200,7 +202,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
                                   height: 10,
                                 ),
                                 WhiteText(
-                                    text: 'student',
+                                    text: 'Students',
                                     fontWeight: FontWeight.w300,
                                     size: 15),
                                 SizedBox(
@@ -220,11 +222,12 @@ class _ReportingScreenState extends State<ReportingScreen> {
             ),
             Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 15.0),
+                  const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
+                    // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       BlackText(
                           text: 'Students Scoring',
@@ -365,8 +368,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text("Export To CSV"),
-        content: Text(
-            "You have success in exporting file, please only do in one time"),
+        content: Text("You have successfully exported to CSV"),
         actions: <Widget>[
           TextButton(
             onPressed: () {
