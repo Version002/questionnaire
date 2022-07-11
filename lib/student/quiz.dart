@@ -698,52 +698,53 @@ class _EndQuizButtonState extends State<EndQuizButton> {
   dynamic postData = [];
   Future postScore() async {
     if (data!['students'] != null) {
-     dynamic postData = [];
+      dynamic postData = [];
 
-          if (data!['students'] != null) {
-            postData = data!['students'];
-            DateTime now = DateTime.now();
-            String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
-            //  DateTime dt = DateTime.parse(formattedDate);
-            postData.add({
+      if (data!['students'] != null) {
+        postData = data!['students'];
+        DateTime now = DateTime.now();
+        String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
+        //  DateTime dt = DateTime.parse(formattedDate);
+        postData.add({
+          "student_name": studentUserName,
+          "student_score": correctAnswers,
+          "time": formattedDate,
+        });
+        final dataList = [];
+
+        for (int i = 0; i < postData.length; i++) {
+          dataList.add(i);
+        }
+
+        FirebaseFirestore.instance
+            .collection('teacher')
+            .doc('VbWzEnRYiyi4TJB0yfBs')
+            .set({
+          "students": dataList
+              .map((e) => {
+                    "student_name": postData[e]['student_name'],
+                    "student_score": postData[e]['student_score'],
+                    "time": postData[e]['time'],
+                  })
+              .toList(),
+        }, SetOptions(merge: true));
+      } else {
+        DateTime now = DateTime.now();
+        String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
+        FirebaseFirestore.instance
+            .collection('teacher')
+            .doc('VbWzEnRYiyi4TJB0yfBs')
+            .set({
+          "students": [
+            {
               "student_name": studentUserName,
               "student_score": correctAnswers,
               "time": formattedDate,
-            });
-            final dataList = [];
-
-            for (int i = 0; i < postData.length; i++) {
-              dataList.add(i);
             }
-
-            FirebaseFirestore.instance
-                .collection('teacher')
-                .doc('VbWzEnRYiyi4TJB0yfBs')
-                .set({
-              "students": dataList
-                  .map((e) => {
-                        "student_name": postData[e]['student_name'],
-                        "student_score": postData[e]['student_score'],
-                        "time": postData[e]['time'],
-                      })
-                  .toList(),
-            }, SetOptions(merge: true));
-          } else {
-            DateTime now = DateTime.now();
-            String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
-            FirebaseFirestore.instance
-                .collection('teacher')
-                .doc('VbWzEnRYiyi4TJB0yfBs')
-                .set({
-              "students": [
-                {
-                  "student_name": studentUserName,
-                  "student_score": correctAnswers,
-                  "time": formattedDate,
-                }
-              ]
-            }, SetOptions(merge: true));
-          }}
+          ]
+        }, SetOptions(merge: true));
+      }
+    }
     // Navigator.pop(context);
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => MainPage()));

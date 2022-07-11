@@ -37,6 +37,7 @@ class _ReportingScreenState extends State<ReportingScreen> {
     docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
     data = await docSnapshot.data()!;
     student = data!['students'];
+    // print('test --- ${student[0]['time']}');
     quiz = data!['quiz'][0]['quiz_id'];
     setState(() {
       student;
@@ -274,31 +275,18 @@ class _ReportingScreenState extends State<ReportingScreen> {
                             itemBuilder: (context, index) {
                               number = index;
 
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              return Expanded(
+                                  child: Row(
+                                // mainAxisAlignment:
+                                //     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Expanded(
-                                      child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 15.0),
-                                        child: Text(
-                                          student?[index]['student_name']
-                                                  .toString() ??
-                                              'Empty',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 18,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        student?[index]['student_score']
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 15.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width * 0.25,
+                                      child: Text(
+                                        student?[index]['student_name']
                                                 .toString() ??
                                             'Empty',
                                         style: TextStyle(
@@ -307,10 +295,33 @@ class _ReportingScreenState extends State<ReportingScreen> {
                                           color: Colors.black,
                                         ),
                                       ),
-                                    ],
-                                  ))
+                                    ),
+                                  ),
+                                   Container(
+                                    width: MediaQuery.of(context).size.width * 0.4,
+                                     child: Text(
+                                      student?[index]['time']
+                                              .toString() ??
+                                          'Empty',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                      ),
+                                  ),
+                                   ),
+                                  Text(
+                                    '${student?[index]['student_score']
+                                            .toString()} pt' ??
+                                        'Empty',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                 ],
-                              );
+                              ));
                             }),
                       );
                     }
