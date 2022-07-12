@@ -210,13 +210,11 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      child: Image.asset(
-        'assets/quiz.png',
-        height: 50,
-        width: 50,
-        fit: BoxFit.fitWidth,
-      ),
+    return Image.asset(
+      'assets/quiz.png',
+      height: 50,
+      width: 50,
+      fit: BoxFit.fitWidth,
     );
   }
 }

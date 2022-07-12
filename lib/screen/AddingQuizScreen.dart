@@ -25,7 +25,8 @@ class AddingQuizScreen extends StatefulWidget {
 
 class _AddingQuizScreenState extends State<AddingQuizScreen> {
   bool _checkbox = false;
-  DateTime dateTime = DateTime(2022, 11, 7, 5, 30);
+  DateTime now = DateTime.now();
+  DateTime dateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 5, 30);
   final quizNameController = TextEditingController();
   final quizIdController = TextEditingController();
   final numberQuestionController = TextEditingController();
