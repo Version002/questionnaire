@@ -4,6 +4,7 @@ import 'package:questionnaire/main.dart';
 import 'package:questionnaire/screen/AddingQuizScreen.dart';
 // import 'package:questionnaire/screen/CreatingQuizScreen.dart';
 import 'package:questionnaire/screen/ReportingScreen.dart';
+import 'package:questionnaire/viewQuizScreen.dart';
 import 'package:questionnaire/widget/text/BlackText.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -55,11 +56,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     children: [
                       Container(
-                        height: 100,
+                        height: 50,
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: 200,
+                        height: 150,
                         decoration: BoxDecoration(
                           color: Color(0xffFFFED1),
                           borderRadius: BorderRadius.circular(10),
@@ -97,12 +98,76 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   Positioned(
-                    bottom: 130,
-                    left: MediaQuery.of(context).size.width * 0.5,
+                    bottom: 110,
+                    left: MediaQuery.of(context).size.width * 0.7,
                     child: Image.asset(
                       'assets/quiz.png',
-                      height: 130,
-                      width: 130,
+                      height: 80,
+                      width: 80,
+                      fit: BoxFit.fitWidth,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ViewQuizScreen()));
+              },
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        height: 50,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 150,
+                        decoration: BoxDecoration(
+                          color: Color(0xffCFFED4),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 30,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    color: Color(0xffCFFED4),
+                                    borderRadius: BorderRadius.circular(120),
+                                    border: Border.all(color: Colors.black)),
+                                child: Center(
+                                  child: Image.asset(
+                                    'assets/forward_icon.png',
+                                    height: 18,
+                                    width: 18,
+                                    fit: BoxFit.fitWidth,
+                                  ),
+                                ),
+                              ),
+                              BlackText(
+                                  text: 'View Quiz',
+                                  fontWeight: FontWeight.bold,
+                                  size: 23)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: 110,
+                    left: MediaQuery.of(context).size.width * 0.7,
+                    child: Image.asset(
+                      'assets/dashboard.png',
+                      height: 80,
+                      width: 80,
                       fit: BoxFit.fitWidth,
                     ),
                   ),
@@ -119,11 +184,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                     children: [
                       Container(
-                        height: 100,
+                        height: 50,
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: 200,
+                        height: 150,
                         decoration: BoxDecoration(
                           color: Color(0xffFEE1CF),
                           borderRadius: BorderRadius.circular(10),
@@ -161,18 +226,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   Positioned(
-                    bottom: 120,
-                    left: MediaQuery.of(context).size.width * 0.5,
+                    bottom: 110,
+                    left: MediaQuery.of(context).size.width * 0.7,
                     child: Image.asset(
                       'assets/report.png',
-                      height: 130,
-                      width: 130,
+                      height: 80,
+                      width: 80,
                       fit: BoxFit.fitWidth,
                     ),
                   ),
                 ],
               ),
             ),
+            
           ],
         ),
       ),

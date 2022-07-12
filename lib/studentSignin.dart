@@ -18,18 +18,9 @@ var quizID;
 var students;
 var startDay;
 var endDay;
+bool isloaded = false;
 bool inTime = true;
 Map<String, dynamic>? data;
-Future<dynamic> fetchDocuments() async {
-  collection = FirebaseFirestore.instance.collection('teacher');
-  docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
-  data = await docSnapshot.data()!;
-  quizID = data!['quiz'][0]['quiz_id'];
-  startDay = data!['quiz'][0]['quiz_startday'];
-  endDay = data!['quiz'][0]['quiz_endday'];
-  students = data!['students'];
-  // print(students?.length());
-}
 
 class StudentSignin extends StatefulWidget {
   const StudentSignin({Key? key}) : super(key: key);
@@ -45,36 +36,47 @@ class _StudentSigninState extends State<StudentSignin> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Future<dynamic> fetchDocuments() async {
+    collection = FirebaseFirestore.instance.collection('teacher');
+    docSnapshot = await collection.doc('VbWzEnRYiyi4TJB0yfBs').get();
+    data = await docSnapshot.data()!;
+    quizID = data!['quiz'][0]['quiz_id'];
+    startDay = data!['quiz'][0]['quiz_startday'];
+    endDay = data!['quiz'][0]['quiz_endday'];
+    students = data!['students'];
+
     DateTime now = DateTime.now();
     String formattedDate = DateFormat('yyyy-dd-MM kk:mm').format(now);
-     DateTime dt = DateTime.parse(formattedDate);
-  print(dt); // 2020-01-02 03:04:05.000
+    DateTime dt = DateTime.parse(formattedDate);
+    print(dt); // 2020-01-02 03:04:05.000
 
-     DateTime endQuiz = DateTime.parse(endDay);
-     DateTime startQuiz = DateTime.parse(startDay);
-  // print(dt); // 2020-01-02 03:04:05.000
-    
+    DateTime endQuiz = DateTime.parse(endDay);
+    DateTime startQuiz = DateTime.parse(startDay);
+    // print(dt); // 2020-01-02 03:04:05.000
 
-    if(dt.compareTo(startQuiz) > 0 && dt.compareTo(endQuiz)<0) {
-      setState(() {
-        
-        inTime = true;
-      });
-    }else {
-      setState(() {
-        inTime = false;
-      });
+    if (dt.compareTo(startQuiz) > 0 && dt.compareTo(endQuiz) < 0) {
+      inTime = true;
+    } else {
+      inTime = false;
     }
-
-
-
     print(startQuiz);
     print(endQuiz);
     print(dt);
     print(inTime);
-    return Scaffold(
+
+    setState(() {
+      students;
+      startDay;
+      endDay;
+      data;
+      isloaded = true;
+    });
+    // print(students?.length());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return isloaded == false? Center(child: CircularProgressIndicator(),) : Scaffold(
       body: SingleChildScrollView(
         child: Center(
           child: Column(
