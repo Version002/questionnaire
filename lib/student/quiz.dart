@@ -436,7 +436,7 @@ class _questionWidgetState extends State<questionWidget> {
                 }
                 // ignore: unnecessary_cast
                 correctAnswers = (correctAnswers /
-                        data!['quiz'][0]['quiz_questions'].length *
+                        randomItem.length *
                         100)
                     .ceil() as int;
 
@@ -876,13 +876,11 @@ class PurpleContainer extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Row(
                         children: [
-                          Positioned(
-                            child: Image.asset(
-                              'assets/trophy.png',
-                              height: 80,
-                              width: 80,
-                              fit: BoxFit.fitWidth,
-                            ),
+                          Image.asset(
+                            'assets/trophy.png',
+                            height: 80,
+                            width: 80,
+                            fit: BoxFit.fitWidth,
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,

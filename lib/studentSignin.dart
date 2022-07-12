@@ -285,52 +285,24 @@ class StartButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 145.0, vertical: 50.0),
-      child: TextButton(
-        onPressed: () {
-          bool isTaken = false;
-          if (students != Null) {
-            for (int i = 0; i < students.length; i++) {
-              if (userStudentController.text == students[i]['student_name']) {
-                isTaken = true;
-              } else {
-                isTaken = false;
+      padding: EdgeInsets.symmetric( vertical: 50.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.4,
+        child: TextButton(
+          onPressed: () {
+            bool isTaken = false;
+            if (students != Null) {
+              for (int i = 0; i < students.length; i++) {
+                if (userStudentController.text == students[i]['student_name']) {
+                  isTaken = true;
+                } else {
+                  isTaken = false;
+                }
               }
             }
-          }
-          if (isTaken == true) {
-            final snackBar = SnackBar(
-              content: Text('Username is already taken'),
-              backgroundColor: cPrimary,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-            // showDialog(
-            //   context: context,
-            //   builder: (ctx) => AlertDialog(
-            //     title: Text("Username Taken"),
-            //     content: Text("Your username is already taken"),
-            //     actions: <Widget>[
-            //       TextButton(
-            //         onPressed: () {
-            //           Navigator.pop(context);
-            //         },
-            //         child: Text('ok'),
-            //       ),
-            //     ],
-            //   ),
-            // );
-          } else {
-            if (quizIdController.text == quizID && inTime == true) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) => QuizScreen(
-                            studentName: userStudentController.text,
-                          ))));
-            } else {
+            if (isTaken == true) {
               final snackBar = SnackBar(
-                content: Text('Incorrect Quiz ID'),
+                content: Text('Username is already taken'),
                 backgroundColor: cPrimary,
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -338,8 +310,8 @@ class StartButton extends StatelessWidget {
               // showDialog(
               //   context: context,
               //   builder: (ctx) => AlertDialog(
-              //     title: Text("Incorrect Quiz ID"),
-              //     content: Text("You have entered the wrong Quiz ID"),
+              //     title: Text("Username Taken"),
+              //     content: Text("Your username is already taken"),
               //     actions: <Widget>[
               //       TextButton(
               //         onPressed: () {
@@ -350,22 +322,40 @@ class StartButton extends StatelessWidget {
               //     ],
               //   ),
               // );
+            } else {
+              if (quizIdController.text == quizID && inTime == true) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: ((context) => QuizScreen(
+                              studentName: userStudentController.text,
+                            ))));
+              } else {
+                final snackBar = SnackBar(
+                  content: Text('Incorrect Quiz ID'),
+                  backgroundColor: cPrimary,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+               
+           
+              }
             }
-          }
-        },
-        child: Text(
-          "Start Quiz",
-          style: TextStyle(fontSize: 16),
-        ),
-        style: ButtonStyle(
-          backgroundColor:
-              MaterialStateProperty.all(Color.fromARGB(255, 106, 91, 226)),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
-          shape: MaterialStateProperty.all(RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              side: BorderSide(
-                color: Color.fromARGB(255, 106, 91, 226),
-              ))),
+          },
+          child: Text(
+            "Start Quiz",
+            style: TextStyle(fontSize: 16),
+          ),
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all(Color.fromARGB(255, 106, 91, 226)),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                side: BorderSide(
+                  color: Color.fromARGB(255, 106, 91, 226),
+                ))),
+          ),
         ),
       ),
     );
