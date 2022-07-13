@@ -319,46 +319,45 @@ class _ReportingScreenState extends State<ReportingScreen> {
                                 // mainAxisAlignment:
                                 //     MainAxisAlignment.spaceBetween,
                                 children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(bottom: 15.0),
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width *
-                                      0.25,
-                                  child: Text(
-                                    student?[index]['student_name']
-                                            .toString() ??
-                                        'Empty',
+                                  Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 15.0),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.25,
+                                      child: Text(
+                                        student?[index]['student_name']
+                                                .toString() ??
+                                            'Empty',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    child: Text(
+                                      student?[index]['time'].toString() ??
+                                          'Empty',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 18,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                    '${student?[index]['student_score'].toString()} pt',
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 18,
                                       color: Colors.black,
                                     ),
                                   ),
-                                ),
-                              ),
-                              Container(
-                                width:
-                                    MediaQuery.of(context).size.width * 0.4,
-                                child: Text(
-                                  student?[index]['time'].toString() ??
-                                      'Empty',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                '${student?[index]['student_score'].toString()} pt' ??
-                                    'Empty',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                ),
-                              ),
                                 ],
                               );
                             }),

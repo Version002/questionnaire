@@ -26,7 +26,8 @@ class AddingQuizScreen extends StatefulWidget {
 class _AddingQuizScreenState extends State<AddingQuizScreen> {
   bool _checkbox = false;
   DateTime now = DateTime.now();
-  DateTime dateTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, 5, 30);
+  DateTime dateTime = DateTime(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day, 5, 30);
   final quizNameController = TextEditingController();
   final quizIdController = TextEditingController();
   final numberQuestionController = TextEditingController();
@@ -44,7 +45,9 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
       if (studentQues > ques) {
         final snackBar = SnackBar(
           content: Text(
-              'students\' questions need to be smaller or equal to overall question',style: TextStyle(color: cPrimary),),
+            'students\' questions need to be smaller or equal to overall question',
+            style: TextStyle(color: cPrimary),
+          ),
           backgroundColor: Colors.white,
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -183,7 +186,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
                 mainColor: Colors.white,
                 textColor: Colors.white,
                 // controller: state.firstname,
-                labelText: 'duration in minue',
+                labelText: 'duration in minute',
                 prefixIcon: Image.asset(
                   'assets/question_icon.png',
                   height: 12,
@@ -250,7 +253,7 @@ class _AddingQuizScreenState extends State<AddingQuizScreen> {
                     },
                   ),
                   Text(
-                    'multi taking',
+                    'Multiple Retake',
                     style: TextStyle(color: Colors.white),
                   ),
                 ],
